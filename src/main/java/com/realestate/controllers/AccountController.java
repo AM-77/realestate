@@ -52,7 +52,76 @@ import com.realestate.services.ReportsService;
 @Controller
 public class AccountController {
 	
+	@Autowired
+	private ClientService clientService;
+	@Autowired
+	private AgentService agentService;
+	@Autowired
+	private OperatorService operatorService;
+	@Autowired
+	private AdminService adminService;
+	@Autowired
+	private ReportsService reportsService;
+	@Autowired
+	private AppointementService appointementService;
+	@Autowired
+	private LodgementService lodgementService;
+	@Autowired
+	private NotificationService notificationService;
 	
+	DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+	
+	@GetMapping("subscribe_as_client")
+	public String get_subscribe(HttpSession session) {
+		if(session.getAttribute("client") != null || session.getAttribute("agent") != null || session.getAttribute("operator") != null || session.getAttribute("admin") != null)
+			return "redirect:/";
+		
+		return "subscribe/subscribe_as_client";
+	}
+	
+	@GetMapping("subscribe_as_agent")
+	public String get_subscribe_as_agent(HttpSession session, Model model) {
+		if(session.getAttribute("client") != null || session.getAttribute("operator") != null || session.getAttribute("agent") != null || session.getAttribute("admin") != null)
+			return "redirect:/";
+		
+		if(session.getAttribute("type") != null && session.getAttribute("message") != null) {
+			model.addAttribute("type", session.getAttribute("type"));
+			model.addAttribute("message", session.getAttribute("message"));
+			
+			session.removeAttribute("type");
+			session.removeAttribute("message");
+		}
+		
+		return "subscribe/subscribe_as_agent";
+	}
+	
+	@GetMapping("subscribe_as_operator")
+	public String get_subscribe_as_operator(HttpSession session, Model model) {
+		if(session.getAttribute("client") != null || session.getAttribute("operator") != null || 
+				session.getAttribute("agent") != null || session.getAttribute("admin") != null)
+			return "redirect:/";
+		
+		if(session.getAttribute("type") != null && session.getAttribute("message") != null) {
+			model.addAttribute("type", session.getAttribute("type"));
+			model.addAttribute("message", session.getAttribute("message"));
+			
+			session.removeAttribute("type");
+			session.removeAttribute("message");
+		}
+		
+		return "subscribe/subscribe_as_operator";
+	}
+	
+	@GetMapping("subscribe_as_admin")
+	public String get_subscribe_as_admin(HttpSession session, Model model) {
+		if(session.getAttribute("admin") != null)
+				return "subscribe/subscribe_as_admin";
+		
+		
+		model.addAttribute("type", "model.addAttribute(\"message\", \"You have to login to your admin account.\");");
+		model.addAttribute("message", "You have to login to your admin account.");
+		return "login/login";
+	}
 	
 	
 }
