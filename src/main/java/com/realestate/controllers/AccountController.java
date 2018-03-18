@@ -181,6 +181,22 @@ public class AccountController {
 		}
 	}
 	
+	public String  is_valid_admin(Admin admin, String repassword) {
+		if(is_valid("username", admin.getEmail(), admin.getName(), admin.getLast_name(), 
+				admin.getPassword(), admin.getPhone(), repassword).equals("valid")) {
+			
+			if(admin_email_exists(admin.getEmail()))
+				return "This email is already assained to an other account.";
+			
+			//the cv and the loacle validation 
+			return "valid";
+		}else {
+			return is_valid("a_valid_username", admin.getEmail(), admin.getName(), admin.getLast_name(), 
+					admin.getPassword(), admin.getPhone(), repassword);
+		}
+	}
+	
+	
 	
 	
 	
