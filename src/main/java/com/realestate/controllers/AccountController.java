@@ -153,6 +153,20 @@ public class AccountController {
 		}
 	}
 	
+	public String  is_valid_agent(Agent agent, String repassword) {
+		if(is_valid(agent.getUsername(), agent.getEmail(),agent.getName(), agent.getLast_name(), agent.getPassword(), 
+				agent.getPhone(), repassword).equals("valid")) {
+			
+			if(agent_email_exists(agent.getEmail()))
+				return "This email is already assained to an other account.";
+				
+			return "valid";
+		}else {
+			return is_valid(agent.getUsername(), agent.getEmail(),agent.getName(), agent.getLast_name(), agent.getPassword(), 
+					agent.getPhone(), repassword);
+		}
+	}
+	
 	
 	
 	
