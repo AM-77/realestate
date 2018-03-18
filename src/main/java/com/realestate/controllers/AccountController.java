@@ -168,6 +168,21 @@ public class AccountController {
 	}
 	
 	
+	public String  is_valid_operator(Operator operator, String repassword) {
+		if(is_valid(operator.getUsername(), operator.getEmail(), operator.getName(), operator.getLast_name(), 
+			operator.getPassword(), operator.getPhone(), repassword).equals("valid")) {
+			if(operator_email_exists(operator.getEmail()))
+				return "This email is already assained to an other account.";
+	
+			return "valid";
+		}else {
+			return is_valid(operator.getUsername(), operator.getEmail(), operator.getName(), operator.getLast_name(), 
+					operator.getPassword(), operator.getPhone(), repassword);
+		}
+	}
+	
+	
+	
 	
 	
 	
