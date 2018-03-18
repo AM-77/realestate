@@ -124,4 +124,21 @@ public class AccountController {
 	}
 	
 	
+	public String  is_valid_client(Client client, String repassword) {
+		if(is_valid(client.getUsername(), client.getEmail(),client.getName(), client.getLast_name(), client.getPassword(), 
+				client.getPhone(), repassword).equals("valid")) {
+			
+			if(client_email_exists(client.getEmail()))
+				return "This email is already assained to an other account.";
+				 
+			return "valid";
+		}else {
+			return is_valid(client.getUsername(), client.getEmail(),client.getName(), client.getLast_name(), client.getPassword(), 
+					client.getPhone(), repassword);
+		}
+	}
+	
+	
+	
+	
 }
