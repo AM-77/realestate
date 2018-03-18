@@ -196,6 +196,95 @@ public class AccountController {
 		}
 	}
 	
+	public String is_valid(String username, String email, String name, String last_name, String password, 
+						    String phone, String repassword) {
+		
+		if(username.trim().length() == 0)
+			return "The username is required.";	
+		
+		if(email.trim().length() == 0)
+			return "The email is required.";
+		
+		if(password.trim().length() == 0)
+			return "The password is required.";
+		
+		if(phone.trim().length() == 0)
+			return "The phone number is required.";
+		
+		if(name.trim().length() == 0)
+			return "Your name is required.";
+		
+		if(repassword.trim().length() == 0)
+			return "The password confirmation is required.";
+		
+		if(last_name.trim().length() == 0)
+			return "The last name is required.";
+		
+		if(!password.trim().equals(repassword.trim()))
+			return "The password does not match with its confirmation.";
+		
+			
+		if( !is_accepted("[A-Za-z0-9_]{4,12}", username.trim()))
+			return "Invalid username. It must contains only characters and digets.";
+		
+		if( !is_accepted("[A-Za-z0-9.-_%]+@[A-Za-z0-9._-]+\\.[A-Za-z]{2,4}", email.trim())) 
+			return "Invalid email.";
+		
+		if( !is_accepted("[A-Za-z0-9.-_]{6,20}", password.trim())) 
+			return "Invalid passowrd. It must be more then 6 characters and digets.";
+		
+		if( !is_accepted("[0-9\\+]{8,14}", phone.trim())) 
+			return "Invalid phone number.";
+		
+		if( !is_accepted("[A-Za-z]{2,20}", name.trim())) 
+			return "Invalid name. It must contains only characters.";
+		
+		if( !is_accepted("[A-Za-z]{2,20}", last_name.trim())) 
+			return "Invalid lastname. It must contains only characters.";
+						
+		return "valid";
+	}
+	
+	public boolean is_accepted(String the_regexp, String str) {
+		Pattern pattern = Pattern.compile(the_regexp);
+		Matcher matcher = pattern.matcher(str);
+		
+		while(matcher.find()) {
+			if(matcher.group().trim().length() == str.trim().length()) {
+				return true;
+			}
+		}
+		
+		return false;
+	}
+	
+	public boolean client_email_exists(String email) {
+		if(clientService.client_email_exists(email))
+			return true;
+		else
+			return false;
+	}
+	
+	public boolean agent_email_exists(String email) {
+		if(agentService.agent_email_exists(email))
+			return true;
+		else
+			return false;
+	}
+	
+	public boolean operator_email_exists(String email) {
+		if(operatorService.operator_email_exists(email))
+			return true;
+		else
+			return false;
+	}
+	
+	public boolean admin_email_exists(String email) {
+		if(adminService.admin_email_exists(email))
+			return true;
+		else
+			return false;
+	}
 	
 	
 	
