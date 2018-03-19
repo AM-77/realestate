@@ -426,6 +426,100 @@ public class AccountController {
 		return "subscribe/subscribe_as_client";
 	}
 	
+	@PostMapping("subscribe_as_agent")
+	public String post_subscribe_as_agent(@RequestParam("username") String username, 
+										   @RequestParam("email") String email,
+										   @RequestParam ("password")String password, 
+										   @RequestParam("repassword") String repassword, 
+										   @RequestParam("name") String name, 
+										   @RequestParam("last_name") String last_name, 
+										   @RequestParam("profile_pic") MultipartFile profile_pic, 
+										   @RequestParam("birthdate") String birthdate, 
+										   @RequestParam("phone") String phone, 
+										   @RequestParam("gender") String gender, 
+										   @RequestParam("locale") String locale,
+										   @RequestParam("cv") MultipartFile cv, 
+										   HttpSession session, Model model,
+										   HttpServletRequest request) throws ParseException {
+			
+		String profile_picture_name = "default_profile_picture.jpg";
+		String cv_name = "no_cv";
+
+		if(!profile_pic.isEmpty()) {
+			String extension = profile_pic.getOriginalFilename().substring(profile_pic.getOriginalFilename().lastIndexOf("."), profile_pic.getOriginalFilename().length());
+			
+			if(!extension.equalsIgnoreCase("jpg") || !extension.equalsIgnoreCase("jpeg") || !extension.equalsIgnoreCase("png") ) {
+				model.addAttribute("type", "error");
+				model.addAttribute("message", "Invalid profile picture.");
+			
+				return "subscribe/subscribe_as_agent";
+			}
+			
+			Long random = Calendar.getInstance().getTimeInMillis();
+			profile_picture_name = random + extension;
+		}
+		
+		if(!cv.isEmpty()) {
+			String extension = cv.getOriginalFilename().substring(cv.getOriginalFilename().lastIndexOf("."), cv.getOriginalFilename().length());
+			
+			if(!extension.equalsIgnoreCase("jpg") || !extension.equalsIgnoreCase("jpeg") || !extension.equalsIgnoreCase("png") || !extension.equalsIgnoreCase("pdf")) {
+				model.addAttribute("type", "error");
+				model.addAttribute("message", "Invalid cv file.");
+			
+				return "subscribe/subscribe_as_agent";
+			}
+			
+			cv_name = username + "-" + "cv" + extension;
+		}
+		
+		String key = "" + Calendar.getInstance().getTimeInMillis() + "" + Calendar.getInstance().getTimeInMillis() + "" + Calendar.getInstance().getTimeInMillis();
+		
+		Agent agent = new Agent(0, email.trim(), password.trim(), username.trim(), name.trim(), last_name.trim(), df.parse(birthdate), 
+								gender.trim(), locale.trim(), 1, profile_picture_name.trim(), cv_name.trim(), phone.trim(), key);
+		
+		String is_valid = is_valid_agent(agent, repassword);
+		
+		try {
+			if(is_valid.equals("valid")) {
+				
+				byte[] profile_pictue = profile_pic.getBytes();
+				String path = "/home/amine/workspace-sts/project_1/src/main/resources/static/images/agent/";
+				File uploaded_file = new File(path + cv_name);
+				BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(uploaded_file));
+				stream.write(profile_pictue);
+				stream.close();
+				
+				byte[] byte_cv = cv.getBytes();
+				String cv_path = "/home/amine/workspace-sts/project_1/src/main/resources/static/images/agent/cv/";
+				File uploaded_cv = new File(cv_path + profile_picture_name);
+				BufferedOutputStream cv_stream = new BufferedOutputStream(new FileOutputStream(uploaded_cv));
+				cv_stream.write(byte_cv);
+				cv_stream.close();
+				
+				agent.setBlocked(2);		
+
+				send_confirmation_email(agent.getEmail(), key);
+
+				if(agentService.agent_subscribe(agent)) {
+					
+					session.setAttribute("agent", agent);
+					return "redirect:/login";
+					
+				}else {
+					model.addAttribute("type", "error");
+					model.addAttribute("message", "Sorry. There was an error somewhere, please try again later.");
+				}
+			}else {
+				model.addAttribute("type", "error");
+				model.addAttribute("message", is_valid);
+			}
+		}catch (Exception e) {
+			model.addAttribute("type", "error");
+			model.addAttribute("message", "Sorry. There was an exception somewhere, please try again later.");
+		}
+		
+		return "subscribe/subscribe_as_agent";
+	}
 	
 	
 	
