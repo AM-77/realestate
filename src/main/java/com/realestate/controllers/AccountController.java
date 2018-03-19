@@ -322,6 +322,33 @@ public class AccountController {
 		return  true;	
 	}
 	
+	@GetMapping("email_confirm")
+	public String get_email_confirm(@RequestParam("key") String key, HttpSession session) {
+		
+		if(clientService.get_client_by_confirmation_key(key)) {
+		
+			session.setAttribute("client", clientService.get_client_by_confirmation_key(key));
+		
+		}else {
+			
+			if(agentService.get_agent_by_confirmation_key(key)) {
+			
+				session.setAttribute("agent", agentService.get_agent_by_confirmation_key(key));
+			
+			}else {
+				
+				if(operatorService.get_operator_by_confirmation_key(key)) {
+				
+					session.setAttribute("operator", operatorService.get_operator_by_confirmation_key(key));
+			
+				}
+		
+			}
+		
+		}
+		
+		return "/";
+	}
 	
 	
 	
