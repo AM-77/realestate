@@ -616,5 +616,55 @@ public class AccountController {
 		return "subscribe/subscribe_as_operator";
 	}
 	
+	@PostMapping("subscribe_as_admin")
+	public String post_subscribe_as_admin(@RequestParam("email") String email, 
+										   @RequestParam ("password")String password,
+										   @RequestParam("repassword") String repassword, 
+										   @RequestParam("name") String name, 
+										   @RequestParam("last_name") String last_name, 
+										   @RequestParam("profile_pic") MultipartFile profile_pic, 
+										   @RequestParam("phone") String phone, HttpSession session, Model model) {
+		
+		String profile_picture_name = "default_profile_picture.jpg";
+		if(!profile_pic.isEmpty()) {
+			String extension = profile_pic.getOriginalFilename().substring(profile_pic.getOriginalFilename().lastIndexOf("."), profile_pic.getOriginalFilename().length());
+			Long random = Calendar.getInstance().getTimeInMillis();
+			profile_picture_name = random + extension;
+		}
+		
+		Admin admin = new Admin(0, email.trim(), password.trim(), name.trim(), last_name.trim(), profile_picture_name.trim(), phone.trim());
+		String is_valid = is_valid_admin(admin, repassword);
+		try {
+			if(is_valid.equals("valid")) {
+				
+				byte[] profile_pictue = profile_pic.getBytes();
+				String path = "/home/amine/workspace-sts/project_1/src/main/resources/static/images/admin/";
+				File uploaded_file = new File(path + profile_picture_name);
+				BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(uploaded_file));
+				stream.write(profile_pictue);
+				stream.close();
+				
+				if(adminService.admin_subscribe(admin)) {
+					
+					session.setAttribute("admin", admin);
+					return "redirect:/";
+				}else {
+					model.addAttribute("type", "error");
+					model.addAttribute("message", "Sorry. There was an error somewhere, please try again later.");
+				}
+			
+		}else {
+				model.addAttribute("type", "error");
+				model.addAttribute("message", is_valid);
+			}
+			
+		}catch (Exception e) {
+			model.addAttribute("type", "error");
+			model.addAttribute("message", "Sorry. There was an exception somewhere, please try again later.");
+		}
+		
+		return "subscribe/subscribe_as_admin";
+	}
+	
 	
 }
