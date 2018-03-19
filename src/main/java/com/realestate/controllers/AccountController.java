@@ -287,6 +287,41 @@ public class AccountController {
 	}
 	
 	
+	private JavaMailSender javaMailSender = this.mailSender();
+    public JavaMailSenderImpl mailSender() {
+        JavaMailSenderImpl javaMailSender = new JavaMailSenderImpl();
+
+        javaMailSender.setProtocol("SMTP");
+        javaMailSender.setHost("smtp.mail.yahoo.com");
+        javaMailSender.setPort(587);
+        javaMailSender.setJavaMailProperties(new Properties());
+        
+        return javaMailSender;
+    }
+	
+	public boolean send_confirmation_email(String email_to, String key) {
+		
+	
+		String emailSubject = "Realestate | Email confirmation.";
+		String emailMessage = "Your account has been Successfully in the realestate website."
+				+ " Please click the link to confirm you email address http://154.121.251.212:8080/email_confirm?key="+key;
+
+		javaMailSender.send(new MimeMessagePreparator() {
+			public void prepare(MimeMessage mimeMessage) throws Exception {
+
+				MimeMessageHelper mimeMsgHelperObj = new MimeMessageHelper(mimeMessage, true, "UTF-8");				
+				mimeMsgHelperObj.setTo(email_to);
+				mimeMsgHelperObj.setFrom("amine.griche77@gmail.com");				
+				mimeMsgHelperObj.setText(emailMessage);
+				mimeMsgHelperObj.setSubject(emailSubject);	
+			}
+		});
+		
+		System.out.println("\nMessage Send Successfully.... !\n");
+		
+		return  true;	
+	}
+	
 	
 	
 	
