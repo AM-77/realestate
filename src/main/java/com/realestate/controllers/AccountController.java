@@ -353,4 +353,80 @@ public class AccountController {
 	
 	
 	
+	@PostMapping("subscribe_as_client")
+	public String post_subscribe_client(@RequestParam("username") String username, 
+										 @RequestParam("email") String email, 
+										 @RequestParam ("password")String password, 
+										 @RequestParam("repassword") String repassword, 
+										 @RequestParam("name") String name, 
+										 @RequestParam("last_name") String last_name, 
+										 @RequestParam("profile_pic") MultipartFile profile_pic,
+										 @RequestParam("birthdate") String birthdate, 
+										 @RequestParam("phone") String phone, 
+										 @RequestParam("gender") String gender, 
+										 HttpSession session, Model model ) throws ParseException, IOException {
+		
+		
+		String profile_picture_name = "default_profile_picture.jpg";
+		
+		if(!profile_pic.isEmpty()) {
+			String extension = profile_pic.getOriginalFilename().substring(profile_pic.getOriginalFilename().lastIndexOf("."), profile_pic.getOriginalFilename().length());
+			
+			
+			if(!extension.equalsIgnoreCase("jpg") || !extension.equalsIgnoreCase("jpeg") || !extension.equalsIgnoreCase("png") ) {
+				model.addAttribute("type", "error");
+				model.addAttribute("message", "Invalid profile picture.");
+			
+				return "subscribe/subscribe_as_client";
+			}
+			
+			
+			Long random = Calendar.getInstance().getTimeInMillis();
+			profile_picture_name = random + extension;
+		}
+			
+		String key = "" + Calendar.getInstance().getTimeInMillis() + "" + Calendar.getInstance().getTimeInMillis() + "" + Calendar.getInstance().getTimeInMillis();
+				
+		Client client = new Client(0, email.trim(), password.trim(), username.trim(), name.trim(), last_name.trim(), 
+									df.parse(birthdate), gender.trim(), 0, profile_picture_name.trim(), phone.trim(), key);
+		String is_valid = is_valid_client(client, repassword);
+		try {
+			if(is_valid.equals("valid")) {
+				
+				byte[] profile_pictue = profile_pic.getBytes();
+				String path = "/home/amine/workspace-sts/project_1/src/main/resources/static/images/client//";
+				
+				File uploaded_file = new File(path + profile_picture_name);
+				BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(uploaded_file));
+				stream.write(profile_pictue);
+				stream.close();
+
+				send_confirmation_email(client.getEmail(), key);				
+				
+				if(clientService.client_subscribe(client)) {	
+					
+					session.setAttribute("client", client);
+					return "redirect:/";
+				}
+				else {
+					model.addAttribute("type", "error");
+					model.addAttribute("message", "Sorry. There was an error somewhere, please try again later.");
+				}
+			}else {
+				model.addAttribute("type", "error");
+				model.addAttribute("message", is_valid);
+			}
+		}catch (Exception e) {
+			
+			e.printStackTrace();
+			model.addAttribute("type", "error");
+			model.addAttribute("message", "Sorry. There was an exception somewhere, please try again later.");
+		}
+		
+		return "subscribe/subscribe_as_client";
+	}
+	
+	
+	
+	
 }
