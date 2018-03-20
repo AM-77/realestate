@@ -799,5 +799,49 @@ public class AccountController {
 		return "redirect:/";
 	}
 	
+	@PostMapping("block_client")
+	public String post_block_client(@RequestParam("email") String email, HttpSession session) {
+		
+		if(session.getAttribute("operator") != null) {
+			
+			if(client_email_exists(email)) {
+				
+				if(clientService.get_client_by_email(email).getBlocked() == 0) {
+					
+					if(clientService.block_client_by_email(email)) {
+					
+						session.setAttribute("type", "success");
+						session.setAttribute("message", "The client account has been successfuly blocked.");
+					
+					}else {
+					
+						session.setAttribute("type", "error");
+						session.setAttribute("message", "Sorry. There was an error somewhere try again later.");
+					
+					}
+				}else {
+				
+					session.setAttribute("type", "error");
+					session.setAttribute("message", "This account is already blocked.");
+				}
+
+			}else {
+			
+				session.setAttribute("type", "error");
+				session.setAttribute("message", "This email is not assocaited to any client account.");
+			
+			}
+			
+			session.setAttribute("_url", "subscribe/handel_client_account");
+		}else {
+			
+			session.setAttribute("type", "error");
+			session.setAttribute("message", "Access deiend.");
+		
+		}
+		
+		return "redirect:/";
+	}
+	
 	
 }
