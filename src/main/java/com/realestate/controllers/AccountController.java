@@ -761,5 +761,43 @@ public class AccountController {
 		return "redirect:/";
 	}
 	
+	@PostMapping("remove_client")
+	public String post_remove_client(@RequestParam("email") String email, HttpSession session) {
+		
+		if(session.getAttribute("operator") != null) {
+			
+			if(client_email_exists(email)) {
+				
+				if(clientService.remove_client_by_email(email)) {
+				
+					session.setAttribute("type", "success");
+					session.setAttribute("message", "The client account has been successfuly removed.");
+				
+				}else {
+				
+					session.setAttribute("type", "error");
+					session.setAttribute("message", "Sorry. There was an error somewhere try again later.");
+			
+				}
+			
+			}else {
+			
+				session.setAttribute("type", "error");
+				session.setAttribute("message", "This email is not assocaited to any client account.");
+		
+			}
+
+			session.setAttribute("_url", "subscribe/handel_client_account");
+		
+		}else {
+		
+			session.setAttribute("type", "error");
+			session.setAttribute("message", "Access deiend.");
+		
+		}
+		
+		return "redirect:/";
+	}
+	
 	
 }
