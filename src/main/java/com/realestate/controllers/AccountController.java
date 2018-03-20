@@ -698,5 +698,68 @@ public class AccountController {
 		}
 	}
 	
+	@PostMapping("add_client")
+	public String post_add_client(@RequestParam("email") String email, 
+							   @RequestParam ("password")String password, 
+							   @RequestParam("repassword") String repassword, 
+							   HttpSession session ) throws ParseException {
+				
+		if(session.getAttribute("operator") != null) {
+			
+			String key = "" + Calendar.getInstance().getTimeInMillis() + "" + Calendar.getInstance().getTimeInMillis() + "" + Calendar.getInstance().getTimeInMillis();
+			Client client = new Client(0, email.trim(), password.trim(), "added_by_operator", "", "", df.parse("0000-00-00"),"", 0, "", "", key);
+			
+			try {
+				
+				if(!password.equals(repassword) || client_email_exists(email)) {
+					
+					if(client_email_exists(email)) {
+					
+						session.setAttribute("type", "error");
+						session.setAttribute("message", "This email is allredy assocaited to a client account.");
+					
+					}else {
+					
+						session.setAttribute("type", "error");
+						session.setAttribute("message", "This password and its confirmation are not identical.");
+					
+					}
+					
+				}else {
+				
+					
+					if(clientService.client_subscribe(client)) {
+					
+						session.setAttribute("type", "success");
+						session.setAttribute("message", "The client account has been successfuly created.");
+					
+					}else {
+					
+						session.setAttribute("type", "error");
+						session.setAttribute("message", "Sorry, There was an error somewhere, Try again later.");
+				
+					}
+				
+				}
+				
+			}catch (Exception e) {
+
+				session.setAttribute("type", "error");
+				session.setAttribute("message", "Sorry, There was an error somewhere, Try again later.");
+			
+			}
+			
+			session.setAttribute("_url", "subscribe/handel_client_account");
+			
+		}else {
+		
+			session.setAttribute("type", "error");
+			session.setAttribute("message", "Access deiend.");
+		
+		}
+		
+		return "redirect:/";
+	}
+	
 	
 }
