@@ -666,5 +666,37 @@ public class AccountController {
 		return "subscribe/subscribe_as_admin";
 	}
 	
+	@GetMapping("handel_client_account")
+	public String get_add_client(HttpSession session, Model model) throws ParseException {
+		
+		if((Operator)session.getAttribute("operator") != null) {
+			
+			model.addAttribute("operator", session.getAttribute("operator"));
+			
+			List<Notification_details> notifications = reportsService.get_reports(session);
+			session.setAttribute("notifications", notifications);
+			
+			int notification_nbr = 0;
+			for(Notification_details notif : notifications) {
+				if(!notif.isViewed())
+					notification_nbr ++ ;
+			}
+			
+			model.addAttribute("notifications", notifications);
+			model.addAttribute("notification_nbr", notification_nbr);
+			if(session.getAttribute("reporter") != null) {
+				model.addAttribute("reporter",session.getAttribute("reporter"));
+			}
+			
+			return "subscribe/handel_client_account"; 
+		}else {
+			
+			session.setAttribute("url", "handel_client_account");
+			session.setAttribute("type", "error");
+			session.setAttribute("message", "You have to login.");
+			return "redirect:/login";
+		}
+	}
+	
 	
 }
