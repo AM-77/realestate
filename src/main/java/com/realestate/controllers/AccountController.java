@@ -1268,6 +1268,134 @@ public class AccountController {
 		return "redirect:/error";
 	}
 	
+	@PostMapping("edit_profile")
+	public String post_edit_profile(@RequestParam("name")String name,
+									 @RequestParam("last_name")String last_name,
+									 @RequestParam("birthdate")String birthdate,
+									 
+									 @RequestParam("gender")String gender,
+									 @RequestParam("phone")String phone,
+									 @RequestParam("username")String username,
+									 HttpSession session) throws ParseException {
+		
+		String email = "wh7777@gmail.com";
+		if(session.getAttribute("client") != null || session.getAttribute("agent") != null || session.getAttribute("operator") != null) {
+			int id = 0;
+			
+			if(session.getAttribute("client") != null) {
+				id = ((Client)session.getAttribute("client")).getId();
+				Client client = new Client(id, email, "00000000", username, name, last_name, df.parse(birthdate), gender, 0, "", phone, "");
+				String is_valid = is_valid_client(client, "00000000");
+				
+				if(is_valid.equals("valid") || is_valid.equals("This email is already assained to an other account.")) {
+					
+					if(clientService.update_client_profile(client)) {	
+					
+						session.setAttribute("client", clientService.get_client_by_id(((Client)session.getAttribute("client")).getId()));
+						session.setAttribute("type", "success");
+						session.setAttribute("message", "The profile has been updated successfuly.");
+					
+					}
+					else {
+					
+						session.setAttribute("type", "error");
+						session.setAttribute("message", "Sorry. There was an error somewhere, please try again later.");
+					
+					}
+				}else {
+					
+					session.setAttribute("type", "error");
+					session.setAttribute("message", is_valid);
+				
+				}
+				
+				return "redirect:/client_profile/"+ id;
+				
+			}else {
+				
+				if(session.getAttribute("agent") != null) {
+					
+					
+					id = ((Agent)session.getAttribute("agent")).getId();
+					
+					Agent agent = new Agent(id, email, "00000000", username, name, last_name, df.parse(birthdate), gender, "", 0, "", "", phone, "");
+					String is_valid = is_valid_agent(agent, "00000000");
+					
+					if(is_valid.equals("valid")) {
+						
+						if(agentService.update_agent_profile(agent)) {	
+						
+							session.setAttribute("agent", agentService.get_agent_by_id(((Agent)session.getAttribute("agent")).getId()));
+							session.setAttribute("type", "success");
+							session.setAttribute("message", "The profile has been updated successfuly.");
+						
+						}
+						else {
+						
+							session.setAttribute("type", "error");
+							session.setAttribute("message", "Sorry. There was an error somewhere, please try again later.");
+						
+						}
+					}else {
+					
+						session.setAttribute("type", "error");
+						session.setAttribute("message", is_valid);
+
+					}
+					
+					return "redirect:/agent_profile/"+ id;
+					
+				}else {
+					
+					if(session.getAttribute("operator") != null) {
+						id = ((Operator)session.getAttribute("operator")).getId();
+						
+						Operator operator = new Operator(id, email, "00000000", username, name, last_name, df.parse(birthdate), gender, "", 0, "", "", phone, "");
+						String is_valid = is_valid_operator(operator, "00000000");
+						
+						if(is_valid.equals("valid")) {
+							
+							if(operatorService.update_operator_profile(operator)) {	
+							
+								
+								session.setAttribute("type", "success");
+								session.setAttribute("message", "The profile has been updated successfuly.");
+							
+								
+								return "redirect:/edit_profile";
+							}else {
+							
+								session.setAttribute("type", "error");
+								session.setAttribute("message", "Sorry. There was an error somewhere, please try again later.");
+							
+							}
+							
+						}else {
+							
+							session.setAttribute("type", "error");
+							session.setAttribute("message", is_valid);
+						
+						}
+						
+						return "redirect:/operator_profile/"+ id;
+					}else {
+						
+						return "redirect:/error";
+						
+					}
+					
+				}
+				
+			}
+			
+		}else {
+			
+			return "redirect:/error";
+		
+		}
+
+	}
+	
 	
 	@PostMapping("/confirm_subsc_operator")
 	public String post_confirm_subsc_operator(@RequestParam("id") int id, HttpSession session, Model model) {
