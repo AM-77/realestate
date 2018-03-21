@@ -1361,4 +1361,31 @@ public class AccountController {
 
 	}
 	
+	@PostMapping("remove_subsc_operator")
+	public String post_remove_subsc_operator(@RequestParam("id") int id, HttpSession session, Model model) {
+		
+		if(session.getAttribute("admin") != null) {
+			
+			if(operatorService.remove_an_op(id)) {
+		
+				session.setAttribute("type", "success");
+				session.setAttribute("message", "The operator's account removed successfuly.");
+			
+			}else {
+				
+				session.setAttribute("type", "error");
+				session.setAttribute("message", "Sorry. Somthing went wrong. Please try again later.");
+			}
+			
+			return "redirect:/operators_stats";
+		}else {
+			
+			model.addAttribute("type", "error");
+			model.addAttribute("message", "You have to login.");
+			return "login/login";
+		
+		}
+
+	}
+	
 }
