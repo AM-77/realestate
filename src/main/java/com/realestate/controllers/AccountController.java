@@ -1395,7 +1395,36 @@ public class AccountController {
 		}
 
 	}
-	
+		
+	@PostMapping("/confirm_subsc_agent")
+	public String post_confirm_subsc_agent(@RequestParam("id") int id, HttpSession session, Model model) {
+		
+		if(session.getAttribute("admin") != null) {
+			
+			if(agentService.confirm_an_agent(id)) {
+			
+				session.setAttribute("type", "success");
+				session.setAttribute("message", "The agent's account validated successfully.");
+			
+			}else {
+			
+				session.setAttribute("type", "error");
+				session.setAttribute("message", "Sorry. Somthing went wrong. Please try again later.");
+		
+			}
+			
+			return "redirect:/agents_stats";
+		
+		}else {
+		
+			model.addAttribute("type", "error");
+			model.addAttribute("message", "You have to login.");
+			return "login/login";
+		
+		}
+
+	}
+		
 	
 	@PostMapping("/confirm_subsc_operator")
 	public String post_confirm_subsc_operator(@RequestParam("id") int id, HttpSession session, Model model) {
@@ -1560,5 +1589,10 @@ public class AccountController {
 		}
 
 	}
+	
+	
+	
+	
+	
 	
 }
