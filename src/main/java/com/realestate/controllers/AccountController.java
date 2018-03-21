@@ -1224,6 +1224,51 @@ public class AccountController {
 	}
 	
 	
+	@GetMapping("edit_profile")
+	public String get_edit_profile(HttpSession session, Model model) throws ParseException {
+		if(session.getAttribute("client") != null) {
+			
+			session.setAttribute("client", clientService.get_client_by_id(((Client)session.getAttribute("client")).getId()));
+			
+			List<Notification_details> notifications = notificationService.get_notifications(session);
+			int notification_nbr = 0;
+			for(Notification_details notif : notifications) {
+
+				if(!notif.isViewed())
+					notification_nbr ++ ;
+			
+			}
+			
+			model.addAttribute("notification_nbr", notification_nbr);
+			model.addAttribute("notifications", notifications);
+			model.addAttribute("client", ((Client) session.getAttribute("client")));
+			return "edit/client";
+		}
+		
+		if(session.getAttribute("agent") != null) {
+			
+			session.setAttribute("agent", agentService.get_agent_by_id(((Agent)session.getAttribute("agent")).getId()));
+			
+			List<Notification_details> notifications = notificationService.get_notifications(session);
+			int notification_nbr = 0;
+			
+			for(Notification_details notif : notifications) {
+
+				if(!notif.isViewed())
+					notification_nbr ++ ;
+			
+			}
+			
+			model.addAttribute("notification_nbr", notification_nbr);
+			model.addAttribute("notifications", notifications);
+			model.addAttribute("agent", ((Agent) session.getAttribute("agent")));
+			return "edit/agent";
+		}
+		
+		return "redirect:/error";
+	}
+	
+	
 	@PostMapping("/confirm_subsc_operator")
 	public String post_confirm_subsc_operator(@RequestParam("id") int id, HttpSession session, Model model) {
 		
