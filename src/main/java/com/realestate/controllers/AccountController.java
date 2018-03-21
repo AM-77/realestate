@@ -932,5 +932,152 @@ public class AccountController {
 		
 	}
 	
+	@SuppressWarnings("deprecation")
+	@GetMapping("client_profile/{id}")
+	public String get_client_profile(@PathVariable("id") int id_client, HttpSession session, Model model) throws ParseException {
+		
+		if(session.getAttribute("client") != null || session.getAttribute("agent") != null || session.getAttribute("operator") != null || session.getAttribute("admin") != null) {
+		
+			
+			
+			model.addAttribute("is_not_logged", false);
+			
+			if(session.getAttribute("client") != null){
+			
+				List<Notification_details> notifications = notificationService.get_notifications(session);
+				int notification_nbr = 0;
+				
+				for(Notification_details notif : notifications) {
+					if(!notif.isViewed())
+						notification_nbr ++ ;
+				}
+				
+				model.addAttribute("notification_nbr", notification_nbr);
+				model.addAttribute("notifications", notifications);
+				
+				model.addAttribute("is_client", true);
+				model.addAttribute("client", session.getAttribute("client"));
+				
+				if(((Client)session.getAttribute("client")).getId() == id_client) {
+					model.addAttribute("link", true);
+					
+					if(session.getAttribute("type") != null && session.getAttribute("message") != null) {
+						model.addAttribute("type", session.getAttribute("type"));
+						model.addAttribute("message", session.getAttribute("message"));
+						session.removeAttribute("type");
+						session.removeAttribute("message");
+					}
+				}
+				
+			}else {
+				model.addAttribute("is_client", false);
+				if(session.getAttribute("type") != null && session.getAttribute("message") != null) {
+					model.addAttribute("type", session.getAttribute("type"));
+					model.addAttribute("message", session.getAttribute("message"));
+					session.removeAttribute("type");
+					session.removeAttribute("message");
+				}
+			}
+			
+			if(session.getAttribute("agent") != null){
+								
+				List<Notification_details> notifications = notificationService.get_notifications(session);
+				int notification_nbr = 0;
+				
+				for(Notification_details notif : notifications) {
+					if(!notif.isViewed())
+						notification_nbr ++ ;
+				}
+				
+				model.addAttribute("notification_nbr", notification_nbr);
+				model.addAttribute("notifications", notifications);
+				
+				model.addAttribute("is_agent", true);
+				model.addAttribute("agent", session.getAttribute("agent"));
+				
+			}else {
+				model.addAttribute("is_agent", false);
+				if(session.getAttribute("type") != null && session.getAttribute("message") != null) {
+					model.addAttribute("type", session.getAttribute("type"));
+					model.addAttribute("message", session.getAttribute("message"));
+					session.removeAttribute("type");
+					session.removeAttribute("message");
+				}
+			}
+			
+			if(session.getAttribute("operator") != null){
+				
+				model.addAttribute("operator", session.getAttribute("operator"));
+				
+				List<Notification_details> notifications = reportsService.get_reports(session);
+				session.setAttribute("notifications", notifications);
+				
+				int notification_nbr = 0;
+				for(Notification_details notif : notifications) {
+					if(!notif.isViewed())
+						notification_nbr ++ ;
+				}
+				
+				model.addAttribute("notifications", notifications);
+				model.addAttribute("notification_nbr", notification_nbr);
+				model.addAttribute("is_operator", true);
+				model.addAttribute("operator", session.getAttribute("operator"));
+				
+			}else {
+				model.addAttribute("is_operator", false);
+			}
+
+
+			if(session.getAttribute("admin") != null){
+				
+				model.addAttribute("admin", session.getAttribute("admin"));
+				model.addAttribute("is_admin", true);
+				return "redirect:/";
+				
+			}else {
+				model.addAttribute("is_admin", false);
+			}
+			
+			Client client = clientService.get_client_by_id(id_client);
+			if(client != null && client.getBlocked() != 1){
+				
+				int age = (new Date().getYear()) - client.getBirthdate().getYear();
+				model.addAttribute("age", age);
+				model.addAttribute("profile_client", client);
+				return "visite/client_profile";
+			}else {
+				
+				session.setAttribute("looking_for", "client");
+				return "redirect:/error";
+				
+			}
+			
+		}else {
+
+			model.addAttribute("is_admin", false);
+			model.addAttribute("is_agent", false);
+			model.addAttribute("is_client", false);
+			model.addAttribute("is_operator", false);
+			model.addAttribute("is_not_logged", true);
+			
+			Client client = clientService.get_client_by_id(id_client);
+			if(client != null && client.getBlocked() != 1){
+				
+				int age = (new Date().getYear()) - client.getBirthdate().getYear();
+				model.addAttribute("age", age);
+				model.addAttribute("profile_client", client);
+				
+				return "visite/client_profile";
+			
+			}else {
+				
+				session.setAttribute("looking_for", "client");
+				return "redirect:/error";
+				
+			}
+			
+		}
+	}
+	
 	
 }
