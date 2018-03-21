@@ -1223,4 +1223,33 @@ public class AccountController {
 		}
 	}
 	
+	
+	@PostMapping("/confirm_subsc_operator")
+	public String post_confirm_subsc_operator(@RequestParam("id") int id, HttpSession session, Model model) {
+		
+		if(session.getAttribute("admin") != null) {
+			
+			if(operatorService.confirm_an_op(id)) {
+				
+				session.setAttribute("type", "success");
+				session.setAttribute("message", "The operator's account validated successfuly.");
+			
+			}else {
+			
+				session.setAttribute("type", "error");
+				session.setAttribute("message", "Sorry. Somthing went wrong. Please try again later.");
+			
+			}
+			
+			return "redirect:/operators_stats";
+		}else {
+			
+			model.addAttribute("type", "error");
+			model.addAttribute("message", "You have to login.");
+			return "login/login";
+		
+		}
+
+	}
+	
 }
