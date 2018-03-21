@@ -1490,7 +1490,44 @@ public class AccountController {
 
 	}
 	
+	@PostMapping("/deblock_agent")
+	public String post_deblock_agent(@RequestParam("email") String email, HttpSession session, Model model) {
 		
+		if(session.getAttribute("admin") != null) {
+			
+			if(agentService.agent_email_exists(email)) {
+				
+				if(agentService.deblock_an_agent(email)) {
+				
+					session.setAttribute("type", "success");
+					session.setAttribute("message", "The agent's account deblocked successfully.");
+				
+				}else {
+				
+					session.setAttribute("type", "error");
+					session.setAttribute("message", "Sorry. Somthing went wrong. Please try again later.");
+				
+				}
+			}else {
+			
+				session.setAttribute("type", "error");
+				session.setAttribute("message", "The email's not assocaited to any account.");
+		
+			}
+			
+			return "redirect:/agents_stats";
+		
+		}else {
+		
+			model.addAttribute("type", "error");
+			model.addAttribute("message", "You have to login.");
+			return "login/login";
+		
+		}
+
+	}
+	
+	
 	
 	
 	
