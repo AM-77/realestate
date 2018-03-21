@@ -1454,6 +1454,44 @@ public class AccountController {
 
 	}
 	
+	@PostMapping("/block_agent")
+	public String post_block_agent(@RequestParam("email") String email, HttpSession session, Model model) {
+		
+		if(session.getAttribute("admin") != null) {
+			
+			if(agentService.agent_email_exists(email)) {
+				
+				if(agentService.block_an_agent(email)) {
+				
+					session.setAttribute("type", "success");
+					session.setAttribute("message", "The agent's account blocked successfully.");
+				
+				}else {
+				
+					session.setAttribute("type", "error");
+					session.setAttribute("message", "Sorry. Somthing went wrong. Please try again later.");
+				
+				}
+			}else {
+			
+				session.setAttribute("type", "error");
+				session.setAttribute("message", "The email's not assocaited to any account.");
+			
+			}
+			
+			return "redirect:/agents_stats";
+		}else {
+		
+			model.addAttribute("type", "error");
+			model.addAttribute("message", "You have to login.");
+			return "login/login";
+		
+		}
+
+	}
+	
+		
+	
 	
 	
 	@PostMapping("/confirm_subsc_operator")
