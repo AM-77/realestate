@@ -1079,5 +1079,148 @@ public class AccountController {
 		}
 	}
 	
+	@SuppressWarnings("deprecation")
+	@GetMapping("agent_profile/{id}")
+	public String get_agent_profile(@PathVariable("id") int id_agent, HttpSession session, Model model) throws ParseException {
+		
+		model.addAttribute("is_not_logged", true);
+		
+		if(session.getAttribute("client") != null || session.getAttribute("agent") != null || session.getAttribute("operator") != null || session.getAttribute("admin") != null) {
+			
+			model.addAttribute("is_agent", false);
+			model.addAttribute("is_client", false);
+			model.addAttribute("is_operator", false);
+			model.addAttribute("is_admin", false);
+			
+			model.addAttribute("is_not_logged", false);
+			
+			if(session.getAttribute("client") != null){
+			
+				List<Notification_details> notifications = notificationService.get_notifications(session);
+				int notification_nbr = 0;
+				
+				for(Notification_details notif : notifications) {
+					if(!notif.isViewed())
+						notification_nbr ++ ;
+				}
+				
+				model.addAttribute("notification_nbr", notification_nbr);
+				model.addAttribute("notifications", notifications);
+				model.addAttribute("is_client", true);
+				model.addAttribute("client", session.getAttribute("client"));
+				
+			}
+			
+			if(session.getAttribute("agent") != null){
+				
+				List<Notification_details> notifications = notificationService.get_notifications(session);
+				int notification_nbr = 0;
+				
+				for(Notification_details notif : notifications) {
+				
+					if(!notif.isViewed())
+						notification_nbr ++ ;
+				
+				}
+				
+				model.addAttribute("notification_nbr", notification_nbr);
+				model.addAttribute("notifications", notifications);
+				
+				model.addAttribute("is_agent", true);
+				model.addAttribute("agent", session.getAttribute("agent"));
+				
+				if(((Agent)session.getAttribute("agent")).getId() == id_agent) {
+
+					model.addAttribute("agent", session.getAttribute("agent"));
+					model.addAttribute("link", true);
+					
+					if(session.getAttribute("type") != null && session.getAttribute("message") != null) {
+						model.addAttribute("type", session.getAttribute("type"));
+						model.addAttribute("message", session.getAttribute("message"));
+						session.removeAttribute("type");
+						session.removeAttribute("message");
+					}
+					
+					
+					
+					return "visite/agent_profile";
+				
+				}
+				
+			}
+			
+			if(session.getAttribute("operator") != null){
+				
+				model.addAttribute("is_operator", true);
+				model.addAttribute("operator", session.getAttribute("operator"));
+				
+				List<Notification_details> notifications = reportsService.get_reports(session);
+				session.setAttribute("notifications", notifications);
+				
+				int notification_nbr = 0;
+				for(Notification_details notif : notifications) {
+				
+					if(!notif.isViewed())
+						notification_nbr ++ ;
+				
+				}
+				
+				model.addAttribute("notifications", notifications);
+				model.addAttribute("notification_nbr", notification_nbr);
+				model.addAttribute("is_operator", true);
+				model.addAttribute("operator", session.getAttribute("operator"));
+				
+			}
+			
+			if(session.getAttribute("admin") != null){
+				
+				model.addAttribute("admin", session.getAttribute("admin"));
+				model.addAttribute("is_admin", true);
+				return "redirect:/";
+				
+			}
+			
+			Agent agent = agentService.get_agent_by_id(id_agent);
+			
+			if(agent != null && agent.getBlocked() != 1){
+								
+				int age = (new Date().getYear()) - agent.getBirthdate().getYear();
+				model.addAttribute("age", age);
+				model.addAttribute("profile_agent", agent);
+				return "visite/agent_profile";
+				
+			}else {
+				
+				session.setAttribute("looking_for", "agent");
+				return "redirect:/error";
+				
+			}
+			
+		}else {
+			
+			model.addAttribute("is_admin", false);
+			model.addAttribute("is_agent", false);
+			model.addAttribute("is_client", false);
+			model.addAttribute("is_operator", false);
+			model.addAttribute("is_not_logged", true);
+			
+			Agent agent = agentService.get_agent_by_id(id_agent);
+			if(agent != null && agent.getBlocked() != 1){
+								
+				int age = (new Date().getYear()) - agent.getBirthdate().getYear();
+				model.addAttribute("age", age);
+				model.addAttribute("profile_agent", agent);
+
+				return "visite/agent_profile";
+				
+			}else {
+				
+				session.setAttribute("looking_for", "agent");
+				return "redirect:/error";
+				
+			}
+						
+		}
+	}
 	
 }
