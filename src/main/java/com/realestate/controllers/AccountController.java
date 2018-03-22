@@ -2066,4 +2066,37 @@ public class AccountController {
 		
 		return "redirect:/lodgements_stats";
 	}
+	
+	@GetMapping("remove_lodgement")
+	public String get_remove_lodgement(@RequestParam("id") int id, HttpSession session, Model model) {
+		
+		if(session.getAttribute("admin") != null) {
+
+			for(Appointement appoi: appointementService.get_Appointements_by_id_lodgement(id)) {
+			
+				appointementService.sold_cancel_appointement(appoi.getId());
+				notificationService.add_sold_notification(appoi.getId(), "The appointement has been canceled due to lodgement sold.", "The appointement has been canceled due to lodgement sold.");
+			
+			}
+				
+			if(lodgementService.remove_lodgement(id)) {	
+		
+				session.setAttribute("type", "success");
+				session.setAttribute("message", "The lodgement has been removed succefully.");
+			
+			}else {
+			
+				session.setAttribute("type", "error");
+				session.setAttribute("message", "Sorry. Somthing went wrong. Please try again later.");
+			
+			}
+		}else {
+			
+			session.setAttribute("type", "error");
+			session.setAttribute("message", "You have to login.");
+		
+		}
+		
+		return "redirect:/lodgements_stats";
+	}
 }
