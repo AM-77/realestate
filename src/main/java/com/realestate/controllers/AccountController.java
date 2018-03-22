@@ -1948,4 +1948,94 @@ public class AccountController {
 		}
 		
 	}
+	
+	
+	@PostMapping("add__lodgement")
+	public String post_add_lodgement(@RequestParam("address") String address, 
+								   	  @RequestParam("type") String type,
+								   	  @RequestParam("price") double price, 
+								   	  @RequestParam("surface") double surface, 
+								   	  @RequestParam("floor") int floor, 
+								   	  @RequestParam("locale") int locale,
+								   	  @RequestParam("picture01") MultipartFile picture01,
+								   	  @RequestParam("picture02") MultipartFile picture02,
+								   	  @RequestParam("picture03") MultipartFile picture03,
+								   	  @RequestParam("picture04") MultipartFile picture04,
+								   	  @RequestParam("picture05") MultipartFile picture05,
+								   	  HttpSession session, Model model) throws IOException {
+		
+		if(session.getAttribute("admin") != null) {
+			
+			String picture_name01, picture_name02, picture_name03, picture_name04, picture_name05;
+		
+			if(!picture01.isEmpty() && !picture02.isEmpty() && !picture03.isEmpty() && !picture04.isEmpty() && !picture05.isEmpty()) {
+				
+				String extension1 = picture01.getOriginalFilename().substring(picture01.getOriginalFilename().lastIndexOf("."), picture01.getOriginalFilename().length());
+				String extension2 = picture02.getOriginalFilename().substring(picture02.getOriginalFilename().lastIndexOf("."), picture02.getOriginalFilename().length());
+				String extension3 = picture03.getOriginalFilename().substring(picture03.getOriginalFilename().lastIndexOf("."), picture03.getOriginalFilename().length());
+				String extension4 = picture04.getOriginalFilename().substring(picture04.getOriginalFilename().lastIndexOf("."), picture04.getOriginalFilename().length());
+				String extension5 = picture05.getOriginalFilename().substring(picture05.getOriginalFilename().lastIndexOf("."), picture05.getOriginalFilename().length());
+				
+				
+				picture_name01 = "pic_01" + extension1;
+				picture_name02 = "pic_02" + extension2;
+				picture_name03 = "pic_03" + extension3;
+				picture_name04 = "pic_04" + extension4;
+				picture_name05 = "pic_05" + extension5;
+				
+				String pics = picture_name01+","+picture_name02+","+picture_name03+","+picture_name04+","+picture_name05;
+				
+				if(lodgementService.add_lodgement(locale, address, type, price, surface, floor, pics)) {
+					
+					int id = lodgementService.getLastId();
+					String lodg_pics_path = "/home/amine/workspace-sts/project_1/src/main/resources/static/images/lodgements/" + id + "/";
+					
+					File file = new File(lodg_pics_path);
+				       
+					if (!file.exists()) {
+			            
+						if (file.mkdir()) {
+			            	
+			            	
+						
+							session.setAttribute("type", "success");
+							session.setAttribute("message", "The lodgement has been added succefully.");
+							
+			            } else {
+			            
+			            	session.setAttribute("type", "error");
+							session.setAttribute("message", "Sorry. Somthing went wrong. Please try again later.");
+			            
+			            }
+					
+					}else {
+					
+						session.setAttribute("type", "error");
+						session.setAttribute("message", "Sorry. Somthing went wrong. Please try again later.");
+				
+					}
+				
+		        }else {
+		        	
+		        	session.setAttribute("type", "error");
+					session.setAttribute("message", "Sorry. Somthing went wrong. Please try again later.");
+
+		        }
+			
+			}else {
+			
+				session.setAttribute("type", "error");
+				session.setAttribute("message", "Sorry. Somthing went wrong. Please try again later.");
+		
+			}
+		
+		}else {
+		
+			session.setAttribute("type", "error");
+			session.setAttribute("message", "You have to login.");
+		
+		}
+		
+		return "redirect:/lodgements_stats";
+	}
 }
