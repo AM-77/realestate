@@ -1729,9 +1729,223 @@ public class AccountController {
 
 	}
 	
+
 	
-	
-	
-	
-	
+	@GetMapping("lodgement_details/{id}")
+	public String get_appartement_details(@PathVariable("id")int id_lodgement,  Model model, HttpSession session) throws ParseException {
+		
+		Lodgement lodgement = lodgementService.get_lodgements_by_id(id_lodgement);
+		
+		
+		if(session.getAttribute("client") != null || session.getAttribute("agent") != null || session.getAttribute("operator") != null || session.getAttribute("admin") != null) {
+			
+			model.addAttribute("is_not_logged", false);
+			
+			if(session.getAttribute("client") != null){
+			
+				List<Notification_details> notifications = notificationService.get_notifications(session);
+				int notification_nbr = 0;
+				for(Notification_details notif : notifications) {
+
+					if(!notif.isViewed())
+						notification_nbr ++ ;
+				
+				}
+				
+				model.addAttribute("notification_nbr", notification_nbr);
+				model.addAttribute("notifications", notifications);
+				model.addAttribute("is_client", true);
+				model.addAttribute("client", session.getAttribute("client"));
+				
+				if(session.getAttribute("type") != null && session.getAttribute("message") != null ) {
+					
+					model.addAttribute("type", session.getAttribute("type"));
+					model.addAttribute("message", session.getAttribute("message"));
+					session.removeAttribute("message");
+					session.removeAttribute("type");
+				}
+				
+			}else {
+			
+				model.addAttribute("is_client", false);
+			
+			}
+			
+			if(session.getAttribute("agent") != null){
+				
+				List<Notification_details> notifications = notificationService.get_notifications(session);
+				int notification_nbr = 0;
+				
+				for(Notification_details notif : notifications) {
+
+					if(!notif.isViewed())
+						notification_nbr ++ ;
+				
+				}
+				
+				model.addAttribute("notification_nbr", notification_nbr);
+				model.addAttribute("notifications", notifications);
+				model.addAttribute("is_agent", true);
+				model.addAttribute("agent", session.getAttribute("agent"));
+				
+				
+			}else {
+			
+				model.addAttribute("is_agent", false);
+			
+			}
+			
+			if(session.getAttribute("operator") != null){
+				
+				
+				model.addAttribute("operator", session.getAttribute("operator"));
+				
+				List<Notification_details> notifications = reportsService.get_reports(session);
+				session.setAttribute("notifications", notifications);
+				
+				int notification_nbr = 0;
+				for(Notification_details notif : notifications) {
+				
+					if(!notif.isViewed())
+						notification_nbr ++ ;
+				}
+				
+				model.addAttribute("notifications", notifications);
+				model.addAttribute("notification_nbr", notification_nbr);
+				model.addAttribute("is_operator", true);
+				model.addAttribute("operator", session.getAttribute("operator"));
+				
+			}else {
+			
+				model.addAttribute("is_operator", false);
+			
+			}
+			
+			if(session.getAttribute("admin") != null){
+				
+				model.addAttribute("admin", session.getAttribute("admin"));
+				model.addAttribute("is_admin", true);
+				
+				return "redirect:/";
+			}else {
+			
+				model.addAttribute("is_admin", false);
+
+			}
+			
+			
+			if(lodgement != null) {
+				
+				List<Appointement> appois = appointementService.get_Appointements_by_id_lodgement(id_lodgement);
+				List<Lodgement_detail> lodgement_details = new 	ArrayList<Lodgement_detail>();
+				String half;
+				
+				for(Appointement appoi:appois) {
+					
+					if(appoi.getFirst_half() == 1)
+						half = "Morning";
+					else
+						half = "Evening";
+					
+					if(appoi.getReview() != null && !appoi.getReview().equals("")) {
+					
+						lodgement_details.add(
+
+								new Lodgement_detail(
+										(clientService.get_client_by_id(appoi.getId_client())).getProfile_pic(),
+										(clientService.get_client_by_id(appoi.getId_client())).getUsername(),
+										appoi.getDate(),
+										half, appoi.getReview()
+								));
+						
+						if(lodgement_details.size() == 25)
+							break;
+					}	
+					
+				}
+				
+				model.addAttribute("lodgement", lodgement);
+				model.addAttribute("lodgement_pics", lodgement.getPics().split(","));
+				model.addAttribute("lodgement_details", lodgement_details);
+				
+				if( !(session.getAttribute("type") == null) && !(session.getAttribute("message") == null) ) {
+					
+					model.addAttribute("type", session.getAttribute("type"));
+					model.addAttribute("message", session.getAttribute("message"));
+					session.removeAttribute("type");
+					session.removeAttribute("message");
+				}
+				
+				return "visite/lodgement_details";
+		
+			}else {
+			
+				session.setAttribute("looking_for", "lodgement");
+				return "redirect:/error";
+			
+			}
+			
+		}else {
+			
+			model.addAttribute("is_admin", false);
+			model.addAttribute("is_agent", false);
+			model.addAttribute("is_client", false);
+			model.addAttribute("is_operator", false);
+			model.addAttribute("is_not_logged", true);
+			
+			if(lodgement != null) {
+				
+				List<Appointement> appois = appointementService.get_Appointements_by_id_lodgement(id_lodgement);
+				
+				List<Lodgement_detail> lodgement_details = new 	ArrayList<Lodgement_detail>();
+				String half;
+				
+				for(Appointement appoi:appois) {
+					
+					if(appoi.getFirst_half() == 1)
+						half = "Morning";
+					else
+						half = "Evening";
+					
+					if(appoi.getReview() != null && !appoi.getReview().equals("")) {
+					
+						lodgement_details.add(
+								new Lodgement_detail(
+										(clientService.get_client_by_id(appoi.getId_client())).getProfile_pic(),
+										(clientService.get_client_by_id(appoi.getId_client())).getUsername(),
+										appoi.getDate(),
+										half, appoi.getReview()
+								));
+						
+						if(lodgement_details.size() == 25)
+							break;
+					}	
+					
+					
+				}
+				
+				model.addAttribute("lodgement", lodgement);
+				model.addAttribute("lodgement_pics", lodgement.getPics().split(","));
+				model.addAttribute("lodgement_details", lodgement_details);
+				
+				if( !(session.getAttribute("type") == null) && !(session.getAttribute("message") == null) ) {
+					
+					model.addAttribute("type", session.getAttribute("type"));
+					model.addAttribute("message", session.getAttribute("message"));
+					session.removeAttribute("type");
+					session.removeAttribute("message");
+				}
+					
+				return "visite/lodgement_details";
+		
+			}else {
+			
+				session.setAttribute("looking_for", "lodgement");
+				return "redirect:/error";
+			
+			}
+			
+		}
+		
+	}
 }
