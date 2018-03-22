@@ -1996,7 +1996,35 @@ public class AccountController {
 			            
 						if (file.mkdir()) {
 			            	
-			            	
+			            	byte[] _picture = picture01.getBytes();
+							File uploaded_file = new File(lodg_pics_path + picture_name01);
+							BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(uploaded_file));
+							stream.write(_picture);
+							stream.close();
+							
+							_picture = picture01.getBytes();
+							uploaded_file = new File(lodg_pics_path + picture_name02);
+							stream = new BufferedOutputStream(new FileOutputStream(uploaded_file));
+							stream.write(_picture);
+							stream.close();
+							
+							_picture = picture01.getBytes();
+							uploaded_file = new File(lodg_pics_path + picture_name03);
+							stream = new BufferedOutputStream(new FileOutputStream(uploaded_file));
+							stream.write(_picture);
+							stream.close();
+							
+							_picture = picture01.getBytes();
+							uploaded_file = new File(lodg_pics_path + picture_name04);
+							stream = new BufferedOutputStream(new FileOutputStream(uploaded_file));
+							stream.write(_picture);
+							stream.close();
+							
+							_picture = picture01.getBytes();
+							uploaded_file = new File(lodg_pics_path + picture_name05);
+							stream = new BufferedOutputStream(new FileOutputStream(uploaded_file));
+							stream.write(_picture);
+							stream.close();
 						
 							session.setAttribute("type", "success");
 							session.setAttribute("message", "The lodgement has been added succefully.");
