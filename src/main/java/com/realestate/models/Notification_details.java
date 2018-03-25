@@ -188,4 +188,7 @@ public class Notification_details {
 		return notification_time.toString().substring(0, notification_time.toString().indexOf(" "));
 	}
 	
+	public String get_appointement_date() {
+		return appointement_date.toString().substring(0, appointement_date.toString().indexOf(" "));
+	}
 }
