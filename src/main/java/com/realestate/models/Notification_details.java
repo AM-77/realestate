@@ -184,4 +184,8 @@ public class Notification_details {
 		this.viewed = viewed;
 	}
 	
+	public String get_notification_time() {
+		return notification_time.toString().substring(0, notification_time.toString().indexOf(" "));
+	}
+	
 }
