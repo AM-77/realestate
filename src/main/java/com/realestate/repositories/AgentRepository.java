@@ -66,4 +66,17 @@ public interface AgentRepository extends JpaRepository<Agent, Integer>{
 	@Query(value="UPDATE `agent` SET `blocked` = '0' WHERE `email` = :email ;", nativeQuery=true)
 	public int deblock_an_agent(@Param("email")String email);
 
+	@Transactional
+	@Modifying(clearAutomatically = true)
+	@Query(value="DELETE FROM `agent` WHERE `email` = :email ", nativeQuery=true)
+	public int remove_an_agent(@Param("email")String email);
+
+	@Query(value="SELECT * FROM agent WHERE confirm_key = :confirm_key LIMIT 1", nativeQuery=true)
+	public Agent get_agent_by_confirmation_key(@Param("confirm_key") String confirm_key);
+
+	@Transactional
+	@Modifying(clearAutomatically = true)
+	@Query(value="UPDATE `agent` SET `username` = :username, `name` = :name, `last_name` = :last_name, `phone` = :phone, `birthdate` = :birthdate WHERE id = :id   ", nativeQuery=true)
+	public int update_agent_profile(@Param("id")int id, @Param("username")String username, @Param("name")String name, @Param("last_name")String last_name, @Param("phone")String phone, @Param("birthdate")Date birthdate);
+
 }
