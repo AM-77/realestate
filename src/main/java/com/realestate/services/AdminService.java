@@ -20,4 +20,19 @@ public class AdminService {
 		return false;
 	}
 
+	public boolean admin_email_exists(String email) {
+		if(adminRepository.get_admin_by_email(email) != null)
+			return true;
+		else
+			return false;
+	}
+
+	public Admin get_admin_by_email_and_password(String email, String password) {
+		return (Admin)adminRepository.get_admin_by_email_and_password(email, password);
+	}
+
+	public Admin get_admin_by_id(int user_id) {
+		return adminRepository.get_admin_by_id(user_id);
+	}
+
 }
