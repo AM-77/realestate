@@ -40,5 +40,21 @@ public interface AgentRepository extends JpaRepository<Agent, Integer>{
 	@Query(value="SELECT * FROM agent WHERE id = (SELECT id_agent FROM appointement WHERE appointement.id = :id_appointement LIMIT 1)", nativeQuery=true)
 	public Agent get_agent_by_appointement_id(@Param("id_appointement")int id_appointement);
 
+	@Query(value="SELECT COUNT(*) FROM agent ", nativeQuery=true)
+	public int nbr_account();
+
+	@Query(value="SELECT * FROM agent WHERE blocked = '2'; ", nativeQuery=true)
+	public List<Agent> get_agent_subscribe_demand();
+
+	@Transactional
+	@Modifying(clearAutomatically = true)
+	@Query(value="DELETE FROM `agent` WHERE `id` = :id ", nativeQuery=true)
+	public int remove_an_agent(@Param("id")int id);
+	
+	@Transactional
+	@Modifying(clearAutomatically = true)
+	@Query(value="UPDATE `agent` SET `blocked` = '0' WHERE `id` = :id ;", nativeQuery=true)
+	public int confirm_an_agent(@Param("id")int id);
+
 	
 }
