@@ -57,4 +57,55 @@ public class AgentService {
 		return agentRepository.get_agent_by_appointement_id(id_appointement);
 	}
 
+	public int nbr_account() {
+		return agentRepository.nbr_account();
+	}
+
+	public List<Agent> get_agent_subscribe_demand() {
+		return agentRepository.get_agent_subscribe_demand();
+	}
+
+	public boolean remove_an_agent(int id) {
+		if(agentRepository.remove_an_agent(id) == 1)
+			return true;
+		else
+			return false;
+	}
+
+	public boolean confirm_an_agent(int id) {
+		if(agentRepository.confirm_an_agent(id) == 1)
+			return true;
+		else
+			return false;
+	}
+
+	public boolean block_an_agent(String email) {
+		if(agentRepository.block_an_agent(email) == 1)
+			return true;
+		else
+			return false;
+	}
+
+	public boolean deblock_an_agent(String email) {
+		if(agentRepository.deblock_an_agent(email) == 1)
+			return true;
+		else
+			return false;
+	}
+
+	public boolean remove_an_agent(String email) {
+		if(agentRepository.remove_an_agent(email) == 1)
+			return true;
+		else
+			return false;
+	}
+
+	public boolean get_agent_by_confirmation_key(String key) {
+		if((Agent)agentRepository.get_agent_by_confirmation_key(key) != null)
+			return true;
+		return false;
+	}
+
+	
+
 }
