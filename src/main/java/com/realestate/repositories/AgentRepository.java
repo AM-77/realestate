@@ -24,4 +24,21 @@ public interface AgentRepository extends JpaRepository<Agent, Integer>{
 								@Param("last_name")String last_name, @Param("profile_pic")String profile_pic, @Param("phone")String phone, 
 								@Param("username")String username, @Param("cv")String cv, @Param("locale")String locale,  @Param("key_confirm")String key_confirm);
 
+	@Query(value="SELECT * FROM agent WHERE email= :email AND blocked=0 LIMIT 1", nativeQuery=true)
+	public Agent get_agent_by_email(@Param("email") String email);
+
+	@Query(value="SELECT * FROM agent WHERE email= :email AND password= :password LIMIT 1", nativeQuery=true)
+	public Agent get_agent_by_email_and_password(@Param("email")String email, @Param("password")String password);
+
+	@Query(value="SELECT * FROM agent WHERE locale=:locale AND blocked=0 ", nativeQuery=true)
+	public List<Agent> get_agents_by_locale(@Param("locale")int locale);
+
+	
+	@Query(value="SELECT * FROM agent WHERE id=:id LIMIT 1", nativeQuery=true)
+	public Agent get_agent_by_id(@Param("id")int id_agent);
+
+	@Query(value="SELECT * FROM agent WHERE id = (SELECT id_agent FROM appointement WHERE appointement.id = :id_appointement LIMIT 1)", nativeQuery=true)
+	public Agent get_agent_by_appointement_id(@Param("id_appointement")int id_appointement);
+
+	
 }
