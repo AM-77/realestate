@@ -18,6 +18,14 @@ public interface AdminRepository extends JpaRepository<Admin, Integer>{
 	public int admin_subscribe(@Param("id")int id, @Param("email")String email, @Param("phone")String phone, 
 							    @Param("name")String name, @Param("password")String password, 
 								@Param("last_name")String last_name, @Param("profile_pic")String profile_pic);
+	
+	@Query(value="SELECT * FROM admin WHERE email= :email  LIMIT 1", nativeQuery=true)
+	public Admin get_admin_by_email(@Param("email") String email);
 
+	@Query(value="SELECT * FROM admin WHERE email= :email AND password= :password  LIMIT 1", nativeQuery=true)
+    public Admin get_admin_by_email_and_password(@Param("email")String email, @Param("password")String password);
+
+	@Query(value="SELECT * FROM admin WHERE id= :id  LIMIT 1", nativeQuery=true)
+	public Admin get_admin_by_id(@Param("id") int user_id);
 
 }
