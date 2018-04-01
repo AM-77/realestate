@@ -106,6 +106,12 @@ public class AgentService {
 		return false;
 	}
 
+	public boolean update_agent_profile(Agent agent) {
+		if(agentRepository.update_agent_profile(agent.getId(), agent.getUsername(), agent.getName(), agent.getLast_name(), agent.getPhone(), agent.getBirthdate()) == 1) {
+			return true;
+		}else {
+			return false;
+		}
+	}
 	
-
 }
