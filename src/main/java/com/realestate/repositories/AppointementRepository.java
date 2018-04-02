@@ -13,7 +13,5 @@ import org.springframework.data.repository.query.Param;
 import com.realestate.models.Appointement;
 
 public interface AppointementRepository extends JpaRepository<Appointement, Integer> {
-	
-	
 
 }
