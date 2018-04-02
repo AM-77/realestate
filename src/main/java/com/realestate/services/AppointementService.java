@@ -159,5 +159,51 @@ public class AppointementService {
 	public void sold_cancel_appointement(int id) {
 		appointementRepository.sold_cancel_appointement(id);
 	}
+	
+	public int nbr_all_appoi() {
+		return appointementRepository.nbr_all_appoi();
+	}
+
+	public int nbr_appoi_by_locale(int locale) {
+		return appointementRepository.nbr_appoi_by_locale(locale);
+	}
+
+	public int nbr_appoi_by_type(String type) {
+		return appointementRepository.nbr_appoi_by_type(type);
+	}
+	
+	public int nbr_appoi_by_floor(int floor) {
+		return appointementRepository.nbr_appoi_by_floor(floor);
+	}
+	
+	public int nbr_appoi_by_address(String address) {
+		return appointementRepository.nbr_appoi_by_address(address);
+	}
+
+	public int nbr_appointement_canceled() {
+		return appointementRepository.nbr_appointement_canceled();
+	}
+
+	public int nbr_appointement_canceled(String user) {
+		return appointementRepository.nbr_appointement_canceled(user);
+	}
+
+	public int nbr_appointement_confirmed() {
+		return appointementRepository.nbr_appointement_confirmed();
+	}
+
+	public int nbr_appointement_confirmed(String user) {
+		if(user.equals("client"))
+			return appointementRepository.nbr_appointement_confirmed_client();
+		else
+			return appointementRepository.nbr_appointement_confirmed_agent();
+	}
+
+	public int nbr_appointement_waiting(String user) {
+		if(user.equals("client"))
+			return appointementRepository.nbr_appointement_waiting_client();
+		else
+			return appointementRepository.nbr_appointement_waiting_agent();
+	}
 
 }
