@@ -99,5 +99,40 @@ public interface AppointementRepository extends JpaRepository<Appointement, Inte
 	@Query(value="UPDATE appointement SET canceled ='1', canceler = 'sold' WHERE id = :id_appointement", nativeQuery=true)
 	public void sold_cancel_appointement(@Param("id_appointement")int id);
 	
+	@Query(value="SELECT COUNT(*) FROM appointement", nativeQuery=true)
+	public int nbr_all_appoi();
+
+	@Query(value="SELECT COUNT(*) FROM appointement WHERE id_lodgement in ( SELECT id FROM lodgement WHERE locale = :locale )", nativeQuery=true)
+	public int nbr_appoi_by_locale(@Param("locale") int locale);
+
+	@Query(value="SELECT COUNT(*) FROM appointement WHERE id_lodgement in ( SELECT id FROM lodgement WHERE type = :type )", nativeQuery=true)
+	public int nbr_appoi_by_type(@Param("type") String type);
+
+	@Query(value="SELECT COUNT(*) FROM appointement WHERE id_lodgement in ( SELECT id FROM lodgement WHERE floor = :floor )", nativeQuery=true)
+	public int nbr_appoi_by_floor(int floor);
+
+	@Query(value="SELECT COUNT(*) FROM appointement WHERE id_lodgement in ( SELECT id FROM lodgement WHERE address = :address )", nativeQuery=true)
+	public int nbr_appoi_by_address(String address);
+
+	@Query(value="SELECT COUNT(*) FROM appointement WHERE canceled = '1' ", nativeQuery=true)
+	public int nbr_appointement_canceled();
 	
+	@Query(value="SELECT COUNT(*) FROM appointement WHERE canceled = '1' AND canceler = :user ", nativeQuery=true)
+	public int nbr_appointement_canceled(@Param("user") String user);
+
+	@Query(value="SELECT COUNT(*) FROM appointement WHERE client_confirm = '1' AND  agent_confirm = '1' ", nativeQuery=true)
+	public int nbr_appointement_confirmed();
+
+	@Query(value="SELECT COUNT(*) FROM appointement WHERE client_confirm = '1' ", nativeQuery=true)
+	public int nbr_appointement_confirmed_client();
+	
+	@Query(value="SELECT COUNT(*) FROM appointement WHERE agent_confirm = '1' ", nativeQuery=true)
+	public int nbr_appointement_confirmed_agent();
+
+	@Query(value="SELECT COUNT(*) FROM appointement WHERE client_confirm = '0' AND canceled != '1' ", nativeQuery=true)
+	public int nbr_appointement_waiting_client();
+	
+	@Query(value="SELECT COUNT(*) FROM appointement WHERE agent_confirm = '0' AND canceled != '1' ", nativeQuery=true)
+	public int nbr_appointement_waiting_agent();
+
 }
