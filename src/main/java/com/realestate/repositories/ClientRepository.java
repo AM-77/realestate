@@ -59,4 +59,27 @@ public interface ClientRepository extends JpaRepository<Client, Integer>{
 	@Query(value="SELECT * FROM client WHERE email = :email AND username= 'added_by_operator' LIMIT 1 ", nativeQuery=true)
 	public Client is_finished_subscribe(@Param("email")String email);
 
+
+	@Transactional
+	@Modifying(clearAutomatically = true)
+	@Query(value = "UPDATE `client` SET password = :password , username = :username , name = :name , last_name = :last_name , birthdate = :birthdate , gender = :gender , phone = :phone , blocked = :blocked , profile_pic = :profile_pic  WHERE email = :email", nativeQuery= true)
+	public int client_finish_subscribe(@Param("email") String email,@Param("gender") String gender,
+								 @Param("birthdate") Date birthdate, @Param("blocked") int blocked, @Param("name") String name, 
+								 @Param("password") String password, @Param("last_name") String lastname, 
+								 @Param("profile_pic") String profile_pic, @Param("phone") String phone, 
+								 @Param("username") String username);
+	
+	
+	@Query(value="SELECT COUNT(*) FROM client ", nativeQuery=true)
+	public int nbr_account();
+	
+	@Query(value="SELECT * FROM client WHERE confirm_key = :confirm_key LIMIT 1 ", nativeQuery=true)
+	public Client get_client_by_confirmation_key(@Param("confirm_key") String confirm_key);
+
+	
+	@Transactional
+	@Modifying(clearAutomatically = true)
+	@Query(value="UPDATE `client` SET  `username` = :username, `name` = :name, `last_name` = :last_name, `phone` = :phone, `birthdate` = :birthdate WHERE id = :id  ", nativeQuery=true)
+	public int update_client_profile(@Param("id")int id, @Param("username")String username, @Param("name")String name, @Param("last_name")String last_name, @Param("phone")String phone, @Param("birthdate")Date birthdate);
+
 }
