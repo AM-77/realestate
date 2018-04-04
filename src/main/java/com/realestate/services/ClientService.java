@@ -91,4 +91,31 @@ public class ClientService {
 		return clientRepository.get_client_by_email(email_client);
 	}
 
+	public boolean is_finished_subscribe(String email) {
+		if(clientRepository.is_finished_subscribe(email) == null) {
+			return true;
+		}else {
+			return false;
+		}
+	}
+
+	public int nbr_account() {
+		return clientRepository.nbr_account();
+	}
+
+	public boolean get_client_by_confirmation_key(String key) {
+		if((Client)clientRepository.get_client_by_confirmation_key(key) != null)
+			return true;
+		
+		return false;
+	}
+
+	public boolean update_client_profile(Client client) {
+		if(clientRepository.update_client_profile(client.getId(), client.getUsername(), client.getName(), client.getLast_name(), client.getPhone(), client.getBirthdate()) == 1) {
+			return true;
+		}else {
+			return false;
+		}
+	}
+
 }
