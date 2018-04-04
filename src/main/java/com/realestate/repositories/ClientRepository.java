@@ -31,5 +31,32 @@ public interface ClientRepository extends JpaRepository<Client, Integer>{
 								 @Param("username") String username,
 								 @Param("key_confirm") String key_confirm);
 
-	
+	@Query(value="SELECT * FROM client WHERE email= :email  LIMIT 1", nativeQuery=true)
+	public Client get_client_by_email(@Param("email") String email);
+
+	@Query(value="SELECT * FROM client WHERE email= :email AND password= :password  LIMIT 1", nativeQuery=true)
+	public Client get_client_by_email_and_password(@Param("email")String email,@Param("password")String password);
+
+
+	@Query(value="SELECT * FROM client WHERE id=:id_client LIMIT 1", nativeQuery=true)
+	public Client get_client_by_id(@Param("id_client")int id_client);
+
+	@Query(value="SELECT * FROM client WHERE id = (SELECT id_client FROM appointement WHERE appointement.id = :id_appointement LIMIT 1)", nativeQuery=true)
+	public Client get_client_by_appointement_id(@Param("id_appointement")int id_appointement);
+
+
+	@Transactional
+	@Modifying(clearAutomatically = true)
+	@Query(value = "DELETE FROM `client` WHERE email = :email", nativeQuery=true)
+	public int remove_client_by_email(@Param("email")String email);
+
+	@Transactional
+	@Modifying(clearAutomatically = true)
+	@Query(value = "UPDATE `client` SET `blocked` = '1' WHERE email = :email", nativeQuery=true)
+	public int block_client_by_email(@Param("email")String email);
+
+
+	@Query(value="SELECT * FROM client WHERE email = :email AND username= 'added_by_operator' LIMIT 1 ", nativeQuery=true)
+	public Client is_finished_subscribe(@Param("email")String email);
+
 }
