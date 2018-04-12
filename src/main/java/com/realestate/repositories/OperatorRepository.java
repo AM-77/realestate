@@ -40,5 +40,43 @@ public interface OperatorRepository extends JpaRepository<Operator, Integer>{
 
 	@Query(value="SELECT * FROM operator WHERE blocked = 2 ", nativeQuery=true)
 	public List<Operator> get_operator_subscribe_demand();
+
+	@Transactional
+	@Modifying(clearAutomatically = true)
+	@Query(value="DELETE FROM `operator` WHERE `id` = :id ", nativeQuery=true)
+	public int remove_an_op(@Param("id")int id);
+
+	
+	@Transactional
+	@Modifying(clearAutomatically = true)
+	@Query(value="UPDATE `operator` SET `blocked` = '0' WHERE `id` = :id ;", nativeQuery=true)
+	public int confirm_an_op(@Param("id")int id);
+
+
+	@Transactional
+	@Modifying(clearAutomatically = true)
+	@Query(value="UPDATE `operator` SET `blocked` = '1' WHERE `email` = :email ;", nativeQuery=true)
+	public int block_an_op(@Param("email")String email);
+
+	@Transactional
+	@Modifying(clearAutomatically = true)
+	@Query(value="UPDATE `operator` SET `blocked` = '0' WHERE `email` = :email ;", nativeQuery=true)
+	public int deblock_an_op(@Param("email")String email);
+
+
+	@Transactional
+	@Modifying(clearAutomatically = true)
+	@Query(value="DELETE FROM `operator` WHERE `email` = :email ", nativeQuery=true)
+	public int remove_an_op(@Param("email")String email);
+
+
+	@Query(value="SELECT * FROM operator WHERE confirm_key= :confirm_key  LIMIT 1", nativeQuery=true)
+	public Operator get_operator_by_confirmation_key(@Param("confirm_key") String confirm_key);
+
+
+	@Transactional
+	@Modifying(clearAutomatically = true)
+	@Query(value="UPDATE `operator` SET `email` = :email , `username` = :username, `name` = :name, `last_name` = :last_name, `phone` = :phone, `phone` = :birthdate WHERE id = :id  ", nativeQuery=true)
+	public int update_operator_profile(@Param("id")int id, @Param("username")String username, @Param("name")String name, @Param("last_name")String last_name, @Param("email")String email, @Param("phone")String phone, @Param("birthdate")Date birthdate);
 	
 }
