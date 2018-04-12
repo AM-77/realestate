@@ -74,4 +74,42 @@ public class OperatorService {
 		}
 	}
 
+	public boolean block_an_op(String email) {
+		if(operatorRepository.block_an_op(email) == 1) {
+			return true;
+		}else {
+			return false;
+		}
+	}
+
+	public boolean remove_an_op(String email) {
+		if(operatorRepository.remove_an_op(email) == 1) {
+			return true;
+		}else {
+			return false;
+		}
+	}
+
+	public boolean deblock_an_op(String email) {
+		if(operatorRepository.deblock_an_op(email) == 1) {
+			return true;
+		}else {
+			return false;
+		}
+	}
+
+	public boolean get_operator_by_confirmation_key(String key) {
+		if((Operator)operatorRepository.get_operator_by_confirmation_key(key) != null)
+			return true;
+		return false;
+	}
+
+	public boolean update_operator_profile(Operator operator) {
+		if(operatorRepository.update_operator_profile(operator.getId(), operator.getUsername(), operator.getName(), operator.getLast_name(), operator.getEmail(), operator.getPhone(), operator.getBirthdate()) == 1) {
+			return true;
+		}else {
+			return false;
+		}
+	}
+
 }
