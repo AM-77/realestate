@@ -25,5 +25,20 @@ public interface OperatorRepository extends JpaRepository<Operator, Integer>{
 								@Param("username")String username, @Param("cv")String cv, @Param("locale")String locale, @Param("key_confirm")String key_confirm);
 
 	
+	@Query(value="SELECT * FROM operator WHERE email= :email  LIMIT 1", nativeQuery=true)
+	public Operator get_operator_by_email(@Param("email") String email);
+
+	@Query(value="SELECT * FROM operator WHERE email= :email AND password= :password  LIMIT 1", nativeQuery=true)
+	public Operator get_operator_by_email_and_password(@Param("email")String email, @Param("password")String password);
+
+
+	@Query(value="SELECT * FROM operator WHERE id= :id  LIMIT 1", nativeQuery=true)
+	public Operator get_operator_by_id(@Param("id")int user_id);
+
+	@Query(value="SELECT COUNT(*) FROM operator ", nativeQuery=true)
+	public int nbr_account();
+
+	@Query(value="SELECT * FROM operator WHERE blocked = 2 ", nativeQuery=true)
+	public List<Operator> get_operator_subscribe_demand();
 	
 }
