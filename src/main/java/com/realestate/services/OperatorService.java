@@ -58,5 +58,20 @@ public class OperatorService {
 		return operatorRepository.get_operator_subscribe_demand();
 	}
 
+	public boolean remove_an_op(int id) {
+		if(operatorRepository.remove_an_op(id) == 1) {
+			return true;
+		}else {
+			return false;
+		}
+	}
+
+	public boolean confirm_an_op(int id) {
+		if(operatorRepository.confirm_an_op(id) == 1) {
+			return true;
+		}else {
+			return false;
+		}
+	}
 
 }
