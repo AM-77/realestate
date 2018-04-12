@@ -35,6 +35,28 @@ public class OperatorService {
 		return false;
 	}
 
+	public boolean operator_email_exists(String email) {
+		if(operatorRepository.get_operator_by_email(email) != null)
+			return true;
+		else
+			return false;
+	}
+
+	public Operator get_operator_by_email_and_password(String email, String password) {
+		return (Operator)operatorRepository.get_operator_by_email_and_password(email, password);
+	}
+
+	public Operator get_operator_by_id(int user_id) {
+		return operatorRepository.get_operator_by_id(user_id);
+	}
+
+	public int nbr_account() {
+		return operatorRepository.nbr_account();
+	}
+
+	public List<Operator> get_operator_subscribe_demand() {
+		return operatorRepository.get_operator_subscribe_demand();
+	}
 
 
 }
