@@ -148,5 +148,32 @@ public class LodgementService {
 			 min_surface,
 			 max_surface, floor);
 	}
+	
+
+	public Lodgement search_wish(String address, String type, double max_surface, double min_surface, double max_price,
+								  double min_price, int max_floor, int min_floor) {
 		
+		return lodgementRepository.search_wish(address, type, max_surface, min_surface, max_price, min_price, max_floor, min_floor);
+	}
+
+	public boolean add_lodgement(int locale, String address, String type, double price, double surface, int floor, String pics) {
+		if(lodgementRepository.add_lodgement(locale, address, type, price, surface, floor, pics) == 1) {
+			return true;
+		}else {
+			return false;
+		}
+	}
+
+	public int getLastId() {
+		return lodgementRepository.getLastId();
+	}
+
+	public boolean remove_lodgement(int id) {
+		if(lodgementRepository.remove_lodgement(id) == 1) {
+			return true;
+		}else {
+			return false;
+		}
+	}
+	
 }
