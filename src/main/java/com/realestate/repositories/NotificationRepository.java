@@ -26,5 +26,9 @@ public interface NotificationRepository extends JpaRepository<Notification, Inte
 	@Query(value = "INSERT INTO notification VALUES ( NULL, :id_appointement, :client_notif, :agent_notif, CURRENT_TIMESTAMP, '1', '0')", nativeQuery= true)
 	public int add_client_confirm_notification(@Param("id_appointement")int id_appointement, @Param("client_notif")String client_notif,  @Param("agent_notif")String agent_notif);
 
-	
+	@Transactional
+	@Modifying(clearAutomatically = true)
+	@Query(value = "INSERT INTO notification VALUES ( NULL, :id_appointement, :client_notif, :agent_notif, CURRENT_TIMESTAMP, '0', '0')", nativeQuery= true)
+	public int add_client_cancel_notification(@Param("id_appointement")int id_appointement, @Param("client_notif")String client_notif,  @Param("agent_notif")String agent_notif);
+
 }
