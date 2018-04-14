@@ -31,4 +31,14 @@ public interface NotificationRepository extends JpaRepository<Notification, Inte
 	@Query(value = "INSERT INTO notification VALUES ( NULL, :id_appointement, :client_notif, :agent_notif, CURRENT_TIMESTAMP, '0', '0')", nativeQuery= true)
 	public int add_client_cancel_notification(@Param("id_appointement")int id_appointement, @Param("client_notif")String client_notif,  @Param("agent_notif")String agent_notif);
 
+	@Transactional
+	@Modifying(clearAutomatically = true)
+	@Query(value = "UPDATE `notification` SET `v_client` = '1' WHERE id_appointement in ( SELECT id FROM appointement WHERE appointement.id_client=:id_client)", nativeQuery= true)
+	public void set_viewed_notifications_for_client(@Param("id_client")int id_client);
+
+	@Transactional
+	@Modifying(clearAutomatically = true)
+	@Query(value = "UPDATE `notification` SET `v_agent` = '1' WHERE id_appointement in ( SELECT id FROM appointement WHERE id_agent=:id_agent)", nativeQuery= true)
+	public void set_viewed_notifications_for_agent(@Param("id_agent")int id_agent);
+	
 }
