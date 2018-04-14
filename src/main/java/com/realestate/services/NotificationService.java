@@ -39,8 +39,37 @@ public class NotificationService {
 			return false;
 	}
 
-	public List<Notification> get_notifications_by_client_id(int id_client) {
-		return notificationRepository.get_notifications_by_client_id(id_client);
+	public boolean add_client_confirm_notification(int id_appointement, String client_notif, String agent_notif) {
+		if(notificationRepository.add_client_confirm_notification( id_appointement, client_notif, agent_notif) == 1) {
+			return true;
+		}else {
+			return false;
+		}
+	}
+
+	public boolean add_client_cancel_notification(int id_appointement, String client_notif, String agent_notif) {
+		if(notificationRepository.add_client_cancel_notification( id_appointement, client_notif, agent_notif) == 1) {
+			return true;
+		}else {
+			return false;
+		}
+	}
+
+
+	public boolean add_agent_cancel_notification(int id_appointement, String client_notif, String agent_notif) {
+		if(notificationRepository.add_agent_cancel_notification( id_appointement, client_notif, agent_notif) == 1) {
+			return true;
+		}else {
+			return false;
+		}
+	}
+
+	public boolean add_agent_confirm_notification(int id_appointement, String client_notif, String agent_notif) {
+		if(notificationRepository.add_agent_confirm_notification( id_appointement, client_notif, agent_notif) == 1) {
+			return true;
+		}else {
+			return false;
+		}
 	}
 
 }
