@@ -20,4 +20,27 @@ import com.realestate.repositories.NotificationRepository;
 @Service
 public class NotificationService {
 	
+	@Autowired
+	private NotificationRepository notificationRepository; 
+	@Autowired
+	private LodgementService lodgementService; 
+	@Autowired
+	private ClientService clientService;
+	@Autowired
+	private AppointementService appointementService;
+	@Autowired
+	private AgentService agentService;
+	
+	public boolean add_notification(int id_appointement, String client_notif, String agent_notif) {
+		
+		if(notificationRepository.add_notification(id_appointement, client_notif, agent_notif) == 1)
+			return true;
+		else
+			return false;
+	}
+
+	public List<Notification> get_notifications_by_client_id(int id_client) {
+		return notificationRepository.get_notifications_by_client_id(id_client);
+	}
+
 }
