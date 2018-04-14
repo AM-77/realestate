@@ -13,5 +13,10 @@ import com.realestate.models.Notification;
 
 public interface NotificationRepository extends JpaRepository<Notification, Integer>{
 
+	@Transactional
+	@Modifying(clearAutomatically = true)
+	@Query(value = "INSERT INTO notification VALUES ( NULL, :id_appointement, :client_notif, :agent_notif, CURRENT_TIMESTAMP, '0', '0')", nativeQuery= true)
+	public int add_notification(@Param("id_appointement")int id_appointement, @Param("client_notif")String client_notif,  @Param("agent_notif")String agent_notif);
+
 	
 }
