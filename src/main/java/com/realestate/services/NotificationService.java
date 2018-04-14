@@ -71,5 +71,20 @@ public class NotificationService {
 			return false;
 		}
 	}
+	public List<Notification> get_notifications_by_agent_id(int id_agent) {
+		return notificationRepository.get_notifications_by_agent_id(id_agent);
+	}
+	
+	public List<Notification> get_notifications_by_client_id(int id_client) {
+		return notificationRepository.get_notifications_by_client_id(id_client);
+	}
 
+	public void set_viewed_notifications_for_agent(int id_agent) {
+		notificationRepository.set_viewed_notifications_for_agent(id_agent);
+	}
+	
+	public void set_viewed_notifications_for_client(int id_client) {
+		notificationRepository.set_viewed_notifications_for_client(id_client);
+	}
+	
 }
