@@ -54,4 +54,9 @@ public interface NotificationRepository extends JpaRepository<Notification, Inte
 	@Query(value = "SELECT * FROM `notification` WHERE id_appointement in ( SELECT id FROM appointement WHERE appointement.id_agent=:id_agent) ORDER BY time DESC", nativeQuery= true)
 	public List<Notification> get_notifications_by_agent_id(@Param("id_agent")int id_agent);
 
+	@Transactional
+	@Modifying(clearAutomatically = true)
+	@Query(value = "INSERT INTO notification VALUES ( NULL, :id_appointement, :client_notif, :agent_notif, CURRENT_TIMESTAMP, '0', '0')", nativeQuery= true)
+	public void add_sold_notification(@Param("id_appointement")int id, @Param("client_notif")String client_notif, @Param("agent_notif")String agent_notif);
+
 }
