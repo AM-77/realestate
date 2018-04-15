@@ -46,7 +46,6 @@ public class Agent {
 		this.phone = phone;
 		this.confirm_key = confirm_key;
 	}
-
 	
 	public String getConfirm_key() {
 		return confirm_key;
@@ -60,116 +59,93 @@ public class Agent {
 		return id;
 	}
 
-
 	public void setId(int id) {
 		this.id = id;
 	}
-
 
 	public String getEmail() {
 		return email;
 	}
 
-
 	public void setEmail(String email) {
 		this.email = email;
 	}
-
 
 	public String getPassword() {
 		return password;
 	}
 
-
 	public void setPassword(String password) {
 		this.password = password;
 	}
-
 
 	public String getUsername() {
 		return username;
 	}
 
-
 	public void setUsername(String username) {
 		this.username = username;
 	}
-
 
 	public String getName() {
 		return name;
 	}
 
-
 	public void setName(String name) {
 		this.name = name;
 	}
-
 
 	public String getLast_name() {
 		return last_name;
 	}
 
-
 	public void setLast_name(String last_name) {
 		this.last_name = last_name;
 	}
-
 
 	public Date getBirthdate() {
 		return birthdate;
 	}
 
-
 	public void setBirthdate(Date birthdate) {
 		this.birthdate = birthdate;
 	}
-
 
 	public String getGender() {
 		return gender;
 	}
 
-
 	public void setGender(String gender) {
 		this.gender = gender;
 	}
-
 
 	public String getLocale() {
 		return locale;
 	}
 
-
 	public void setLocale(String locale) {
 		this.locale = locale;
 	}
-
 
 	public int getBlocked() {
 		return blocked;
 	}
 
-
 	public void setBlocked(int blocked) {
 		this.blocked = blocked;
 	}
-
 
 	public String getProfile_pic() {
 		return profile_pic;
 	}
 
-
 	public void setProfile_pic(String profile_pic) {
 		this.profile_pic = profile_pic;
 	}
 
-
 	public String getCv() {
 		return cv;
 	}
-
 
 	public void setCv(String cv) {
 		this.cv = cv;
@@ -193,4 +169,5 @@ public class Agent {
 		else
 			return false;
 	}
+	
 }

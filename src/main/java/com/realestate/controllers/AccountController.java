@@ -1921,7 +1921,6 @@ public class AccountController {
 							break;
 					}	
 					
-					
 				}
 				
 				model.addAttribute("lodgement", lodgement);
@@ -1948,7 +1947,6 @@ public class AccountController {
 		}
 		
 	}
-	
 	
 	@PostMapping("add__lodgement")
 	public String post_add_lodgement(@RequestParam("address") String address, 
