@@ -137,5 +137,44 @@ public class AdminController {
 		return new Statistcs_details(nbr_all_website_visites, nbr_client_website_visites, nbr_agent_website_visites, nbr_operator_website_visites, percent_client_website_visites, percent_agent_website_visites, percent_operator_website_visites, nbr_all_visites_website_by_clients_mounths, percent_all_visites_website_by_clients_mounths, nbr_all_visites_website_by_agents_mounths, percent_all_visites_website_by_agents_mounths, nbr_all_visites_website_by_operators_mounths, percent_all_visites_website_by_operators_mounths, nbr_appoi_locale_one, nbr_appoi_locale_two, nbr_appoi_locale_three, nbr_appoi_locale_four, nbr_appoi_locale_five, percent_appoi_locale_one, percent_appoi_locale_two, percent_appoi_locale_three, percent_appoi_locale_four, percent_appoi_locale_five, nbr_appoi_F1, nbr_appoi_F2, nbr_appoi_F3, nbr_appoi_F4, nbr_appoi_F5, percent_appoi_F1, percent_appoi_F2, percent_appoi_F3, percent_appoi_F4, percent_appoi_F5, nbr_appointement_canceled, percent_appointement_canceled, nbr_appointement_canceled_by_clients, nbr_appointement_canceled_by_agents, percent_appointement_canceled_by_clients, percent_appointement_canceled_by_agents, nbr_appointement_confirmed, percent_appointement_confirmed, nbr_appointement_confirmed_by_clients, nbr_appointement_confirmed_by_agents, percent_appointement_confirmed_by_clients, percent_appointement_confirmed_by_agents, nbr_appointement_reported, percent_appointement_reported, nbr_appointement_reported_by_clients, nbr_appointement_reported_by_agents, percent_appointement_reported_by_clients, percent_appointement_reported_by_agents, nbr_all_appoi, nbr_appointement_waiting_clients, nbr_appointement_waiting_agents);
 	}
 	
+	@PostMapping("nbr_appoi_by_address")
+	public int post_nbr_appoi_by_address(HttpSession session, @RequestParam("address")String address) {
+		return appointementService.nbr_appoi_by_address(address);
+	}
 	
+	@PostMapping("nbr_appoi_by_floor")
+	public int post_nbr_appoi_by_floor(HttpSession session, @RequestParam("floor")int floor) {
+		return appointementService.nbr_appoi_by_floor(floor);
+	}
+		
+	@PostMapping("nbr_account")
+	public int post_nbr_client_account(HttpSession session, @RequestParam("type")String type) {
+		if(type.equals("client")) {
+			return clientService.nbr_account();
+		}
+		
+		if(type.equals("agent")) {
+			return agentService.nbr_account();
+		}
+		
+		if(type.equals("operator")) {
+			return operatorService.nbr_account();
+		}
+		
+		if(type.equals("all")) {
+			return (clientService.nbr_account() + agentService.nbr_account() + operatorService.nbr_account() );
+		}
+		
+		return 0;
+			
+	}
+	
+	
+	public double round(double value, int places) {
+	    if (places < 0) throw new IllegalArgumentException();
+	    long factor = (long) Math.pow(10, places);
+	    value = value * factor;
+	    long tmp = Math.round(value);
+	    return (double) tmp / factor;
+	}
 }
