@@ -458,5 +458,40 @@ public class AppointementController {
 			return "login/login";
 
 	}
-		
+	
+	
+	@PostMapping("propose_appointement")
+	public String post_propose_appointement(@RequestParam(value="id_agent")int id_agent,
+											 @RequestParam(value="date")String date,
+											 @RequestParam(value="half")String half,
+											 @RequestParam(value="id_lodgement")int id_lodgement,
+											 Model model, HttpSession session) throws ParseException {
+				
+		int first_half = 0;
+		int second_half = 0;
+		if(session.getAttribute("client") != null) {
+			if(half.toLowerCase().equals("morning")) {
+				first_half = 1;
+				second_half = 0;
+			}else {
+				first_half = 0;
+				second_half = 1;
+			}
+				
+			if(appointementService.add(df.parse(date), first_half, second_half, id_lodgement, id_agent, ((Client)session.getAttribute("client")).getId()) == 1) {
+				session.setAttribute("type", "success");
+				session.setAttribute("message", "The appointement has been saved.");
+			}
+			else {
+				session.setAttribute("type", "error");
+				session.setAttribute("message", "There was an error in saving the appointement.");
+			}
+			
+			
+			return "redirect:/reserve_appointement?id="+id_lodgement;
+		}else
+			return "login/login";
+	}
+	
+	
 }
