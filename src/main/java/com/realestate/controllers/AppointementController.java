@@ -538,4 +538,74 @@ public class AppointementController {
 			return "login/login";
 	}
 	
+	@PostMapping("report_appointement")
+	public String post_report_appointement(@RequestParam("report")String report, @RequestParam("id")int id_appoi, HttpSession session, Model model) {
+		
+		if(session.getAttribute("client") != null) {
+			
+			if(appointementService.get_appointements_by_id(id_appoi).getCanceled() == 0) {
+			
+				if(report.length() > 8) {
+					if(appointementService.existe_appoi_by_id_client(((Client)session.getAttribute("client")).getId(), id_appoi)){
+						
+						if(reportService.add_report("client", id_appoi, report)) {
+							session.setAttribute("type", "success");
+							session.setAttribute("message", "The appointement has been reported.");
+						}else {
+							session.setAttribute("type", "error");
+							session.setAttribute("message", "Sorry! Something went worng, Try again later.");
+						}
+							
+					}else {
+						session.setAttribute("type", "error");
+						session.setAttribute("message", "You dont have such an appointement.");
+					}
+				}else {
+					session.setAttribute("type", "error");
+					session.setAttribute("message", "Please enter a valid report.");
+				}
+			}else {
+				session.setAttribute("type", "error");
+				session.setAttribute("message", "This appointement is already canceled.");
+			}
+			
+			return "redirect:/my_appointements";
+		}else {
+			if(session.getAttribute("agent") != null) {
+				
+				if(appointementService.get_appointements_by_id(id_appoi).getCanceled() == 0) {
+				
+					if(report.length() > 8) {
+						if(appointementService.existe_appoi_by_id_agent(((Agent)session.getAttribute("agent")).getId(), id_appoi)){
+							
+							if(reportService.add_report("agent", id_appoi, report)) {
+								session.setAttribute("type", "success");
+								session.setAttribute("message", "The appointement has been reported.");
+							}else {
+								session.setAttribute("type", "error");
+								session.setAttribute("message", "Sorry! Something went worng, Try again later.");
+							}
+								
+						}else {
+							session.setAttribute("type", "error");
+							session.setAttribute("message", "You dont have such an appointement.");
+						}
+					}else {
+						session.setAttribute("type", "error");
+						session.setAttribute("message", "Please enter a valid report.");
+					}
+				}else {
+					session.setAttribute("type", "error");
+					session.setAttribute("message", "This appointement is already canceled.");
+				}
+				
+				return "redirect:/my_appointements";
+			}else {
+				session.setAttribute("url", "my_appointements");
+				return "redirect:/login";
+			}
+		}
+		
+	}
+	
 }
