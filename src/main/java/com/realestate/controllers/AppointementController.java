@@ -410,7 +410,53 @@ public class AppointementController {
 
 	}
 	
-	
-	
-	
+	@PostMapping("reserve_appointement_by_operator")
+	public String post_reserve_appointement_by_operator(@RequestParam("id_lodg") int id_lodgement,
+											 @RequestParam("id_agent") int id_agent,
+											 @RequestParam("client") String email_client,
+											 @RequestParam("half") String half,
+											 @RequestParam("date") String date,
+											 HttpSession session) throws ParseException {
+		
+		int first_half = 0;
+		int second_half = 0;
+		if(session.getAttribute("operator") != null) {
+			
+			if(clientService.client_email_exists(email_client)) {
+				
+				if(!clientService.block_client_by_email(email_client)) {
+					if(half.toLowerCase().equals("morning")) {
+						first_half = 1;
+						second_half = 0;
+					}else {
+						first_half = 0;
+						second_half = 1;
+					}
+						
+					if(appointementService.add(df.parse(date), first_half, second_half, id_lodgement, id_agent, ((Client)clientService.get_client_by_email(email_client)).getId() ) == 1) {
+						session.setAttribute("type", "success");
+						session.setAttribute("message", "The appointement has been saved.");
+					}
+					else {
+						session.setAttribute("type", "error");
+						session.setAttribute("message", "There was an error in saving the appointement.");
+					}
+				}else {
+					session.setAttribute("type", "error");
+					session.setAttribute("message", "The client' account is blocked.");
+				}
+			
+				
+			}else {
+				session.setAttribute("type", "error");
+				session.setAttribute("message", "The client's email is assocaited to any account.");
+			}
+			
+			
+			return "redirect:/reserve_appointement?id="+id_lodgement;
+		}else
+			return "login/login";
+
+	}
+		
 }
