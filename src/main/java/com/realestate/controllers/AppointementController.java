@@ -668,4 +668,63 @@ public class AppointementController {
 		return "redirect:/login";
 	}
 	
+	@GetMapping("confirm_appointement")
+	public String get_confirm_client_appointement(@RequestParam("id")int id_appointement, HttpSession session, Model model) {
+		
+		if(session.getAttribute("client")!=null) {
+			
+			if(((Client)session.getAttribute("client")).getUsername().equals("added_by_operator"))
+				return "redirect:/";
+			
+			if(appointementService.get_appointements_by_id(id_appointement).getCanceled() == 0) {
+			
+				if(appointementService.client_confirm_appointement(id_appointement)) {
+					
+					notificationService.add_client_confirm_notification(id_appointement, "no_notif" ,"The client: "+ ((Client)session.getAttribute("client")).getUsername() + " has confirmed his appointement.");
+					
+					session.setAttribute("type", "success");
+					session.setAttribute("message", "The appointement has been confirmed.");
+					
+				}else {
+					session.setAttribute("type", "error");
+					session.setAttribute("message", "Sorry! Something went worng, Try again later.");
+				}
+			}else {
+				session.setAttribute("type", "error");
+				session.setAttribute("message", "This appointement is already canceled.");
+			}
+			
+			
+			session.setAttribute("url", "my_appointements");
+			return "redirect:/my_appointements";
+		}else {
+			
+			if(session.getAttribute("agent")!=null) {
+				
+				if(appointementService.get_appointements_by_id(id_appointement).getCanceled() == 0) {
+					if(appointementService.agent_confirm_appointement(id_appointement)) {
+						
+						notificationService.add_agent_confirm_notification(id_appointement ,"The agent: "+ ((Agent)session.getAttribute("agent")).getUsername() + " has confirmed his appointement.", "no_notif");
+						
+						session.setAttribute("type", "success");
+						session.setAttribute("message", "The appointement has been confirmed.");
+						
+					}else {
+						session.setAttribute("type", "error");
+						session.setAttribute("message", "Sorry! Something went worng, Try again later.");
+					}
+				}else {
+					session.setAttribute("type", "error");
+					session.setAttribute("message", "This appointement is already canceled.");
+				}
+				session.setAttribute("url", "my_appointements");
+				return "redirect:/my_appointements";
+			}
+		}
+		
+		session.setAttribute("url", "my_appointements");
+		return "redirect:/login";
+		
+	}
+	
 }
