@@ -727,4 +727,302 @@ public class AppointementController {
 		
 	}
 	
+	@SuppressWarnings("deprecation")
+	@PostMapping("my_appointements")
+	public String get_search_appointement_by_date(@RequestParam("date")String __date, Model model, HttpSession session) throws ParseException {
+		
+				
+		if(session.getAttribute("client") != null) {
+			
+			List<Notification_details> notifications = notificationService.get_notifications(session);
+			int notification_nbr = 0;
+			
+			for(Notification_details notif : notifications) {
+				if(!notif.isViewed())
+					notification_nbr ++ ;
+			}
+			
+			model.addAttribute("notification_nbr", notification_nbr);
+			model.addAttribute("notifications", notifications);
+			model.addAttribute("client", session.getAttribute("client"));
+			
+			
+			if(__date.equals("")) {
+				return "redirect:/my_appointements";
+			}
+			
+			Date date = df.parse(__date);
+			Date appoi_date;
+			
+			List<Appointement> appointemets = new ArrayList<Appointement>();
+			List<Appointement> appois = appointementService.get_Appointements_by_id_client(((Client)(session.getAttribute("client"))).getId());
+			
+			
+			
+			
+			for(Appointement appoi: appois) {
+				
+				appoi_date = df.parse( (appoi.getDate().getYear()+1900)+"-"+(appoi.getDate().getMonth()+1)+"-"+appoi.getDate().getDate());
+				
+				if( appoi_date.equals(date)) {
+					appointemets.add(appoi);
+				}
+			}
+
+			if(appointemets.size() == 0) {
+				model.addAttribute("empty_list", true);
+			}else {
+				
+					
+					List<My_Appointement> my_appointements = new ArrayList<My_Appointement>();
+					String half;
+					String review;
+					String agent_confirm;
+					String client_confirm;
+					
+					
+					int canceled = 1;
+					boolean can_confirm = false;
+					int _year, _month, _day;
+					String _date = null;
+					Date today = new Date();
+					
+					for(Appointement appoi : appointemets) {
+						
+						if(appoi.getAgent_confirm() == 1)
+							agent_confirm = "Confirmed.";
+						else
+							agent_confirm = "Not confirmed.";
+						
+						if(appoi.getClient_confirm() == 1)
+							client_confirm = "Confirmed.";
+						else
+							client_confirm = "Not confirmed.";
+
+						_day = appoi.getDate().getDate();
+						_month = appoi.getDate().getMonth()+1;
+						_year = appoi.getDate().getYear()+1900;
+						
+						if(_year <= today.getYear()+1900) {
+							if(_month <= today.getMonth()+1) {
+								
+								
+								if(_day-1 == today.getDate() || _day-1 == 0) {
+									can_confirm = true;
+								}else {
+									
+									if(_day == today.getDate() && client_confirm.equalsIgnoreCase("Not confirmed.") && appoi.getCanceled() == 0) {
+										appointementService.client_cancel_appointement(appoi.getId());
+										notificationService.add_client_cancel_notification(appoi.getId(), "The appointement has been automaticly canceled due to your non confirmation.",  "The appointement has been automaticly canceled due to the client non confirmation.");
+										continue;
+									}
+								}
+							}
+						}
+						
+						
+						
+						if(appoi.getFirst_half() == 1)
+							half = "Morning";
+						else
+							half = "Evening";
+						
+						if(appoi.getReview().equals(null) || appoi.getReview().equals(""))
+							review = "No review";
+						else
+							review = appoi.getReview();
+						
+																
+						if(_day<10) {
+							if(_month<10)
+								_date = _year+"-0"+_month+"-0"+_day;
+							else
+								_date = _year+"-"+_month+"-0"+_day;
+						}else {
+							if(_month<10)
+								_date = _year+"-0"+_month+"-"+_day;
+							else
+								_date = _year+"-"+_month+"-"+_day;
+						}
+						
+						canceled = appointementService.get_canceled_value(appoi.getId());
+		
+						
+						my_appointements.add(new  My_Appointement(appoi.getId(), _date, half, 
+								appoi.getId_agent(), agentService.get_agent_by_id(appoi.getId_agent()).getUsername(), 
+								appoi.getId_client(), clientService.get_client_by_id(appoi.getId_client()).getUsername(),
+								appoi.getId_lodgement(), lodgementService.get_lodgements_by_id(appoi.getId_lodgement()).getAddress(),
+								lodgementService.get_lodgements_by_id(appoi.getId_lodgement()).getType(), 
+								agent_confirm, client_confirm , review, canceled, can_confirm));
+						
+							
+					
+						model.addAttribute("empty_list", false);
+					}
+					
+					model.addAttribute("my_appointements", my_appointements);
+					
+				}				
+				
+			
+			
+			
+			session.setAttribute("url", "my_appointements");
+			return "appointement/my_appointements";
+	
+		}else {
+			
+			if(session.getAttribute("agent") != null) {
+				
+				List<Notification_details> notifications = notificationService.get_notifications(session);
+				int notification_nbr = 0;
+				
+				for(Notification_details notif : notifications) {
+					if(!notif.isViewed())
+						notification_nbr ++ ;
+				}
+				
+				model.addAttribute("notification_nbr", notification_nbr);
+				model.addAttribute("notifications", notifications);
+				model.addAttribute("agent", session.getAttribute("agent"));
+				
+				
+				if(__date.equals("")) {
+					return "redirect:/my_appointements";
+				}
+				
+				Date date = df.parse(__date);
+				Date appoi_date;
+				
+				List<Appointement> appointemets = new ArrayList<Appointement>();
+				List<Appointement> appois = appointementService.get_Appointements_by_id_agent(((Agent)(session.getAttribute("agent"))).getId());
+				
+				
+				
+				
+				for(Appointement appoi: appois) {
+					
+					appoi_date = df.parse( (appoi.getDate().getYear()+1900)+"-"+(appoi.getDate().getMonth()+1)+"-"+appoi.getDate().getDate());
+					
+					if( appoi_date.equals(date)) {
+						appointemets.add(appoi);
+					}
+				}
+			
+				
+				if(appointemets.size() == 0) {
+					
+					model.addAttribute("empty_list", true);
+					
+				}else {
+					
+					
+						
+						List<My_Appointement> my_appointements = new ArrayList<My_Appointement>();
+						String half;
+						String review;
+						String agent_confirm;
+						String client_confirm;
+						
+						
+						int canceled = 1;
+						boolean can_confirm = false;
+						int _year, _month, _day;
+						String _date = null;
+						Date today = new Date();
+						
+						for(Appointement appoi : appointemets) {
+							
+							
+							if(appoi.getAgent_confirm() == 1)
+								agent_confirm = "Confirmed.";
+							else
+								agent_confirm = "Not confirmed.";
+							
+							if(appoi.getClient_confirm() == 1)
+								client_confirm = "Confirmed.";
+							else
+								client_confirm = "Not confirmed.";
+	
+							_day = appoi.getDate().getDate();
+							_month = appoi.getDate().getMonth()+1;
+							_year = appoi.getDate().getYear()+1900;
+							
+							if(_year <= today.getYear()+1900) {
+								if(_month <= today.getMonth()+1) {
+									
+									
+									if(_day-1 == today.getDate()) {
+										can_confirm = true;
+									}else {
+										
+										if(_day == today.getDate() && agent_confirm.equalsIgnoreCase("Not confirmed.") && appoi.getCanceled() == 0) {
+											appointementService.agent_cancel_appointement(appoi.getId());
+											notificationService.add_agent_cancel_notification(appoi.getId(), "The appointement has been automaticly canceled due to the agent non confirmation.",  "The appointement has been automaticly canceled due to your non confirmation.");
+											continue;
+										}
+									}
+								}
+							}
+							
+							
+							
+							if(appoi.getFirst_half() == 1)
+								half = "Morning";
+							else
+								half = "Evening";
+							
+							if(appoi.getReview().equals(null) || appoi.getReview().equals(""))
+								review = "No review";
+							else
+								review = appoi.getReview();
+							
+																	
+							if(_day<10) {
+								if(_month<10)
+									_date = _year+"-0"+_month+"-0"+_day;
+								else
+									_date = _year+"-"+_month+"-0"+_day;
+							}else {
+								if(_month<10)
+									_date = _year+"-0"+_month+"-"+_day;
+								else
+									_date = _year+"-"+_month+"-"+_day;
+							}
+							
+							canceled = appointementService.get_canceled_value(appoi.getId());
+			
+							
+							my_appointements.add(new  My_Appointement(appoi.getId(), _date, half, 
+									appoi.getId_agent(), agentService.get_agent_by_id(appoi.getId_agent()).getUsername(), 
+									appoi.getId_client(), clientService.get_client_by_id(appoi.getId_client()).getUsername(),
+									appoi.getId_lodgement(), lodgementService.get_lodgements_by_id(appoi.getId_lodgement()).getAddress(),
+									lodgementService.get_lodgements_by_id(appoi.getId_lodgement()).getType(), 
+									agent_confirm, client_confirm , review, canceled, can_confirm));
+							
+								
+						
+							model.addAttribute("empty_list", false);
+						}
+					
+					
+					model.addAttribute("my_appointements", my_appointements);
+					}
+					
+					
+				
+				
+				
+				session.setAttribute("url", "my_appointements");
+				return "appointement/my_appointements_agent";
+			}
+			
+		}
+
+		session.setAttribute("type", "error");
+		session.setAttribute("message", "You have to login.");
+		return "redirect:/login";
+	
+	}
+	
 }
