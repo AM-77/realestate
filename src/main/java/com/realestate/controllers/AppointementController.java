@@ -1661,4 +1661,37 @@ public class AppointementController {
 		}
 		
 	}
+	
+	@PostMapping("change_review")
+	public String post_change_review(@RequestParam("id")int id_appointement, @RequestParam("review")String review, HttpSession session) {
+		
+		if(session.getAttribute("agent") != null) {
+			
+			if(appointementService.get_appointements_by_id(id_appointement).getCanceled() == 0) {
+				if(appointementService.change_review(id_appointement, review)) {
+					
+					session.setAttribute("type", "success");
+					session.setAttribute("message", "The review has been changed.");
+					
+				}else {
+					
+					session.setAttribute("type", "error");
+					session.setAttribute("message", "Somthing went wrong try again later.");
+				
+				}
+			}else {
+				session.setAttribute("type", "error");
+				session.setAttribute("message", "This appointement is already canceled.");
+			}
+			
+			return "redirect:/my_appointements";
+		}else {
+			
+			session.setAttribute("type", "error");
+			session.setAttribute("message", "Access denied.");
+			return "redirect:/";
+		}
+		
+	}
+	
 }
