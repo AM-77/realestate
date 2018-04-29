@@ -106,4 +106,62 @@ public class FavoriteController {
 			return "redirect:/login";
 		}
 	}	
+	
+	@GetMapping("my_favorites")
+	public String get_my_favorites(HttpSession session, Model model) throws ParseException {
+		
+		
+		if(session.getAttribute("client") != null) {
+			
+			if(((Client)session.getAttribute("client")).getUsername().equals("added_by_oprator"))
+				return "redirect:/";
+			
+			
+			List<Notification_details> notifications = notificationService.get_notifications(session);
+			int notification_nbr = 0;
+			
+			for(Notification_details notif : notifications) {
+				if(!notif.isViewed())
+					notification_nbr ++ ;
+			}
+			
+			model.addAttribute("notification_nbr", notification_nbr);
+			model.addAttribute("notifications", notifications);
+			
+			List<Favorite> favs = favoriteService.get_favorites_by_client(((Client)session.getAttribute("client")).getId());
+			
+			if(favs.size() == 0) {
+				model.addAttribute("empty_list", "true");
+			}else {
+				List<Favorite_details> favorites = new ArrayList<Favorite_details>();
+				Lodgement l;
+				
+				for(Favorite f:favs) {
+					l = lodgementService.get_lodgements_by_id(f.getId_lodgement());
+										
+					favorites.add(new Favorite_details(f.getId(), l.getId(), l.getType(), l.getAddress(), f.getTime().toString().substring(0, 10), f.getTime().toString().substring(11, 19)));
+				}
+				
+				model.addAttribute("empty_list", "false");
+				model.addAttribute("favorites", favorites);
+			}
+			
+			if( !(session.getAttribute("type") == null) && !(session.getAttribute("message") == null) ) {
+				
+				model.addAttribute("type", session.getAttribute("type"));
+				model.addAttribute("message", session.getAttribute("message"));
+				
+				session.removeAttribute("type");
+				session.removeAttribute("message");
+			}
+			
+			session.setAttribute("url", "my_favorites");
+			model.addAttribute("client", session.getAttribute("client"));
+			return "favorite/my_favorites";
+		}else {
+			session.setAttribute("url", "my_favorites");
+			return "redirect:/login";
+		}
+	}
+	
 }
