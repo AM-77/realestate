@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 @ControllerAdvice
 @Controller
-public class ExceptionController {//implements ErrorController{
+public class ExceptionController /*implements ErrorController */{
 	
 //	@GetMapping("error")
 //	public String get_not_found_profile(HttpSession session, Model model) {
@@ -42,5 +42,5 @@ public class ExceptionController {//implements ErrorController{
 //	public String getErrorPath() {
 //		return "/error";
 //	}
-//	
+
 }
