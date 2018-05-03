@@ -230,5 +230,31 @@ public class LoginController {
 		
 		return "login/login";
 	}
+
+
+	
+	@GetMapping("logout")
+	public String get_logout(HttpSession session, Model model, HttpServletRequest request, HttpServletResponse responce) {
+		
+		if(session.getAttribute("client") != null || session.getAttribute("operator") != null || session.getAttribute("agent") != null || session.getAttribute("admin") != null) {
+			if(request.getCookies() != null) {
+				for(Cookie k : request.getCookies()) {
+					k.setValue(null);
+					
+					responce.addCookie(k);
+					
+				}
+			}
+			
+			
+			session.invalidate();
+						
+		}else {
+			model.addAttribute("type", "error");
+			model.addAttribute("message", "You are not logged in.");
+		}
+
+		return "redirect:/";
+	}
 	
 }
