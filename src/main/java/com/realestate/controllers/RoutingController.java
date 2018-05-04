@@ -276,6 +276,91 @@ public class RoutingController {
 			}
 		}
 	}
+		
+	@GetMapping("agents_stats")
+	public String agents_stats(HttpSession session, Model model) {
+		
+		if(session.getAttribute("admin") != null) {
+			List<Agent> agent_subscribe_demand = agentService.get_agent_subscribe_demand();
+			if(agent_subscribe_demand.size() == 0) {
+				model.addAttribute("empty_list", true);
+			}else {
+				model.addAttribute("empty_list", false);
+				model.addAttribute("list_demands", agent_subscribe_demand);
+			}
 			
+
+			if(session.getAttribute("type") != null && session.getAttribute("message") != null) {
+				model.addAttribute("type", session.getAttribute("type"));
+				model.addAttribute("message", session.getAttribute("message"));
+				
+				session.removeAttribute("type");
+				session.removeAttribute("message");
+			}
+
+			model.addAttribute("admin", session.getAttribute("admin"));
+			return "admin/agents_stats";
+		}else {
+			model.addAttribute("type", "error");
+			model.addAttribute("message","Access denied.");
+			return "login/login";
+		}
+		
+	}
+	
+	@GetMapping("operators_stats")
+	public String operators_stats(HttpSession session, Model model) {
+		
+		if(session.getAttribute("admin") != null) {
+			List<Operator> operator_subscribe_demand = operatorService.get_operator_subscribe_demand();
+			if(operator_subscribe_demand.size() == 0) {
+				model.addAttribute("empty_list", true);
+			}else {
+				model.addAttribute("empty_list", false);
+				model.addAttribute("list_demands", operator_subscribe_demand);
+			}
+			
+			if(session.getAttribute("type") != null && session.getAttribute("message") != null) {
+				model.addAttribute("type", session.getAttribute("type"));
+				model.addAttribute("message", session.getAttribute("message"));
+				
+				session.removeAttribute("type");
+				session.removeAttribute("message");
+			}
+			
+
+			model.addAttribute("admin", session.getAttribute("admin"));
+			return "admin/operators_stats";
+		}else {
+			model.addAttribute("type", "error");
+			model.addAttribute("message","Access denied.");
+			return "login/login";
+		}
+		
+	}
+	
+	@GetMapping("lodgements_stats")
+	public String lodgements_stats(HttpSession session, Model model) {
+		
+		if(session.getAttribute("admin") != null) {
+			model.addAttribute("admin", session.getAttribute("admin"));
+			
+			if(session.getAttribute("type") != null && session.getAttribute("message") != null) {
+				model.addAttribute("type", session.getAttribute("type"));
+				model.addAttribute("message", session.getAttribute("message"));
+				
+				session.removeAttribute("type");
+				session.removeAttribute("message");
+			}
+			
+			return "admin/lodgements_stats";
+		}else {
+			model.addAttribute("type", "error");
+			model.addAttribute("message","Access denied.");
+			return "login/login";
+		}
+		
+	}
+	
 	
 }
