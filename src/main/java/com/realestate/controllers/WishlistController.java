@@ -114,5 +114,26 @@ public class WishlistController {
 		
 	}
 	
-	
+	@PostMapping("remove_wish_list")
+	public String post_remove_wish_list(@RequestParam("id") int id_wish, HttpSession session) {
+		
+		if(session.getAttribute("client") != null) {
+			
+			if(wishService.remove_wish(id_wish)) {
+				session.setAttribute("type", "success");
+				session.setAttribute("message", "The lodgement has been removed to the wish list.");
+			}else {
+				session.setAttribute("type", "error");
+				session.setAttribute("message", "Sorry! There was an error please try again later.");
+			}
+			
+			return "redirect:/wish_list";
+		}else {
+			
+			session.setAttribute("type", "error");
+			session.setAttribute("message", "Access denied.");
+			return "redirect:/";
+		}
+		
+	}
 }
