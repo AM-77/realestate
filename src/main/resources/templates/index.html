@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<title>Realestate</title>
+		<link rel="stylesheet" th:href="@{ /css/nav_bar.css }">
+		<link rel="stylesheet" th:href="@{ /css/search_form.css }">
+		<link rel="stylesheet" th:href="@{ /css/index.css }">
+	</head>
+	<body>
+		<div class="wrapper">
+			<header>
+				<nav>
+					<ul>
+						<li>
+							<a href="/">
+								<div class="logo">
+									<img th:src="@{ /images/logo.svg }"/>
+									<p>Realestate</p>
+								</div>
+							</a>
+						</li>
+						
+						<div class="links">
+							<li><a class="current" href="/">Home</a></li>
+							<li>
+								<a class="subscribe">
+									Subscribe
+									<ul class="sub_menu">
+										<li><a href="/subscribe_as_client">As a client</a></li>
+										<li><a href="/subscribe_as_agent">As an agent</a></li>
+										<li><a href="/subscribe_as_operator">As an operator</a></li>
+									</ul>
+								</a>
+							</li>
+							<li><a href="/login">Login</a></li>
+							<li><a class="call_us"><span class="fa fa-phone"></span>Call us<span class="phone_nbr">+21321457845</span></a></li>
+							
+						</div>
+						
+					</ul>				
+				</nav>
+			</header>
+			<section class="section_search">
+				<div class="search_section"></div>
+				<form class="seach-form">
+					
+					<p class="title">Find a property</p>
+					
+					
+					<div class="search_field">
+						<input id="address" class="address search_bar" type="text" name="address" placeholder="Enter a state">
+						<span class="fa fa-map-marker marker"></span>
+						<button class="search-btn" type="button"><span class="fa fa-search"></span></button>
+					</div>
+
+					<div class="types">
+						<p class="type_title" >Select a type</p>
+						
+						<label for="F1">F1</label>
+						<input id="F1" class="type_btn type_f1" type="checkbox" name="type_f1" value="F1">
+						<span class="checkbox"></span>
+						
+						<label for="F2">F2</label>
+						<input id="F2" class="type_btn type_f2" type="checkbox" name="type_f2" value="F2">
+						<span class="checkbox"></span>
+						
+						<label for="F3">F3</label>
+						<input id="F3" class="type_btn type_f3" type="checkbox" name="type_f3" value="F3">
+						<span class="checkbox"></span>
+						
+						<label for="F4">F4</label>
+						<input id="F4" class="type_btn type_f4" type="checkbox" name="type_f4" value="F4">
+						<span class="checkbox"></span>
+						
+						<label for="F5">F5</label>
+						<input id="F5" class="type_btn type_f5" type="checkbox" name="type_f5" value="F5">
+						<span class="checkbox"></span>
+						
+					</div>
+					
+					<p class="advenced_search_btn">advenced search</p>
+					
+					<div class="advenced">
+						
+						<label class="max" for="max_price">max price</label>
+						<input id="max_price" class="max-price" type="number" min="0" name="max_price" placeholder="Enter max price">
+						
+						<label for="min_price">min price</label>
+						<input id="min_price" class="min-price" type="number" min="0" name="min_price" placeholder="Enter min price">
+						
+						<label class="max" for="max_surface">max surface</label>
+						<input id="max_surface" class="max-surface" type="number" min="0" name="max_surface" placeholder="Enter max surface">
+						
+						<label for="min_surface">min surface</label>
+						<input id="min_surface" class="min-surface" type="number" min="0" name="min_surface" placeholder="Enter min surface">
+						
+						<label class="max" for="max_floor">max floor</label>
+						<input id="max_floor" class="max-floor" type="number" min="0" name="max_floor" value="100" placeholder="Enter max floor">
+						
+						<label for="min_floor">min floor</label>
+						<input id="min_floor" class="min-floor" type="number" min="0" name="min_floor" value="0" placeholder="Enter min floor">
+						
+					</div>
+					
+				</form>
+				
+			</section>
+			
+			<section class="result">
+				<div class="search-result">
+				</div>
+			</section>
+			
+			<footer></footer>
+		</div>
+	
+		<script type="text/javascript" th:src="@{ /js/nav_bar.js }"></script>
+		<script type="text/javascript" th:src="@{ /js/search.js }"></script>
+	</body>
+</html>

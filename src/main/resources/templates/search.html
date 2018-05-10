@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<title>Realestate</title>
+		<link rel="stylesheet" href="../static/css/style.css">
+	</head>
+	<body>
+		<div class="wrapper">
+			<header>
+				<nav>
+					<ul>
+						<li><a href="/">Home</a></li>
+						<li>Subscribe
+							<ul>
+								<li><a href="/subscribe">As a client</a></li>
+								<li><a href="/subscribe_as_agent">As an agent</a></li>
+								<li><a href="/subscribe_as_operator">As an operator</a></li>
+							</ul>
+						</li>
+						<li><a href="/login">Login</a></li>
+					</ul>				
+				</nav>
+			</header>
+			<section>
+				<p>The search page</p>
+				
+				
+				<table>
+					<tr th:each="lodg : ${ lodgs }">
+						<td th:text="${ lodg.address }">Onions</td>
+						<td th:text="${ lodg.price }">2.41</td>
+						<td th:text="${ lodg.surface }">yes</td>
+						<td th:text="${ lodg.type }">yes</td>
+						<td th:text="${ lodg.locale }">yes</td>
+					</tr>
+				</table>
+				
+			</section>
+			<footer></footer>
+		</div>
+		
+		<script type="text/javascript" src="./assets/js/search.js"></script>
+	</body>
+</html>
