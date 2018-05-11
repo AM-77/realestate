@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<title>Realestate</title>
+		<link rel="stylesheet" th:href="@{ /css/nav_bar.css }">
+		<link rel="stylesheet" th:href="@{ /css/login.css }">
+	</head>
+	<body>
+		<div class="wrapper">
+			<header>
+				<nav>
+					<ul>
+						<li>
+							<a href="/">
+								<div class="logo">
+									<img th:src="@{ /images/logo.svg }"/>
+									<p>Realestate</p>
+								</div>
+							</a>
+						</li>
+						
+						<div class="links">
+							<li><a href="/">Home</a></li>
+							<li>
+								<a class="subscribe">
+									Subscribe
+									<ul class="sub_menu">
+										<li><a href="/subscribe_as_client">As a client</a></li>
+										<li><a href="/subscribe_as_agent">As an agent</a></li>
+										<li><a href="/subscribe_as_operator">As an operator</a></li>
+									</ul>
+								</a>
+							</li>
+							<li><a class="current" href="/login">Login</a></li>
+							<li><a class="call_us"><span class="fa fa-phone"></span>Call us<span class="phone_nbr">+21321457845</span></a></li>
+							
+							<div class="underline"></div>
+						</div>
+						
+					</ul>				
+				</nav>
+	
+	       </header>
+		   <section>
+		   
+		   		<div class="slider">
+		   			<div class='fade_bg'></div>
+		   			<div class='hovered_image'></div>
+		   			<ul class="slides">
+						<li><img class="01" th:src="@{ /images/slider/slide_01.jpg }"></li>
+						<li><img class="02" th:src="@{ /images/slider/slide_02.jpg }"></li>
+						<li><img class="03" th:src="@{ /images/slider/slide_03.jpg }"></li>
+						<li><img class="04" th:src="@{ /images/slider/slide_04.jpg }"></li>
+						<li><img class="05" th:src="@{ /images/slider/slide_05.jpg }"></li>
+						<li><img class="06" th:src="@{ /images/slider/slide_06.jpg }"></li>
+						<li><img class="07" th:src="@{ /images/slider/slide_07.jpg }"></li>
+						<li><img class="01" th:src="@{ /images/slider/slide_01.jpg }"></li>
+		   			</ul>
+		   			
+		   			<ul class="slider_btn">
+	   					<li class="1 active"></li>
+						<li class="2"></li>
+						<li class="3"></li>
+						<li class="4"></li>
+						<li class="5"></li>
+						<li class="6"></li>
+						<li class="7"></li>
+		   			</ul>
+		   		</div>
+				<div class="login_form">
+					
+					<p th:class="'message ' + ${{ type }}" th:text="${{ message }}"></p>
+					
+					<form method="post" action="login">
+						<div class="logo">
+							<img th:src="@{ /images/logo.svg }" /> 
+							<p class="title">Realestate</p>
+						</div>
+						<label for="email">Your email</label>
+						<input id="email" type="email" name="email" placeholder="Your email please.">
+						<br>
+						<label for="password">Your password<span class="fa fa-eye-slash show_password"></span></label>
+						<input id="password" type="password" name="password" placeholder="Your password please.">
+						
+						
+						<br>						
+						<input id="keep_logged" class="type_btn" type="checkbox" name="keep_logged" value="keep_logged">
+						<span class="checkbox"></span>
+						<label class="keep_logged" for="keep_logged">remember me</label>
+						
+						
+						<input type="submit" value="login">
+					</form>
+				</div>
+			</section>
+			<footer></footer>
+		</div>
+		
+		<script type="text/javascript" th:src="@{ /js/nav_bar.js }"></script>
+		<script type="text/javascript" th:src="@{ /js/login_slider.js }"></script>
+		<script type="text/javascript" th:src="@{ /js/password.js }"></script>
+	</body>
+</html>
