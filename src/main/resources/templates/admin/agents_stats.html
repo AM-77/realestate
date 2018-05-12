@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<title>Realestate | Admin</title>
+		
+		<link rel="stylesheet" th:href="@{ /css/dashboard.css }">
+		<link rel="stylesheet" th:href="@{ /css/messages.css }">
+		<link rel="shortcut icon" th:href="@{ /images/logo.svg }">
+	</head>
+	<body>
+		<div class="wrapper">
+		<header>
+			<nav class="horizontal_nav">
+				<div class="toggle_menu">
+					<span class="fa fa-reorder"></span>
+				</div>
+				
+				<div class="profile_infos">
+					
+					<img class="profile_picture" th:src="@{ '/images/admin/' + ${admin.profile_pic} }" />
+					
+					<p class="profile_name">
+						<span th:text="${ admin.name } +' '+ ${ admin.last_name }"></span>
+					</p>
+					
+					<a class="logout" href="/logout">
+						<span class="fa fa-sign-out"></span>
+					</a>
+				</div>
+
+			</nav>
+			
+			<nav class="vertical_nav">
+				<div class="nav">
+					<div class="logo">
+						<img th:src="@{ /images/logo.svg }"/>
+					</div>
+					
+					<div class="menu">
+						<ul>
+							<a href="/" class="" >
+								<li class="one">
+									<span class="fa fa-pie-chart" title="Generals"></span>
+									<span class="name">Generals</span>
+								</li>
+							</a>
+														
+							<a href="/agents_stats" class="" >
+								<li class="three active">
+									<span class="fa fa-user-secret" title="Agents"></span>
+									<span class="name">Agents</span>
+								</li>
+							</a>
+							
+							<a href="/operators_stats" class="" >
+								<li class="four">
+									<span class="fa fa-cogs" title="Operators"></span>
+									<span class="name">Operators</span>
+								</li>
+							</a>
+							
+							<a href="/lodgements_stats" class="" >
+								<li class="five">
+									<span class="fa fa-building" title="Lodgements"></span>
+									<span class="name">Lodgements</span>
+								</li>
+							</a>
+						</ul>
+					</div>
+				</div>	
+			</nav>
+		</header>
+		<section>
+		
+			<div class="main_section ag">
+				
+				<h1 class="head_title">Agents:</h1>
+			
+				<p th:class="'message ' + ${{ type }}" th:text="${{ message }}"></p>
+				
+				<p class="title">Agent's account: </p>
+				
+				<div class="search_op">
+					<form class="remove_op" method="POST" action="remove_agent">
+						<label for="email">Remove an agent account:</label>
+						<input id="email" type="email" name="email" placeholder="Enter agent's email" />
+						<input type="submit" value="remove">
+					</form>
+					
+					<form class="block_op" method="POST" action="block_agent">
+						<label for="email">Block an agent account:</label>
+						<input id="email" type="email" name="email" placeholder="Enter agent's email" />
+						<input type="submit" value="block">
+					</form>
+					
+					<form class="block_op" method="POST" action="deblock_agent">
+						<label for="email">Deblock an agent account:</label>
+						<input id="email" type="email" name="email" placeholder="Enter agent's email" />
+						<input type="submit" value="deblock">
+					</form>
+				</div>
+				<div style="clear:both"></div>
+
+				<p class="no_subsc_demand empty_list" th:if="${ empty_list }">There is no subscription demand.</p>
+
+				<div th:if="${ !empty_list }">
+					<p class="title">Agent's subscribtion demands: </p>
+					<table>
+						<thead>
+							<tr>
+								<td>name</td>
+								<td>last name</td>
+								<td>birthdate</td>
+								<td>gender</td>
+								<td>locale</td>
+								<td>phone</td>
+								<td>cv</td>
+								<td>Remove</td>
+								<td>Confirm</td>
+							</tr>
+						</thead>
+						
+						<tbody>
+							<tr th:each="agent: ${ list_demands }">
+														
+							<td><span th:text="${ agent.name }"></span></td>
+							<td><span th:text="${ agent.last_name }"></span></td>
+							<td><span th:text="${ agent.get_birthdate() }"></span></td>
+							<td><span th:text="${ agent.gender }"></span></td>
+							<td><span th:text="${ agent.locale }"></span></td>
+							<td><span th:text="${ agent.phone }"></span></td>
+														
+							<td class="external_link" >
+								<p th:if="${ ! agent.cv_exsites() }">No CV</p>
+
+								<a th:if="${ agent.cv_exsites()  }" title="cv" target="_blank" th:href="'/images/agent/cv/' + ${ agent.cv }">
+								cv <span class="fa fa-external-link"></span>
+								</a>
+							</td>
+							
+							<td>
+								<form action="/remove_subsc_agent" method="post">
+									<input type="hidden" th:value="${ agent.id }" name="id" />
+									<input class="remove" type="submit" value="remove" />
+								</form>
+							</td>
+							
+							<td>
+								<form action="/confirm_subsc_agent" method="post">
+									<input type="hidden" th:value="${ agent.id }" name="id" />
+									<input class="remove confirm" type="submit" value="confirm" />
+								</form>
+							</td>
+							
+						</tbody>
+					</table>
+				</div>
+			</div>	
+		</section>
+
+		</div>
+		<script type="text/javascript" th:src="@{ /js/dashboard.js }"></script>
+		<script type="text/javascript" th:src="@{ /js/chart.js }"></script>
+		<script type="text/javascript" th:src="@{ /js/statistic.js }"></script>
+	</body>
+</html>
