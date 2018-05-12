@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<title>Realestate | Admin</title>
+		
+		<link rel="stylesheet" th:href="@{ /css/dashboard.css }">
+		<link rel="stylesheet" th:href="@{ /css/admin_search_form.css }">
+		<link rel="stylesheet" th:href="@{ /css/messages.css }">
+		<link rel="shortcut icon" th:href="@{ /images/logo.svg }">
+		
+	</head>
+	<body>
+		<div class="wrapper">
+		<header>
+			<nav class="horizontal_nav">
+				<div class="toggle_menu">
+					<span class="fa fa-reorder"></span>
+				</div>
+				
+				<div class="profile_infos">
+					
+					<img class="profile_picture" th:src="@{ '/images/admin/' + ${admin.profile_pic} }" />
+					
+					<p class="profile_name">
+						<span th:text="${ admin.name } +' '+ ${ admin.last_name }"></span>
+					</p>
+					
+					<a class="logout" href="/logout">
+						<span class="fa fa-sign-out"></span>
+					</a>
+	
+				</div>
+
+			</nav>
+			
+			<nav class="vertical_nav">
+				<div class="nav">
+					<div class="logo">
+						<img th:src="@{ /images/logo.svg }"/>
+					</div>
+					
+					<div class="menu">
+						<ul>
+							<a href="/">
+								<li class="one">
+									<span class="fa fa-pie-chart" title="Generals"></span>
+									<span class="name">Generals</span>
+								</li>
+							</a>
+							
+							<a href="/agents_stats">
+								<li class="three">
+									<span class="fa fa-user-secret" title="Agents"></span>
+									<span class="name">Agents</span>
+								</li>
+							</a>
+							
+							<a href="/operators_stats">
+								<li class="four">
+									<span class="fa fa-cogs" title="Operators"></span>
+									<span class="name">Operators</span>
+								</li>
+							</a>
+							
+							<a href="/lodgements_stats">
+								<li class="five active">
+									<span class="fa fa-building" title="Lodgements"></span>
+									<span class="name">Lodgements</span>
+								</li>
+							</a>
+						</ul>
+					</div>
+				</div>	
+			</nav>
+		</header>
+		<section>
+		
+			<div class="main_section">
+			
+				<p th:class="'message ' + ${{ type }}" th:text="${{ message }}"></p>
+			
+				<h1 class="head_title">Lodgements:</h1>
+				
+				
+				<div>
+					<p class='title'>Add A Lodgement:</p>
+					<form method="post" action='add__lodgement' enctype="multipart/form-data">
+						<div class="field input">
+							<label for="address">Address: <span class="required">*</span></label>
+							<input type="text" name="address" id="address" placeholder="Enter an address" required />
+						</div>
+						
+						<div class="field select">
+							<label for="type">Type: <span class="required">*</span></label>
+							<select id="type" class="type" name="type" required>
+								<option value="F1">F1</option>
+								<option value="F2">F2</option>
+								<option value="F3">F3</option>
+								<option value="F4">F4</option>
+								<option value="F5">F5</option>
+							</select> 
+						</div>
+						
+						<div class="field select">
+							<label for="locale">Locale: <span class="required">*</span></label>
+							<select id="locale" class="locale" name="locale" required>
+								<option value="1">1</option>
+								<option value="2">2</option>
+								<option value="3">3</option>
+								<option value="4">4</option>
+								<option value="5">5</option>
+							</select> 
+						</div>
+						
+						<div class="field input">
+							<label for="price">Price: <span class="required">*</span></label>
+							<input id="price" type="number" name="price" placeholder="Enter an Price" min="0" required />
+						</div>
+						
+						<div class="field input">
+							<label for="surface">Surface: <span class="required">*</span></label>
+							<input id="surface" type="number" name="surface" placeholder="Enter an Surface" min="0" required />
+						</div>
+						
+						<div class="field input">
+							<label for="floor">Floor: <span class="required">*</span></label>
+							<input id="floor" type="number" name="floor" placeholder="Enter an Floor" min="0" required />
+						</div>
+						
+						<div class="pictures">
+						
+						</div>
+						
+						<div class="lodg_pics">
+							
+							<div class="file">
+				                <input id="profile_pic" type="file" name="picture01" />
+				                
+				                <div class="file_btn">
+				                	<span class="fa fa-paperclip"></span> <span>picture 01<span class="required">*</span></span>
+				                </div>
+				            </div>
+				            <div class="file">
+				                <input id="profile_pic" type="file" name="picture02" />
+				                
+				                <div class="file_btn">
+				                	<span class="fa fa-paperclip"></span> <span>picture 02<span class="required">*</span></span>
+				                </div>
+				            </div>
+				            <div class="file">
+				                <input id="profile_pic" type="file" name="picture03" />
+				                
+				                <div class="file_btn">
+				                	<span class="fa fa-paperclip"></span> <span>picture 03<span class="required">*</span></span>
+				                </div>
+				            </div>
+				            <div class="file">
+				                <input id="profile_pic" type="file" name="picture04" />
+				                
+				                <div class="file_btn">
+				                	<span class="fa fa-paperclip"></span> <span>picture 04<span class="required">*</span></span>
+				                </div>
+				            </div>
+				            <div class="file">
+				                <input id="profile_pic" type="file" name="picture05" />
+				                
+				                <div class="file_btn">
+				                	<span class="fa fa-paperclip"></span> <span>picture 05<span class="required">*</span></span>
+				                </div>
+				            </div>
+				            
+						</div>
+				
+				
+						<input class="add" type="submit" value="Add Lodgement">
+					</form>
+				</div>
+				<div style="clear:both"></div>
+				<section class="section_search">
+					<div class="search_section"></div>
+					<form class="seach-form">
+						
+						<p class="title">Remove A Lodgement:</p>
+						
+						
+						<div class="search_field">
+							<input id="address" class="address search_bar" type="text" name="address" placeholder="Enter a state">
+							<button class="search-btn" type="button"><span class="fa fa-search"></span></button>
+						</div>
+	
+						<div class="types">
+							<p class="type_title" >Select a type: </p>
+							
+							<label for="F1">F1</label>
+							<input id="F1" class="type_btn type_f1" type="checkbox" name="type_f1" value="F1">
+							<span class="checkbox"></span>
+							
+							<label for="F2">F2</label>
+							<input id="F2" class="type_btn type_f2" type="checkbox" name="type_f2" value="F2">
+							<span class="checkbox"></span>
+							
+							<label for="F3">F3</label>
+							<input id="F3" class="type_btn type_f3" type="checkbox" name="type_f3" value="F3">
+							<span class="checkbox"></span>
+							
+							<label for="F4">F4</label>
+							<input id="F4" class="type_btn type_f4" type="checkbox" name="type_f4" value="F4">
+							<span class="checkbox"></span>
+							
+							<label for="F5">F5</label>
+							<input id="F5" class="type_btn type_f5" type="checkbox" name="type_f5" value="F5">
+							<span class="checkbox"></span>
+							
+						</div>
+						<div style="clear:both"></div>
+						<div class="advenced show">
+							
+							<label class="max" for="max_price">max price</label>
+							<input id="max_price" class="max-price" type="number" min="0" name="max_price" placeholder="Enter max price">
+							
+							<label for="min_price">min price</label>
+							<input id="min_price" class="min-price" type="number" min="0" name="min_price" placeholder="Enter min price">
+							
+							<label class="max" for="max_surface">max surface</label>
+							<input id="max_surface" class="max-surface" type="number" min="0" name="max_surface" placeholder="Enter max surface">
+							
+							<label for="min_surface">min surface</label>
+							<input id="min_surface" class="min-surface" type="number" min="0" name="min_surface" placeholder="Enter min surface">
+							
+							<label class="max" for="max_floor">max floor</label>
+							<input id="max_floor" class="max-floor" type="number" min="0" name="max_floor" value="100" placeholder="Enter max floor">
+							
+							<label for="min_floor">min floor</label>
+							<input id="min_floor" class="min-floor" type="number" min="0" name="min_floor" value="0" placeholder="Enter min floor">
+							
+						</div>
+						
+					</form>
+					
+				</section>
+				
+			</div>
+			
+			
+			
+			
+			<section class="result">
+				<div class="search-result">
+				</div>
+			</section>
+			
+		</section>
+		
+		
+
+		</div>
+		<script type="text/javascript" th:src="@{ /js/dashboard.js }"></script>
+		<script type="text/javascript" th:src="@{ /js/chart.js }"></script>
+		<script type="text/javascript" th:src="@{ /js/statistic.js }"></script>
+		<script type="text/javascript" th:src="@{ /js/search_admin.js }"></script>
+	</body>
+</html>
