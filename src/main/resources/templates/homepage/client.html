@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<title>Realestate</title>
+		<link rel="stylesheet" th:href="@{ /css/nav_bar.css }">
+		<link rel="stylesheet" th:href="@{ /css/homepage.css }">
+		<link rel="stylesheet" th:href="@{ /css/search_form.css }">
+		<style>
+			.not_viewed{
+				background: #bbb;
+			}			
+		</style>
+	</head>
+	<body>
+		<div class="wrapper">
+			<header>
+			
+				<nav>
+								
+					<ul>
+						<li>
+							<div class="profile_infos">
+					
+								<img class="profile_picture" th:src="@{ '/images/client/' + ${client.profile_pic} }" />
+								
+								<p class="profile_name">
+									<span th:text="${ client.username }"></span>
+									<span class="gear fa fa-gear"></span>
+								</p>
+								
+								<div class="profile_dropdown_menu">
+									<div class="item">
+										<a th:href="'/client_profile/'+${ client.id }">
+											<span class="fa fa-user"></span>Profile
+										</a>
+									</div>
+									<div class="item">
+										<a href="/logout">
+											<span class="fa fa-sign-out"></span>Logout
+										</a>
+									</div>							
+								</div>
+							</div>
+						</li>
+						
+						<div class="links client">
+							<li><a class="current" href="/homepage">Home</a></li>
+							<li><a href="/my_appointements">My appointements</a></li>
+							<li><a href="/my_favorites">My favorites</a></li>
+							<li><a href="/wish_list">My Wishlist</a></li>
+							<li class="notification_link"><a>Notifications <span th:if="${ notification_nbr != 0 }" class="notification_nbr" th:text="${ notification_nbr }" ></span></a></a></li>
+						</div>
+
+						
+					</ul>				
+				</nav>
+				
+				<div th:class="'notifications '+((${ notifications.size() == 0 } )? 'no_notif' : '')">
+					
+					<div th:if="${ notifications.size() == 0} ">
+						<p class="simple_notif empty_notif">You don't have any notification.</p>
+					</div>
+					
+					<div  th:each="notification : ${ notifications }" th:class="'simple_notif simple_notif_'+${notification.id} +' '+ ((${ notification.viewed } )? 'viewed' : 'not_viewed')" >
+						<p class="time" th:text="'Notification at: '+ ${ notification.notification_time.toString().substring(0, 19) }" ></p>
+						<p class="message" th:text="${ notification.message }" ></p>
+						<p class="more">see details</p>
+						
+						<div th:class="'detailed_notif detailed_notif_'+${notification.id}">
+							<p>
+							
+							<span class="title">Appointement:</span>
+							
+								
+								<a> 
+								<form method="post" action="/my_appointements">
+									<input type="hidden" name="date" th:value="${ notification.get_appointement_date() }">
+									<input type="submit" th:value="'The '+ ${ notification.appointement_time } + ' of ' + ${ notification.get_appointement_date() }" />
+									<span class="fa fa-external-link"></span>
+									</form>
+									</a>
+								
+								
+								
+								</p>
+							<p><span class="title">Lodgement:</span><a  title="visite lodgement details" target="_blank" th:href="'lodgement_details/'+${ notification.id_lodgement }"> <span th:text="${ notification.lodgement_type }"></span> in <span th:text="${ notification.lodgement_address }"></span><span class="fa fa-external-link"></span></a></p>
+							<p><span class="title">Agent:</span> <a title="visite this agent account" target="_blank" th:href="'agent_profile/'+${ notification.id_agent }"> <span th:text="${ notification.agent_username }"></span><span class="fa fa-external-link"></span></a></p>
+						</div>
+						
+					
+					
+					</div>
+												
+				</div>
+								
+			</header>
+			<section class="section_search">
+				<div class="search_section"></div>
+				<form class="seach-form">
+					
+					<p class="title">Find a property</p>
+					
+					
+					<div class="search_field">
+						<input id="address" class="address search_bar" type="text" name="address" placeholder="Enter a state">
+						<span class="fa fa-map-marker marker"></span>
+						<button class="search-btn" type="button"><span class="fa fa-search"></span></button>
+					</div>
+
+					<div class="types">
+						<p class="type_title" >Select a type</p>
+						
+						<label for="F1">F1</label>
+						<input id="F1" class="type_btn type_f1" type="checkbox" name="type_f1" value="F1">
+						<span class="checkbox"></span>
+						
+						<label for="F2">F2</label>
+						<input id="F2" class="type_btn type_f2" type="checkbox" name="type_f2" value="F2">
+						<span class="checkbox"></span>
+						
+						<label for="F3">F3</label>
+						<input id="F3" class="type_btn type_f3" type="checkbox" name="type_f3" value="F3">
+						<span class="checkbox"></span>
+						
+						<label for="F4">F4</label>
+						<input id="F4" class="type_btn type_f4" type="checkbox" name="type_f4" value="F4">
+						<span class="checkbox"></span>
+						
+						<label for="F5">F5</label>
+						<input id="F5" class="type_btn type_f5" type="checkbox" name="type_f5" value="F5">
+						<span class="checkbox"></span>
+						
+					</div>
+					
+					<p class="advenced_search_btn">advenced search</p>
+					
+					<div class="advenced">
+						
+						<label class="max" for="max_price">max price</label>
+						<input id="max_price" class="max-price" type="number" min="0" name="max_price" placeholder="Enter max price">
+						
+						<label for="min_price">min price</label>
+						<input id="min_price" class="min-price" type="number" min="0" name="min_price" placeholder="Enter min price">
+						
+						<label class="max" for="max_surface">max surface</label>
+						<input id="max_surface" class="max-surface" type="number" min="0" name="max_surface" placeholder="Enter max surface">
+						
+						<label for="min_surface">min surface</label>
+						<input id="min_surface" class="min-surface" type="number" min="0" name="min_surface" placeholder="Enter min surface">
+						
+						<label class="max" for="max_floor">max floor</label>
+						<input id="max_floor" class="max-floor" type="number" min="0" name="max_floor" value="100" placeholder="Enter max floor">
+						
+						<label for="min_floor">min floor</label>
+						<input id="min_floor" class="min-floor" type="number" min="0" name="min_floor" value="0" placeholder="Enter min floor">
+						
+					</div>
+					
+				</form>
+				
+			</section>
+			
+			<section class="result">
+				<div class="search-result">
+				</div>
+			</section>
+			<footer></footer>
+		</div>
+		
+		<script type="text/javascript" th:src="@{ /js/search.js }"></script>
+		<script type="text/javascript" th:src="@{ /js/profile_infos.js }"></script>
+		<script type="text/javascript" th:src="@{ /js/notification.js }"></script>
+	</body>
+</html>
