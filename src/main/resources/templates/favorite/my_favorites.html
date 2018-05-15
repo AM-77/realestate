@@ -1,0 +1,137 @@
+ <!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<title>Realestate</title>
+		<link rel="stylesheet" th:href="@{ /css/nav_bar.css }">
+		<link rel="stylesheet" th:href="@{ /css/homepage.css }">
+		<link rel="stylesheet" th:href="@{ /css/my_favorites.css }">
+		<link rel="stylesheet" th:href="@{ /css/messages.css }">
+		
+	</head>
+	<body>
+		<div class="wrapper">
+			<header>
+				<nav>
+								
+					<ul>
+						<li>
+							<div class="profile_infos">
+					
+								<img class="profile_picture" th:src="@{ '/images/client/' + ${client.profile_pic} }" />
+								
+								<p class="profile_name">
+									<span th:text="${ client.username }"></span>
+									<span class="gear fa fa-gear"></span>
+								</p>
+								
+								<div class="profile_dropdown_menu">
+									<div class="item">
+										<a th:href="'/client_profile/'+${ client.id }">
+											<span class="fa fa-user"></span>Profile
+										</a>
+									</div>
+									<div class="item">
+										<a href="/logout">
+											<span class="fa fa-sign-out"></span>Logout
+										</a>
+									</div>							
+								</div>
+							</div>
+						</li>
+						
+						<div class="links client">
+							<li><a href="/homepage">Home</a></li>
+							<li><a href="/my_appointements">My appointements</a></li>
+							<li><a class="current" href="/my_favorites">My favorites</a></li>
+							<li><a href="/wish_list">My Wishlist</a></li>
+							<li class="notification_link"><a>Notifications <span th:if="${ notification_nbr != 0 }" class="notification_nbr" th:text="${ notification_nbr }" ></span></a></a></li>
+						</div>
+
+						
+					</ul>				
+				</nav>
+				
+				<div th:class="'notifications '+((${ notifications.size() == 0 } )? 'no_notif' : '')">
+					
+					<div th:if="${ notifications.size() == 0} ">
+						<p class="simple_notif empty_notif">You don't have any notification.</p>
+					</div>
+					
+					<div  th:each="notification : ${ notifications }" th:class="'simple_notif simple_notif_'+${notification.id} +' '+ ((${ notification.viewed } )? 'viewed' : 'not_viewed')" >
+						<p class="time" th:text="'Notification at: '+ ${ notification.notification_time.toString().substring(0, 19) }" ></p>
+						<p class="message" th:text="${ notification.message }" ></p>
+						<p class="more">see details</p>
+						
+						<div th:class="'detailed_notif detailed_notif_'+${notification.id}">
+							<p>
+							
+							<span class="title">Appointement:</span>
+							
+								
+								<a> 
+								<form method="post" action="/my_appointements">
+									<input type="hidden" name="date" th:value="${ notification.get_appointement_date() }">
+									<input type="submit" th:value="'The '+ ${ notification.appointement_time } + ' of ' + ${ notification.get_appointement_date() }" />
+									<span class="fa fa-external-link"></span>
+									</form>
+									</a>
+								
+								
+								
+								</p>
+							<p><span class="title">Lodgement:</span><a  title="visite lodgement details" target="_blank" th:href="'lodgement_details/'+${ notification.id_lodgement }"> <span th:text="${ notification.lodgement_type }"></span> in <span th:text="${ notification.lodgement_address }"></span><span class="fa fa-external-link"></span></a></p>
+							<p><span class="title">Agent:</span> <a title="visite this agent account" target="_blank" th:href="'agent_profile/'+${ notification.id_agent }"> <span th:text="${ notification.agent_username }"></span><span class="fa fa-external-link"></span></a></p>
+						</div>
+						
+					
+					
+					</div>
+												
+				</div>
+			</header>
+			<section>
+				<p th:class="'message '+${{ type }}" th:text="${{ message }}"></p>
+				
+				<p class='title'>My Favorites:</p>
+				
+				<p class="empty_list" th:if="${ empty_list }">You do not have any lodgement in your favorite list yet.</p>
+
+				<div th:if="${ !empty_list }">
+					<table>
+						<thead>
+							<tr>
+								<td>Lodgement</td>
+								<td>Added at</td>
+								<td>remove</td>
+							</tr>
+						</thead>
+						
+						<tbody>
+							<tr th:each="favorite: ${ favorites }">
+								<td class="external_link">
+									<a title="see in detail" target="_blank" th:attr="href='lodgement_details/'+${ favorite.id_lodg }">
+										<span th:text="${ favorite.type }"></span> in 
+										<span th:text="${ favorite.address }"></span> 
+										<span class="fa fa-external-link"></span>
+									</a>
+								</td>
+								<td>
+								
+								<span th:text="${ favorite.date }"></span> at 
+								<span th:text="${ favorite.time }"></span>
+								</td>
+								
+								<td class="link"> <a th:attr="href='remove_favorite?id='+${ favorite.id }">remove</a></td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</section>
+			<footer></footer>
+		</div>
+		
+		
+		<script type="text/javascript" th:src="@{ /js/profile_infos.js }"></script>
+		<script type="text/javascript" th:src="@{ /js/notification.js }"></script>
+	</body>
+</html>
