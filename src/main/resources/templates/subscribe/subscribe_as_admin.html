@@ -1,0 +1,55 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Realestate | Subscribe</title>
+        <link rel="stylesheet" href="./../../assets/css/style.css">
+        <link rel="shortcut icon" href="./../../assets/images/logo.png">
+    </head>
+    <body>
+       
+           <header>
+       		<nav>
+       			the nav bar
+       		</nav>
+       		<div>
+       			The subscribe page
+       		</div>
+       		<p th:class="${{ type }}" th:text="${{ message }}"></p>
+       </header>
+       <section>
+       
+               <form class="subscribe_form"  method="post" action="subscribe_as_admin">
+                  	
+                <label for="email">Email <span class="required">*</span></label>
+                <input id="email" type="email" name="email" placeholder="Your email" maxlength="50" minlength="6" required/>
+            
+                <label for="password">Password <span class="required">*</span><span class="fa fa-eye-slash show_password"></span></label>
+                <input id="password" type="password"  name="password" placeholder="Your password" maxlength="50" minlength="6" required/>
+           
+                <label for="repassword">Password Confirmation <span class="required">*</span><span class="fa fa-eye-slash show_password"></span></label>
+                <input  id="repassword" type="password"  name="repassword" placeholder="Confirme your password"  maxlength="50" minlength="6" required/>
+           
+                <label for="name">Name <span class="required">*</span></label>
+                <input id ="name" type="text" name="name" placeholder="name" maxlength="50" minlength="4" required/>
+            
+                <label for="f_name">Family name <span class="required">*</span></label>
+                <input id="f_name" type="text" name="last_name" placeholder="Your family name" maxlength="50" minlength="4" required/>
+           
+                <label for="phone">Phone number <span class="required">*</span></label>
+                <input id="phone" type="phone" name="phone" placeholder="Your phone number" maxlength="20" minlength="7" required/>
+                        
+				<label for="profile_pic">Profile picture</label>
+                <input id="profile_pic" type="file" name="profile_pic" placeholder="Your profile picture"/>
+                
+                <input type="submit" class="button" value="Register" >
+                               
+               </from>
+           </section>
+           
+           <footer></footer>
+        
+        <script src="./../../assets/js/subscribe_script.js"></script>
+    </body>
+</html>
+
