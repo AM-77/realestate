@@ -1,0 +1,153 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Realestate | Subscribe</title>
+        <link rel="stylesheet" th:href="@{ /css/nav_bar.css }">
+        <link rel="stylesheet" th:href="@{ /css/subscribe.css }">
+        <link rel="shortcut icon" href="./../../assets/images/logo.png">
+    </head>
+    <body>
+       
+       <header>
+			<nav>
+				<ul>
+					<li>
+						<a href="/">
+							<div class="logo">
+								<img th:src="@{ /images/logo.svg }"/>
+								<p>Realestate</p>
+							</div>
+						</a>
+					</li>
+					
+					<div class="links">
+						<li><a href="/">Home</a></li>
+						<li>
+							<a class="subscribe current">
+								Subscribe
+								<ul class="sub_menu">
+									<li><a href="/subscribe_as_client">As a client</a></li>
+									<li><a href="/subscribe_as_agent">As an agent</a></li>
+									<li><a href="/subscribe_as_operator">As an operator</a></li>
+								</ul>
+							</a>
+						</li>
+						<li><a href="/login">Login</a></li>
+						<li><a class="call_us"><span class="fa fa-phone"></span>Call us<span class="phone_nbr">+21321457845</span></a></li>
+							
+						<div class="underline"></div>
+					</div>
+					
+				</ul>				
+			</nav>
+
+       </header>
+       <section>
+       
+       <div class="slider">
+		   			<div class='fade_bg'></div>
+		   			<div class='hovered_image'></div>
+		   			<ul class="slides">
+						<li><img class="01" th:src="@{ /images/slider/slide_01.jpg }"></li>
+						<li><img class="02" th:src="@{ /images/slider/slide_02.jpg }"></li>
+						<li><img class="03" th:src="@{ /images/slider/slide_03.jpg }"></li>
+						<li><img class="04" th:src="@{ /images/slider/slide_04.jpg }"></li>
+						<li><img class="05" th:src="@{ /images/slider/slide_05.jpg }"></li>
+						<li><img class="06" th:src="@{ /images/slider/slide_06.jpg }"></li>
+						<li><img class="07" th:src="@{ /images/slider/slide_07.jpg }"></li>
+						<li><img class="01" th:src="@{ /images/slider/slide_01.jpg }"></li>
+		   			</ul>
+		   			
+		   			<ul class="slider_btn">
+	   					<li class="1 active"></li>
+						<li class="2"></li>
+						<li class="3"></li>
+						<li class="4"></li>
+						<li class="5"></li>
+						<li class="6"></li>
+						<li class="7"></li>
+		   			</ul>
+		   		</div>
+       <div class="subscribe__form">
+               
+               <p th:class="'message ' + ${{ type }}" th:text="${{ message }}"></p>
+					
+               <form class="subscribe_form"  method="post" action="/subscribe_as_operator" enctype="multipart/form-data">
+                
+                <label for="username">Username  <span class="required">*</span></label>
+                <input id="username" type="text" name="username" placeholder="Your username" maxlength="50" minlength="5" required/>
+                   	
+                <label for="email">Email <span class="required">*</span></label>
+                <input id="email" type="email" name="email" placeholder="Your email" maxlength="50" minlength="6" required/>
+            
+                <label for="password">Password <span class="required">*</span><span class="fa fa-eye-slash show_password"></span></label>
+                <input id="password" type="password"  name="password" placeholder="Your password" maxlength="50" minlength="6" required/>
+           
+                <label for="repassword">Password Confirmation <span class="required">*</span><span class="fa fa-eye-slash show_password"></span></label>
+                <input  id="repassword" type="password"  name="repassword" placeholder="Confirme your password"  maxlength="50" minlength="6" required/>
+           
+                <label for="name">Name <span class="required">*</span></label>
+                <input id ="name" type="text" name="name" placeholder="name" maxlength="50" minlength="4" required/>
+            
+                <label for="f_name">Family name <span class="required">*</span></label>
+                <input id="f_name" type="text" name="last_name" placeholder="Your family name" maxlength="50" minlength="4" required/>
+           
+                <label for="birthdate">Birthdate <span class="required">*</span></label>
+                <input id="birthdate" type="date" name="birthdate" placeholder="Your birthdate" max="2002-12-31" min="1921-08-07" value="2000-01-01" required/>
+            
+                <label for="phone">Phone number <span class="required">*</span></label>
+                <input id="phone" type="phone" name="phone" placeholder="Your phone number" maxlength="20" minlength="7" required/>
+                
+                
+                <div class="agent four_elements">
+                 
+                 <div class="select">        
+                <label for="gender">Gender<span class="required">*</span></label>
+                <select id="gender" name="gender">
+					<option value="male">Male</option>
+					<option value="female">Female</option>
+				</select>
+				</div>
+				<div class="select">
+				<label for="locale">Locale<span class="required">*</span></label>
+                <select id="locale" name="locale">
+					<option value="1">1</option>
+					<option value="2">2</option>
+					<option value="3">3</option>
+					<option value="4">4</option>
+					<option value="5">5</option>
+				</select>
+				</div>
+				
+				<div class="file">
+				<label for="profile_pic">Photo</label>
+                <input id="profile_pic" type="file" name="profile_pic" placeholder="Your profile picture"/>
+	                <div class="file_btn">
+			                	<span class="fa fa-paperclip"></span> <span>Photo</span>
+			                	</div>
+		        </div>
+		        
+		        <div class="file">
+	                <label for="cv">C.V. <span class="required">*</span></label>
+	                <input id="cv" type="file" name="cv" placeholder="Your cv" />
+                <div class="file_btn">
+		                	<span class="fa fa-paperclip"></span> <span>CV</span>                
+							</div>
+	                	
+	                	</div>	
+	                	
+	              </div>   	              
+                <input type="submit" class="button agent" value="Register" >
+                               
+               </from>
+           </section>
+           
+           <footer></footer>
+        
+        <script type="text/javascript" th:src="@{ /js/nav_bar.js }"></script>
+        <script type="text/javascript" th:src="@{ /js/login_slider.js }"></script>
+        <script type="text/javascript" th:src="@{ /js/password.js }"></script>
+    </body>
+</html>
+
