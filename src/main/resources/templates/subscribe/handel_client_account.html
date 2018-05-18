@@ -1,0 +1,141 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Realestate | Manage Client's accounts</title>
+        <link rel="stylesheet" th:href="@{ /css/nav_bar.css }">
+		<link rel="stylesheet" th:href="@{ /css/homepage.css }">
+		<link rel="stylesheet" th:href="@{ /css/messages.css }">
+		<link rel="stylesheet" th:href="@{ /css/manage_client.css }">
+    </head>
+    <body>
+       
+       <header>
+				
+				<nav>
+								
+					<ul>
+						<li>
+							<div class="profile_infos">
+					
+								<img class="profile_picture" th:src="@{ '/images/operator/' + ${operator.profile_pic} }" />
+								
+								<p class="profile_name">
+									<span th:text="${ operator.username }"></span>
+									<a th:href="'/operator_profile/'+${ operator.id }">
+										<span class="gear fa fa-gear"></span>
+									</a>
+								</p>
+															
+								
+							</div>
+						</li>
+						
+						<div class="links operator">
+							<li><a href="/homepage">Home</a></li>
+							<li><a class="current" href="/handel_client_account">client's account</a></li>
+							<li class="notification_link"><a>reports <span th:if="${ notification_nbr != 0 }" class="notification_nbr" th:text="${ notification_nbr }" ></span></a></a></li>
+							<li><a href="/logout">Logout <span class="fa fa-sign-out"></span></a></li>
+						</div>
+
+					</ul>				
+				</nav>
+				
+				
+				
+				<div  th:class="'notifications '+((${ notifications.size() == 0 } )? 'no_notif' : '')">
+
+					<div th:if="${ notifications.size() == 0} ">
+						<p class="simple_notif empty_notif">You don't have any report.</p>
+					</div>
+					
+					<div th:each="notification : ${ notifications }" th:class="'simple_notif simple_notif_'+${notification.id} +' '+ ((${ notification.viewed } )? 'viewed' : 'not_viewed')" >
+						
+						<p class="time" th:text="'Report at: '+ ${ notification.notification_time.toString().substring(0, 19) }" ></p>
+						<p class="message" >
+							
+							<span class="reporter" th:if="${ reporter } == 'client'">
+								<a target="_blank" th:href="'client_profile/'+${ notification.id_client }">
+									<span></span><span th:text="${ notification.agent_username }"></span><span class="fa fa-external-link"></span>				 
+								</a>
+							</span>
+							
+							<span class="reporter" th:if="${ reporter } == 'agent'">
+								<a target="_blank" th:href="'agent_profile/'+${ notification.id_agent }">
+									<span></span><span th:text="${ notification.client_username }"></span><span class="fa fa-external-link"></span>				 
+								</a>
+							</span>
+							
+							<span>Has reported an appointement: </span><br>
+							<span class="message_content" th:text="${ notification.message }" ></span>
+							
+						</p>
+	
+						<p class="more">see details</p>
+						
+						<div th:class="'detailed_notif detailed_notif_'+${notification.id}">
+						
+							<p>
+								<span class="title">Appointement:</span>
+								<span th:text="'The '+ ${ notification.appointement_time } + ' of ' + ${ notification.get_appointement_date() }"></span>
+							</p>
+							
+							<p><span class="title">Lodgement:</span><a  title="visite lodgement details" target="_blank" th:href="'lodgement_details/'+${ notification.id_lodgement }"> <span th:text="${ notification.lodgement_type }"></span> in <span th:text="${ notification.lodgement_address }"></span><span class="fa fa-external-link"></span></a></p>
+							<p th:if="${ reporter } == 'agent'"><span class="title">Client: </span> <a title="visite this agent account" target="_blank" th:href="'client_profile/'+${ notification.id_client }"> <span th:text="${ notification.client_username }"></span><span class="fa fa-external-link"></span></a></p>
+							<p th:if="${ reporter } == 'client'"><span class="title">Agent: </span> <a title="visite this agent account" target="_blank" th:href="'agent_profile/'+${ notification.id_agent }"> <span th:text="${ notification.agent_username }"></span><span class="fa fa-external-link"></span></a></p>
+						
+						</div>
+						
+					</div>
+												
+				</div>
+			</header>
+          
+       <section>
+       
+       		<p th:class="'message '+${{ type }}" th:text="${{ message }}"></p>
+			<p class='title'>Create a client account:</p>
+       
+       		<div>
+               <form class="subscribe_form"  method="post" action="/add_client">
+                       	
+	                <label for="email">Email <span class="required">*</span> : </label>
+	                <input id="email" type="email" name="email" placeholder="The client's email" maxlength="50" minlength="6" required/>
+	            
+	                <label for="password">Password <span class="required">*</span> : <span class="fa fa-eye-slash show_password"></span></label>
+	                <input id="password" type="password"  name="password" placeholder="The password" maxlength="50" minlength="6" required/>
+	           
+	                <label for="repassword">Password Confirmation <span class="required">*</span> : <span class="fa fa-eye-slash show_password"></span></label>
+	                <input  id="repassword" type="password"  name="repassword" placeholder="The password confirmation"  maxlength="50" minlength="6" required/>
+	           
+	                <input type="submit" class="button" value="create account" >
+                               
+               </form>
+            </div>
+            <br><br>
+            <p class='title'>Remove a client account:</p>
+            <div>
+               <form class="subscribe_form"  method="post" action="/remove_client">
+               		<label for="_email">The client's Email <span class="required">*</span>: </label>
+               		<input id="_email" type="email" name="email" placeholder="The client's email" />
+               		<input type="submit" value="remove account" />
+               </form>
+            </div>
+            <br><br>
+            <p class='title'>Block a client account:</p>
+            <div>
+               <form class="subscribe_form"  method="post" action="/block_client">
+               		<label for="__email">The client's Email <span class="required">*</span>: </label>
+               		<input id="__email" type="email" name="email" placeholder="The client's email" >
+               		<input type="submit" value="block account">
+               </form>
+             </div>
+           </section>
+           
+           <footer></footer>
+        
+        <script type="text/javascript" th:src="@{ /js/notification.js }"></script>
+		<script type="text/javascript" th:src="@{ /js/report.js }"></script>
+		<script type="text/javascript" th:src="@{ /js/password.js }"></script>
+    </body>
+</html>
