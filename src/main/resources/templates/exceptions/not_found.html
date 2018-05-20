@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<title>Realestate</title>
+		<link rel="stylesheet" th:href="@{ /css/nav_bar.css }">
+		<link rel="stylesheet" th:href="@{ /css/not_found.css }">
+	</head>
+	<body>
+		<div class="wrapper">
+			<header>
+				<nav>
+					<ul>
+						<li>
+							<a href="/">
+								<div class="logo">
+									<img th:src="@{ /images/logo.svg }"/>
+									<p>Realestate</p>
+								</div>
+							</a>
+						</li>
+						
+						<div class="links not_found">
+							<li><a href="/">Home</a></li>
+							<li><a class="call_us"><span class="fa fa-phone"></span>Call us<span class="phone_nbr">+21321457845</span></a></li>
+							
+						</div>
+						
+					</ul>				
+				</nav>
+				
+			</header>
+			<section class="not_found_section">
+				 
+				<div class="not_found_wrapper">
+					<div class="img">
+						<img th:src="@{ /images/not_found.png }" /> 
+					</div>
+					<div class="error">
+						<h1>404</h1>
+						<h2>Oops Page Not Found</h2>
+						<div th:if="${ looking_for_client }">
+							<p>The client you are looking for does not existes or it is temporery blocked.</p>
+						</div>
+						<div th:if="${ looking_for_agent }">
+							<p>The agent you are looking for does not existes or it is temporery blocked.</p>
+						</div>
+						<div th:if="${ looking_for_wish_list }">
+							<p>Access denied.</p>
+						</div>
+						<div th:if="${ looking_for_lodgement }">
+							<p>The lodgement you are looking for does not existes or it has been sold.</p>
+						</div>
+						
+						<div th:if="${ not_found_error }">
+							
+							<p>The page you are looking for does not exist or has been moved.</p>
+						</div>
+						
+						<a href="/" class="go_home">go home</a>
+					</div>
+					
+				</div>
+			</section>
+			<footer></footer>
+		</div>
+	
+		<script type="text/javascript" th:src="@{ /js/nav_bar.js }"></script>
+	</body>
+</html>
