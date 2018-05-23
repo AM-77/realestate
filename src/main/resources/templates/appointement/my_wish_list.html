@@ -1,0 +1,206 @@
+ <!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<title>Realestate</title>
+		<link rel="stylesheet" th:href="@{ /css/nav_bar.css }">
+		<link rel="stylesheet" th:href="@{ /css/homepage.css }">
+		<link rel="stylesheet" th:href="@{ /css/my_wish_list.css }">
+		<link rel="stylesheet" th:href="@{ /css/messages.css }">
+		
+	</head>
+	<body>
+		<div class="wrapper">
+			<header>
+				<nav>
+								
+					<ul>
+						<li>
+							<div class="profile_infos">
+					
+								<img class="profile_picture" th:src="@{ '/images/client/' + ${client.profile_pic} }" />
+								
+								<p class="profile_name">
+									<span th:text="${ client.username }"></span>
+									<span class="gear fa fa-gear"></span>
+								</p>
+								
+								<div class="profile_dropdown_menu">
+									<div class="item">
+										<a th:href="'/client_profile/'+${ client.id }">
+											<span class="fa fa-user"></span>Profile
+										</a>
+									</div>
+									<div class="item">
+										<a href="/logout">
+											<span class="fa fa-sign-out"></span>Logout
+										</a>
+									</div>							
+								</div>
+							</div>
+						</li>
+						
+						<div class="links client">
+							<li><a href="/homepage">Home</a></li>
+							<li><a href="/my_appointements">My appointements</a></li>
+							<li><a href="/my_favorites">My favorites</a></li>
+							<li><a class="current" href="/wish_list">My Wishlist</a></li>
+							<li class="notification_link"><a>Notifications <span th:if="${ notification_nbr != 0 }" class="notification_nbr" th:text="${ notification_nbr }" ></span></a></a></li>
+						</div>
+
+						
+					</ul>				
+				</nav>
+				
+				<div th:class="'notifications '+((${ notifications.size() == 0 } )? 'no_notif' : '')">
+					
+					<div th:if="${ notifications.size() == 0} ">
+						<p class="simple_notif empty_notif">You don't have any notification.</p>
+					</div>
+					
+					<div  th:each="notification : ${ notifications }" th:class="'simple_notif simple_notif_'+${notification.id} +' '+ ((${ notification.viewed } )? 'viewed' : 'not_viewed')" >
+						<p class="time" th:text="'Notification at: '+ ${ notification.notification_time.toString().substring(0, 19) }" ></p>
+						<p class="message" th:text="${ notification.message }" ></p>
+						<p class="more">see details</p>
+						
+						<div th:class="'detailed_notif detailed_notif_'+${notification.id}">
+							<p>
+							
+							<span class="title">Appointement:</span>
+							
+								
+								<a> 
+								<form method="post" action="/my_appointements">
+									<input type="hidden" name="date" th:value="${ notification.get_appointement_date() }">
+									<input type="submit" th:value="'The '+ ${ notification.appointement_time } + ' of ' + ${ notification.get_appointement_date() }" />
+									<span class="fa fa-external-link"></span>
+									</form>
+									</a>
+								
+								
+								
+								</p>
+							<p><span class="title">Lodgement:</span><a  title="visite lodgement details" target="_blank" th:href="'lodgement_details/'+${ notification.id_lodgement }"> <span th:text="${ notification.lodgement_type }"></span> in <span th:text="${ notification.lodgement_address }"></span><span class="fa fa-external-link"></span></a></p>
+							<p><span class="title">Agent:</span> <a title="visite this agent account" target="_blank" th:href="'agent_profile/'+${ notification.id_agent }"> <span th:text="${ notification.agent_username }"></span><span class="fa fa-external-link"></span></a></p>
+						</div>
+						
+					
+					
+					</div>
+												
+				</div>
+			</header>
+			<section>
+				<p th:class="'message '+${{ type }}" th:text="${{ message }}"></p>
+				
+				<p class='title'>Add An Item Wish List:</p>
+				<div>
+					<form method="post" action='add_wish_list'>
+						<div class="field input">
+							<label for="address">Address: <span class="required">*</span></label>
+							<input type="text" name="address" id="address" placeholder="Enter an address" required />
+						</div>
+						
+						<div class="field select">
+						<label for="type">Type: <span class="required">*</span></label>
+							<select id="type" class="type" name="type" required>
+								<option value="F1">F1</option>
+								<option value="F2">F2</option>
+								<option value="F3">F3</option>
+								<option value="F4">F4</option>
+								<option value="F5">F5</option>
+							</select> 
+						</div>
+						
+						<div class="field input">
+							<label for="max_price">Max Price: <span class="required">*</span></label>
+							<input id="max_price" type="number" name="max_price" placeholder="Enter an Max Price" min="0" required />
+						</div>
+						
+						<div class="field input">
+							<label for="min_price">Min Price: <span class="required">*</span></label>
+							<input id="min_price" type="number" name="min_price" placeholder="Enter an Min Price" min="0" required />
+						</div>
+						
+						<div class="field input">
+							<label for="max_surface">Max Surface: <span class="required">*</span></label>
+							<input id="max_surface" type="number" name="max_surface" placeholder="Enter an Max Surface" min="0" required />
+						</div>
+						
+						<div class="field input">
+							<label for="min_surface">Min Surface: <span class="required">*</span></label>
+							<input id="min_surface" type="number" name="min_surface" placeholder="Enter an Min Surface" min="0" required />
+						</div>
+						
+						<div class="field input">
+							<label for="max_floor">Max Floor: <span class="required">*</span></label>
+							<input id="max_floor" type="number" name="max_floor" placeholder="Enter an Max Floor" min="0" required />
+						</div>
+						
+						<div class="field input">
+							<label for="min_floor">Min Floor: <span class="required">*</span></label>
+							<input id="min_floor" type="number" name="min_floor" placeholder="Enter an Min Floor" min="0" required />
+						</div>
+												
+						<input class="add" type="submit" value="Add to Wish List">
+					</form>
+				</div>
+				<div style="clear:both"></div>
+				<p class='title'>My Wish List:</p>
+				
+				<p class="empty_list" th:if="${ empty_list }">You do not have any lodgement in your wish list yet.</p>
+
+				<div th:if="${ !empty_list }">
+					<table>
+						<thead>
+							<tr>
+								<td>Address</td>
+								<td>Type</td>
+								<td>Max Price</td>
+								<td>Min Price</td>
+								<td>Max Surface</td>
+								<td>Min Surface</td>
+								<td>Max Floor</td>
+								<td>Min Floor</td>
+								<td>Found</td>
+								<td>Remove</td>
+							</tr>
+						</thead>
+						
+						<tbody>
+							<tr th:each="wished: ${ wished_list }">
+														
+							<td><span th:text="${ wished.address }"></span></td>
+							<td><span th:text="${ wished.type }"></span></td>
+							<td><span th:text="${ wished.get_max_price() }"></span> DA</td>
+							<td><span th:text="${ wished.get_min_price() }"></span> DA</td>
+							<td><span th:text="${ wished.max_surface }"></span> M°</td>
+							<td><span th:text="${ wished.min_surface }"></span> M°</td>
+							<td><span th:text="${ wished.max_floor }"></span></td>
+							<td><span th:text="${ wished.min_floor }"></span></td>
+							<td  th:if="${ ! wished.found }"><span>Not Found Yet</span></td>
+							
+							<td class="external_link" th:if="${ wished.found }">
+								<a title="see in detail" target="_blank" th:href="'lodgement_details/' + ${ wished.id_found }">
+								check it now <span class="fa fa-external-link"></span>
+								</a>
+							</td>
+							
+							<td>
+								<form action="/remove_wish_list" method="post">
+									<input type="hidden" name="id" th:value="${ wished.id }" />
+									<input class="remove" type="submit" value="remove" />
+								</form>
+							</td>
+							
+						</tbody>
+					</table>
+				</div>
+			</section>
+			<footer></footer>
+		</div>
+		
+		
+		<script type="text/javascript" th:src="@{ /js/profile_infos.js }"></script>
+		<script type="text/javascript" th:src="@{ /js/notification.js }"></script>
+	</body>
+</html>
