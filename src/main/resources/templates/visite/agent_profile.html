@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<title>Realestate | Agent's Profile</title>
+		<link th:if=" ${ ! is_admin }" rel="stylesheet" th:href="@{ /css/nav_bar.css }">
+		<link th:if=" ${ ! is_admin  && ! is_not_logged }" rel="stylesheet" th:href="@{ /css/homepage.css }">
+		<link th:if=" ${ is_admin }" rel="stylesheet" th:href="@{ /css/dashboard.css }">
+		<link rel="stylesheet" th:href="@{ /css/profile.css }">
+		
+	</head>
+	<body>
+		<div class="wrapper">
+		
+		<header th:if="${ is_not_logged }">
+				<nav>
+					<ul>
+						<li>
+							<a href="/">
+								<div class="logo">
+									<img th:src="@{ /images/logo.svg }"/>
+									<p>Realestate</p>
+								</div>
+							</a>
+						</li>
+						
+						<div class="links">
+							<li><a href="/">Home</a></li>
+							<li>
+								<a class="subscribe">
+									Subscribe
+									<ul class="sub_menu">
+										<li><a href="/subscribe_as_client">As a client</a></li>
+										<li><a href="/subscribe_as_agent">As an agent</a></li>
+										<li><a href="/subscribe_as_operator">As an operator</a></li>
+									</ul>
+								</a>
+							</li>
+							<li><a href="/login">Login</a></li>
+							<li><a class="call_us"><span class="fa fa-phone"></span>Call us<span class="phone_nbr">+21321457845</span></a></li>
+							
+						</div>
+						
+					</ul>				
+				</nav>
+			</header>
+			<header th:if="${ is_client }">
+				<nav>
+								
+					<ul>
+						<li>
+							<div class="profile_infos">
+					
+								<img class="profile_picture" th:src="@{ '/images/client/' + ${client.profile_pic} }" />
+								
+								<p class="profile_name">
+									<span th:text="${ client.username }"></span>
+									<span class="gear fa fa-gear"></span>
+								</p>
+								
+								<div class="profile_dropdown_menu">
+									<div class="item">
+										<a th:href="'/client_profile/'+${ client.id }">
+											<span class="fa fa-user"></span>Profile
+										</a>
+									</div>
+									<div class="item">
+										<a href="/logout">
+											<span class="fa fa-sign-out"></span>Logout
+										</a>
+									</div>							
+								</div>
+							</div>
+						</li>
+						
+						<div class="links client">
+							<li><a href="/homepage">Home</a></li>
+							<li><a href="/my_appointements">My appointements</a></li>
+							<li><a href="/my_favorites">My favorites</a></li>
+							<li><a href="/wish_list">My Wishlist</a></li>
+							<li class="notification_link"><a>Notifications <span th:if="${ notification_nbr != 0 }" class="notification_nbr" th:text="${ notification_nbr }" ></span></a></a></li>
+						</div>
+
+						
+					</ul>				
+				</nav>
+				
+				<div th:class="'notifications '+((${ notifications.size() == 0 } )? 'no_notif' : '')">
+					
+					<div th:if="${ notifications.size() == 0} ">
+						<p class="simple_notif empty_notif">You don't have any notification.</p>
+					</div>
+					
+					<div  th:each="notification : ${ notifications }" th:class="'simple_notif simple_notif_'+${notification.id} +' '+ ((${ notification.viewed } )? 'viewed' : 'not_viewed')" >
+						<p class="time" th:text="'Notification at: '+ ${ notification.notification_time.toString().substring(0, 19) }" ></p>
+						<p class="message" th:text="${ notification.message }" ></p>
+						<p class="more">see details</p>
+						
+						<div th:class="'detailed_notif detailed_notif_'+${notification.id}">
+							<p>
+								<span class="title">Appointement:</span>
+								<a> 
+									<form method="post" action="/my_appointements">
+										<input type="hidden" name="date" th:value="${ notification.get_appointement_date() }">
+										<input type="submit" th:value="'The '+ ${ notification.appointement_time } + ' of ' + ${ notification.get_appointement_date() }" />
+										<span class="fa fa-external-link"></span>
+									</form>
+								</a>
+							</p>
+							<p><span class="title">Lodgement:</span><a  title="visite lodgement details" target="_blank" th:href="'lodgement_details/'+${ notification.id_lodgement }"> <span th:text="${ notification.lodgement_type }"></span> in <span th:text="${ notification.lodgement_address }"></span><span class="fa fa-external-link"></span></a></p>
+							<p><span class="title">Agent:</span> <a title="visite this agent account" target="_blank" th:href="'agent_profile/'+${ notification.id_agent }"> <span th:text="${ notification.agent_username }"></span><span class="fa fa-external-link"></span></a></p>
+						</div>
+						
+					
+					
+					</div>
+												
+				</div>
+			</header>
+			<header th:if="${ is_agent }">	
+				<nav>
+					<ul>
+						<li>
+							<div class="profile_infos agent" >
+					
+								<img class="profile_picture" th:src="@{ '/images/agent/' + ${agent.profile_pic} }" />
+								
+								<p class="profile_name">
+									<span th:text="${ agent.username }"></span>
+									<a title="Edit profile" th:href="'/agent_profile/'+${ agent.id }">
+										<span class="gear fa fa-gear"></span>
+									</a>
+								</p>
+							</div>
+						</li>
+						
+						<div class="links agent">
+							<li><a href="/my_appointements">My appointements</a></li>
+							<li class="notification_link"><a>Notifications <span th:if="${ notification_nbr != 0 }" class="notification_nbr" th:text="${ notification_nbr }" ></span></a></a></li>
+							<li><a href="/logout">Logout <span class="fa fa-sign-out"></span></a></li>
+						</div>
+
+					</ul>			
+				</nav>
+			
+				<div th:class="'notifications '+((${ notifications.size() == 0 } )? 'no_notif' : '')">
+					
+					<div th:if="${ notifications.size() == 0} ">
+						<p class="simple_notif empty_notif">You don't have any notification.</p>
+					</div>
+					
+					<div  th:each="notification : ${ notifications }" th:class="'simple_notif simple_notif_'+${notification.id} +' '+ ((${ notification.viewed } )? 'viewed' : 'not_viewed')" >
+						<p class="time" th:text="'Notification at: '+ ${ notification.notification_time.toString().substring(0, 19) }" ></p>
+						<p class="message" th:text="${ notification.message }" ></p>
+						<p class="more">see details</p>
+						
+						<div th:class="'detailed_notif detailed_notif_'+${notification.id}">
+							<p>
+							
+							<span class="title">Appointement:</span>
+							
+								
+								<a> 
+								<form method="post" action="/my_appointements">
+									<input type="hidden" name="date" th:value="${ notification.get_appointement_date() }">
+									<input type="submit" th:value="'The '+ ${ notification.appointement_time } + ' of ' + ${ notification.get_appointement_date() }" />
+									<span class="fa fa-external-link"></span>
+									</form>
+									</a>
+								
+								
+								
+								</p>
+							<p><span class="title">Lodgement:</span><a  title="visite lodgement details" target="_blank" th:href="'lodgement_details/'+${ notification.id_lodgement }"> <span th:text="${ notification.lodgement_type }"></span> in <span th:text="${ notification.lodgement_address }"></span><span class="fa fa-external-link"></span></a></p>
+							<p><span class="title">Agent:</span> <a title="visite this agent account" target="_blank" th:href="'agent_profile/'+${ notification.id_agent }"> <span th:text="${ notification.agent_username }"></span><span class="fa fa-external-link"></span></a></p>
+						</div>
+						
+					
+					
+					</div>
+												
+				</div>
+			</header>
+			<header th:if="${ is_operator }">
+				<nav>
+								
+					<ul>
+						<li>
+							<div class="profile_infos">
+					
+								<img class="profile_picture" th:src="@{ '/images/operator/' + ${operator.profile_pic} }" />
+								
+								<p class="profile_name">
+									<span th:text="${ operator.username }"></span>
+									<a th:href="'/operator_profile/'+${ operator.id }">
+										<span class="gear fa fa-gear"></span>
+									</a>
+								</p>
+															
+								
+							</div>
+						</li>
+						
+						<div class="links operator">
+							<li><a href="/homepage">Home</a></li>
+							<li><a href="/handel_client_account">client's account</a></li>
+							<li class="notification_link"><a>reports <span th:if="${ notification_nbr != 0 }" class="notification_nbr" th:text="${ notification_nbr }" ></span></a></a></li>
+							<li><a href="/logout">Logout <span class="fa fa-sign-out"></span></a></li>
+						</div>
+
+					</ul>				
+				</nav>
+				
+				
+				
+				<div  th:class="'notifications '+((${ notifications.size() == 0 } )? 'no_notif' : '')">
+
+					<div th:if="${ notifications.size() == 0} ">
+						<p class="simple_notif empty_notif">You don't have any report.</p>
+					</div>
+					
+					<div th:each="notification : ${ notifications }" th:class="'simple_notif simple_notif_'+${notification.id} +' '+ ((${ notification.viewed } )? 'viewed' : 'not_viewed')" >
+						
+						<p class="time" th:text="'Report at: '+ ${ notification.notification_time.toString().substring(0, 19) }" ></p>
+						<p class="message" >
+							
+							<span class="reporter" th:if="${ reporter } == 'client'">
+								<a target="_blank" th:href="'client_profile/'+${ notification.id_client }">
+									<span></span><span th:text="${ notification.agent_username }"></span><span class="fa fa-external-link"></span>				 
+								</a>
+							</span>
+							
+							<span class="reporter" th:if="${ reporter } == 'agent'">
+								<a target="_blank" th:href="'agent_profile/'+${ notification.id_agent }">
+									<span></span><span th:text="${ notification.client_username }"></span><span class="fa fa-external-link"></span>				 
+								</a>
+							</span>
+							
+							<span>Has reported an appointement: </span><br>
+							<span class="message_content" th:text="${ notification.message }" ></span>
+							
+						</p>
+	
+						<p class="more">see details</p>
+						
+						<div th:class="'detailed_notif detailed_notif_'+${notification.id}">
+						
+							<p>
+								<span class="title">Appointement:</span>
+								<span th:text="'The '+ ${ notification.appointement_time } + ' of ' + ${ notification.get_appointement_date() }"></span>
+							</p>
+							
+							<p><span class="title">Lodgement:</span><a  title="visite lodgement details" target="_blank" th:href="'lodgement_details/'+${ notification.id_lodgement }"> <span th:text="${ notification.lodgement_type }"></span> in <span th:text="${ notification.lodgement_address }"></span><span class="fa fa-external-link"></span></a></p>
+							<p th:if="${ reporter } == 'agent'"><span class="title">Client: </span> <a title="visite this agent account" target="_blank" th:href="'client_profile/'+${ notification.id_client }"> <span th:text="${ notification.client_username }"></span><span class="fa fa-external-link"></span></a></p>
+							<p th:if="${ reporter } == 'client'"><span class="title">Agent: </span> <a title="visite this agent account" target="_blank" th:href="'agent_profile/'+${ notification.id_agent }"> <span th:text="${ notification.agent_username }"></span><span class="fa fa-external-link"></span></a></p>
+						
+						</div>
+					</div>						
+				</div>
+			</header>
+			<header th:if="${ is_admin }">
+				<nav class="horizontal_nav">
+				<div class="logo">
+					<img th:src="@{ /images/logo.svg }"/>
+				</div>
+				
+				<div class="profile_infos">
+					
+					<img class="profile_picture" th:src="@{ '/images/admin/' + ${admin.profile_pic} }" />
+					
+					<p class="profile_name">
+						<span th:text="${ admin.name } +' '+ ${ admin.last_name }"></span>
+						<span class="gear fa fa-gear"></span>
+					</p>
+					
+					<div class="profile_dropdown_menu">
+						<div class="item">
+							<a th:href="'/admin_profile/'+${ admin.id }">
+								<span class="fa fa-user"></span>Profile
+							</a>
+						</div>
+						<div class="item">
+							<a href="/logout">
+								<span class="fa fa-sign-out"></span>Logout
+							</a>
+						</div>							
+					</div>
+				</div>
+
+			</nav>
+			</header>
+			<div class="space"></div>
+			<section>
+						
+			<div class="wrapper">
+				<div class="image">
+					<img th:src="@{ '/images/agent/' + ${ profile_agent.profile_pic } }">
+				</div>
+				
+				<div class="infos">
+					<table border="dashed">
+						<tr> 
+							<td class="title">Username: </td>
+							<td class="value" th:text="${ profile_agent.username }"></td>
+						</tr>
+						<tr> 
+							<td class="title">Name: </td>
+							<td class="value" th:text="${ profile_agent.name }"></td>
+						</tr>
+						<tr> 
+							<td class="title">Family Name: </td>
+							<td class="value" th:text="${ profile_agent.last_name }"></td>
+						</tr>
+						<tr> 
+							<td class="title">Age: </td>
+							<td class="value" ><span th:text="${ age }"></span> years old</td>
+						</tr>
+						<tr> 
+							<td class="title">Gender: </td>
+							<td class="value" th:text="${ profile_agent.gender }"></td>
+						</tr>
+						
+						<tr> 
+							<td class="title">Locale: </td>
+							<td class="value" th:text="${ profile_agent.locale }"></td>
+						</tr>
+						
+						<tr> 
+							<td class="title">Email: </td>
+							<td class="value" th:text="${ profile_agent.email }"></td>
+						</tr>
+						
+						<tr> 
+							<td class="title">Phone: </td>
+							<td class="value" th:text="${ profile_agent.phone }"></td>
+						</tr>
+						
+						<tr> 
+							<td class="title">C.V. : </td>
+							<td class="value" ><a th:href="@{ 'assets/images/agent/cv/' + ${profile_agent.cv} }" target=_BLANK>check out my cv</a></td>
+						</tr>
+						
+						<tr th:if="${ link }">
+							<td class="title"></td>
+							<td class="value"><a href="/edit_profile">edit profile</a></td>
+						</tr>
+					</table>
+				</div>
+			
+			</div>
+				
+			</section>
+			<footer></footer>
+		</div>
+	
+		<script type="text/javascript" th:src="@{ /js/nav_bar.js }"></script>
+		<script th:if="${ ! is_admin && ! is_not_logged }" type="text/javascript" th:src="@{ /js/profile_infos.js }"></script>
+		<script th:if="${ ! is_admin && ! is_not_logged  }" type="text/javascript" th:src="@{ /js/notification.js }"></script>
+		<script th:if="${ is_operator && ! is_not_logged }" type="text/javascript" th:src="@{ /js/report.js }"></script>
+		<script th:if="${ is_admin }" type="text/javascript" th:src="@{ /js/admin/dashboard.js }"></script>
+	</body>
+</html>
