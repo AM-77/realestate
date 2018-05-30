@@ -1,0 +1,49 @@
+section.not_found_section{
+    display: block;
+    width: 85%;
+    padding-top: 220px;
+    margin: 0 auto;
+    padding-left: 20%
+}
+
+section.not_found_section .img{
+    display: block;
+    float: left;
+    width: 25%;
+
+}
+
+section.not_found_section .error{
+    width: 75%;
+    float: left;
+}
+
+section.not_found_section .error h1{
+    color: #da3232;
+    font-size: 100px;
+    font-weight: bold
+}
+
+section.not_found_section .error h2{
+    color: #b16666;
+    font-size: 30px;
+    font-weight: bold;
+}
+
+section.not_found_section .error p{
+    color: #271e1e;
+    font-size: 20px;
+    line-height: 2.5
+}
+
+section.not_found_section a.go_home{
+    text-decoration: none;
+    text-transform: capitalize;
+    background: #3e9dfb;
+    font-size: 17px;
+    color: #fff;
+    cursor: pointer;
+    border-radius: 2px;
+    padding: 9px 30px;
+    line-height: 2.8;
+}

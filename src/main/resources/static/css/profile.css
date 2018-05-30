@@ -1,0 +1,109 @@
+.space{
+    display: block;
+    width: 100%;
+    height: 150px;
+}
+section{
+    background: #ffffff;
+    width: 70%;
+    margin: 0 auto;
+    border-radius: 3px;
+    box-shadow: 0px 2px 5px -2px #000000;
+}
+
+section .wrapper{
+    height: 400px;
+    padding: 50px;
+}
+
+section .wrapper .image{
+    border-radius: 3px;
+    overflow: hidden;
+    display: block;
+    background: red;
+    width: 25%;
+    height: 300px;
+    float: left;
+    margin-right: 60px;
+    box-shadow: 0px 2px 5px -2px #000000;
+}
+
+section .wrapper .image img{
+    width: 100%;
+    height: 100%;
+}
+
+section .wrapper .infos.p{
+    padding-top: 22px;
+}
+
+section .wrapper .title, section .wrapper .value, section .wrapper .value input{
+    font-size: 18px;
+    color: #000000a8;
+    line-height: 2;
+}
+
+section .wrapper .value input{
+    line-height: 1.5;	
+}
+
+section .wrapper .title{
+    padding-right: 20px;
+    color: #000000;
+}
+
+section .wrapper .value a{
+    text-decoration: none;
+    text-transform: capitalize;
+    color: #72a2e7;
+    transition: color 250ms cubic-bezier(0.25, 0.1, 0, 1.18)
+}
+
+section .wrapper .value a:hover{
+    color: #0074fb;
+}
+
+.infos input{
+    text-indent: 15px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    border-radius: 2px;
+    border: 1px solid #333333;
+}
+
+.infos input:hover{
+	border: 1px solid #0074fb;
+}
+
+.infos input:disabled{
+    background: transparent;
+    border: none;
+    cursor: default;
+    border: 1px solid #ffffff;
+}
+
+.infos input:active{
+    box-shadow: none;
+    outline: none;
+    boredr: none
+}
+
+.infos button{
+    font-size: 15px;
+    font-family: slabo27;
+    background: #0074fb;
+    border: none;
+    border-radius: 2px;
+    color: #ffffff;
+    padding: 4px 20px;
+    cursor: pointer;
+    margin-top: 15px;
+    float: right;
+    box-shadow: 0px 1px 2px 0px #000;
+    transition: all 250ms cubic-bezier(0.25, 0.1, 0, 1.21);
+}
+
+.infos button:hover{
+    box-shadow: 0px 2px 4px 0px #000000c7;
+    background: #257ae0
+}

@@ -1,0 +1,201 @@
+html{
+	overflow: hidden
+}
+
+.lodgement_details{
+    display: block;
+    width: 90%;
+    margin: 0 auto;
+    padding-top: 60px;
+    background: #ffffff;
+    height: 100vh;
+    overflow: hidden;
+    box-shadow: 0px 0px 10px -3px #000000;
+}
+
+.lodgement_details .lodgement_infos{
+    display: block;
+    width: 30%;
+    height: 100%;
+    height: 100vh;
+    float: left;
+    padding-left: 2.5%;
+    background: #ffffdc4f;
+}
+
+.lodgement_details .lodgement_infos .main_title{
+    margin-top: 20px;
+    font-size: 40px;
+    margin-bottom: 15px;
+    color: #285990;
+}
+
+.lodgement_details .lodgement_infos p.info{
+    font-size: 19px;
+    line-height: 1.5;
+}
+
+.lodgement_details .lodgement_infos .title{
+    color: #08136d;
+}
+
+.lodgement_details .lodgement_infos .value{
+    display: inline-block;
+    color: #434646;
+    text-indent: 10px;
+    margin-right: 10px;
+}
+
+.sqr{
+    position: relative;
+    top: -10px;
+    font-size: 11px;
+    font-weight: bold;
+}
+
+.lodgement_details .lodgement_infos a{
+    display: inline-block;
+    text-decoration: none;
+    color: #e8e8e8;
+    background: #1571af;
+    padding: 5px 35px;
+    margin-top: 20px;
+    margin-bottom:  20px;
+    font-size: 17px;
+    cursor: pointer;
+    border-radius: 2px;
+    text-transform: capitalize;
+    box-shadow: 0px 4px 12px -7px #000000;
+    transition: all 250ms cubic-bezier(0.25, 0.1, 0, 1.16);
+}
+
+.lodgement_details .lodgement_infos a.fav{
+    display: inline-block;
+    text-decoration: none;
+    color: #e8e8e8;
+    background: #0000006b;
+    padding: 5px 10px;
+    margin-top: 0px;
+    margin-bottom:  0px;
+    position: absolute;
+    left: 440px;
+    top: 70px;
+    z-index: 10;
+    font-size: 17px;
+    cursor: pointer;
+    border-radius: 2px;
+    text-transform: capitalize;
+    transition: all 250ms cubic-bezier(0.25, 0.1, 0, 1.16);
+}
+
+.lodgement_details .lodgement_infos a.fav:hover{
+    color: #ffffff;
+    background: #000000b8
+}
+
+.lodgement_details .lodgement_infos a:hover{
+    color: #ffffff;
+    background: #114d75
+}
+
+.lodgement_details .lodgement_pics{
+    width: 70%;
+    float: right;
+}
+
+p.show{
+    font-size: 20px;
+    text-indent: 5px;
+    color: #272727;
+}
+
+.slider{
+    display: block;
+    width: 500%;
+    position: relative;
+    overflow: hidden;
+}
+
+.slider:before{
+    content: "";
+    display: block;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    height: 100vh;
+    z-index: 1;
+    background: #0000001f;
+}
+.slider .prev{
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    display: block;
+    width: 3%;
+    height: 100vh;
+    cursor: pointer;
+    z-index: 1;
+    transition: all 250ms cubic-bezier(0.25, 0.1, 0, 1.15)
+}
+
+.slider .next{
+    position: absolute;
+    left: 17%;
+    top: 0px;
+    display: block;
+    width: 3%;
+    height: 100vh;
+    cursor: pointer;
+    z-index: 1;
+    transition: all 250ms cubic-bezier(0.25, 0.1, 0, 1.15);
+}
+
+.slider .next:hover{
+    background: #ffffff2e;
+}
+.slider .prev:hover{
+    background: #ffffff2e;
+}
+
+.slider .next:hover .fa, .slider .prev:hover .fa{
+    color: #000000bd
+}
+
+.slider .next .fa , .slider .prev .fa{
+    font-size: 51px;
+    color: #00000091; 
+    position: relative; 
+    top: 240px;
+    left: 42px;
+    z-index: 1;
+}
+
+.the_slider{
+    position: relative;
+    z-index: 0;
+    right: 0px;
+    top: 0px;
+    left: 0px;
+}
+
+.disabled{
+	cursor: not-allowed !important
+}
+
+.slider .slide{
+    width: 20%;
+    float: left;
+    height: 90vh;
+}
+
+
+footer{
+    display: block;
+    width: 100%;
+    height: 40px;
+    background: #ffffff;
+    position: relative;
+    top: -40px;
+    box-shadow: 0px 0px 1px 1px #0000004a
+}

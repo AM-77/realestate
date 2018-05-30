@@ -1,0 +1,371 @@
+body{
+	overflow: hidden
+}
+
+.slider{
+    display: block;
+    width: 70%;
+    height: 100vh;
+    position: relative;
+    float: left;
+}
+
+.slider div.fade_bg{
+    display: block;
+    width: 100%;
+    height: 100vh;
+    position: absolute;
+    z-index: 1;
+    background: rgba(0,0,0,0.15)
+}
+
+.slider div.hovered_image{
+    display: block;
+    width: 100%;
+    height: 100vh;
+    position: absolute;
+    z-index: 1;
+}
+
+.slider div.hovered_image.show_slide{
+    animation: show_slide 350ms cubic-bezier(0.25, 0.1, 0, 0.48) forwards;
+}
+
+.slider div.hovered_image.hide_slide{
+    animation: hide_slide 350ms cubic-bezier(0.25, 0.1, 0, 1.24) forwards;
+}
+
+@keyframes show_slide{
+    0%{
+        transform: scale(0.75);
+        opacity: 0
+    }
+
+    100%{
+        transform: scale(1);
+        opacity:1
+    }
+
+}
+
+@keyframes hide_slide{
+    0%{
+        transform: scale(1);
+        opacity: 1
+    }
+
+    100%{
+        transform: scale(0.75);
+        opacity:0
+    }
+
+}
+
+.slider div.hovered_image img{
+    width: 100%;
+    height: 100%;
+
+}
+
+.slider ul.slides{
+    position: relative;
+    width: 800%;
+}
+
+.slider ul.slides li{
+    display: inline-block;
+    float: left;
+    height: 100vh;
+    width: 12.5%;
+}
+
+.slider ul.slides li img{
+    width: 100%;
+    height: 100%;
+}
+
+.slider ul.slider_btn{
+    display: block;
+    position: absolute;
+    width: 280px;
+    height: 13px;
+    top: 95vh;
+    margin: 0 auto;
+    margin-left : 40px
+}
+
+.slider ul.slider_btn li{
+    display: inline-block;
+    width: 13px;
+    height: 13px;
+    background: rgba(0,0,0,0.65);
+    border-radius: 100%;
+    float: left;
+    position: relative;
+    margin: 0 10px;
+    cursor: pointer;
+    z-index: 2;
+    transition: all 250ms cubic-bezier(0.25, 0.1, 0, 1.26);
+}
+
+.slider ul.slider_btn li:hover{
+    background: rgba(0,0,0,0.9);
+    transform: scale(1.25)
+}
+
+.slider ul.slider_btn li.active{
+    background: rgba(0,0,0,0.9);
+    transform: scale(1.25)
+}
+
+.login_form{
+    display: block;
+    width: 30%;
+    height: 100vh;
+    background: #fff;
+    position: absolute;
+    top: 0px;
+    left:70%;
+    z-index: 5;
+    padding: 0px;
+    margin: 0px;
+    box-shadow: 0px 0px 10px -1px rgba(0,0,0,1)
+}
+
+.login_form .message{
+	display:block;
+	position: absolute;
+	top: 100px;
+	left: 450px;
+	opacity: 0;
+	z-index: 10;
+	width: 350px;
+	height: 42px;
+	border-radius: 3px;
+	font-size: 18px;
+	color: #FFFFFF;
+	text-indent: 25px;
+	line-height: 2.3;
+	animation: dispaly_message 3000ms cubic-bezier(0.25, 0.1, 0, 1.15) 100ms forwards;
+}
+
+@keyframes dispaly_message{
+	0%{
+		left: 450px;
+		opacity: 0;
+	}
+	30%{
+		left: 35px;
+		opacity: 1;
+	}
+	70%{
+		left: 35px;
+		opacity: 1;
+	}
+	100%{
+		left: 450px;
+		opacity: 0;
+	}
+}
+
+.login_form .message.error{
+	background: rgba(255, 86, 86, 0.92);
+	border: 1px solid rgb(243, 47, 30);
+}
+
+.login_form .message.succes{
+	background: rgba(85, 142, 78, 0.92);
+	border: 1px solid rgb(75, 132, 81);
+}
+
+.login_form form{
+    display: block;
+    width: 80%;
+    margin:0 auto;
+}
+
+.login_form form .logo{
+    width: 60%;
+    margin: 60px auto;
+    margin-bottom: 30px;
+}
+
+.login_form form .logo img{
+    display: block;
+    width: 80%;
+    margin: 0 auto;
+}
+
+.login_form form .logo .title{
+    text-align: center;
+    font-size: 50px;
+}
+
+.login_form form label{
+    display: block;
+    font-size: 21px;
+    color: rgba(0,0,0,0.85);
+    margin: 0 auto;
+    text-align: center;
+    color: #333;
+    cursor: pointer;
+    position: relative;
+}
+
+.login_form form input{
+    display: block;
+    width: 80%;
+    margin: 0 auto;
+    margin-top: 10px;
+}
+
+.login_form form input[type='email'], 
+.login_form form input[type='password'],
+ .login_form form input[type='text']{
+    border: 1px solid rgba(0,0,0,0.85);
+    border-radius: 3px;
+    height: 40px;
+    margin-bottom: 15px;
+    font-size: 17px;
+    font-weight: 300;
+    text-indent: 15px;
+    font-family: roboto;
+    transition: all 250ms cubic-bezier(0.25, 0.1, 0, 1.36);
+    outline: none;
+}
+
+.login_form form input[type='password'],
+.login_form form input[type='text']{
+	margin-bottom: 0px;
+}
+
+.login_form form input[type='email']:hover,
+.login_form form input[type='password']:hover,
+.login_form form input[type='text']:hover{
+     box-shadow: 0px 5px 10px -5px rgb(82, 110, 234, 0.7);
+     border-color: #0f7ae5;
+}
+
+.login_form form input[type='submit']{
+    border: 1px solid rgba(255,255,255,0);
+    border-radius: 3px;
+    height: 40px;
+    margin-top: 35px;
+    font-size: 20px;
+    font-family: slabo;
+    cursor: pointer;
+    color: #FFFFFF;
+    text-transform: capitalize;
+    background: #1e87f0;
+    transition: all 250ms cubic-bezier(0.25, 0.1, 0, 1.36);
+}
+
+.login_form form input[type='submit']:hover{
+    background: #0f7ae5;
+    box-shadow: 0px 7px 10px -5px rgb(0,0,0, 0.7);
+}
+
+.login_form form .show_password{
+	position: absolute;
+	font-weight: bold;
+	top: 40px;
+	right: 13%;
+	cursor: pointer;
+	color: #000;
+	transition: all 250ms cubic-bezier(0.25, 0.1, 0, 1.36);
+}
+
+.login_form form .show_password:hover{
+    color: #0f7ae5;
+}
+
+
+.login_form form input[type='checkbox']{
+	display: inline-block;
+	width: 20px;
+	height: 20px;
+	position: absolute;
+	margin-left: 35px;
+	opacity: 0;
+	z-index: 3;
+	cursor: pointer;
+}
+
+
+form .checkbox{
+	display: inline-block;
+	width: 20px;
+	height: 20px;
+	position: relative;
+	top: 10px;
+	left: 35px;
+	border: 1px solid rgba(0,0,0,0.75);
+	border-radius: 3px;
+	z-index: 2;
+}
+
+form .checkbox:after, form .checkbox:before{
+	display: block;
+	content: "";
+	width: 20px;
+	height: 6px;
+	background: #1e87f0;;
+	position: absolute;
+	top: 6px;
+	left: -1px;
+	border-radius: 3px;
+	opacity: 0;
+}
+
+form .checkbox:before{
+	transform: rotate(45deg)
+}
+
+form .checkbox:after{
+	transform: rotate(-45deg)
+}
+
+
+form.seach-form .types .type_btn{
+	display: inline-block;
+	width: 20px;
+	height: 20px;
+	position: relative;
+	top: 3px;
+	margin-right: 30px;
+	cursor: pointer;
+	outline: none;
+	z-index: 3;
+	opacity: 0;
+}
+
+form .type_btn:checked + .checkbox{
+	border: 1px solid #1e87f0;
+}
+
+form .type_btn:checked + .checkbox:before, form .type_btn:checked + .checkbox:after{
+	opacity: 1
+}
+
+form label.keep_logged{
+	display: inline-block;
+	font-size: 17px;
+	color: rgba(0,0,0,0.75);
+	text-transform: capitalize;
+	position: relative;
+	top: 6px;
+	left: 40px;
+}
+
+a.forget{
+	color: black;
+	font-size: 14px;
+	position: relative;
+	top: -20px;
+	left: 5px;
+	transition: color 250ms cubic-bezier(0.25, 0.1, 0, 1.29)
+}
+
+a.forget:hover{
+	color: #1e87f0;
+}

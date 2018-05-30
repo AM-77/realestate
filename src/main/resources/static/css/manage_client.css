@@ -1,0 +1,87 @@
+section{
+    display: block;
+    width: 90%;
+    margin: 0 auto;
+    padding-top: 60px;
+}
+
+section p.title{
+    font-size: 25px;
+    margin-top: 50px;
+    margin-bottom:  10px;
+    color: rgb(30, 135, 240);
+    text-decoration: underline;
+}
+
+
+section div form{
+    width: 100%;
+    float: left;
+}
+
+section div form label{
+    display: block;
+    font-size: 19px;
+    float: left;
+    line-height: 2;
+    margin-right: 5px;
+    position: relative;
+}
+
+section div form .show_password{
+	position: absolute;
+	right: -215px;
+	top: 8px;
+	font-weight: bold;
+	cursor: pointer;
+	transition: all 250ms cubic-bezier(0.25, 0.1, 0, 1.36);
+}
+
+section div form .show_password:hover{
+	color: #1e87f0
+}
+
+section div form input{
+    border: 1px solid rgba(0,0,0,0.85);
+    border-radius: 2px;
+    height: 35px;
+    font-size: 17px;
+    font-weight: 300;
+    text-indent: 5px;
+    font-family: roboto;
+    transition: all 250ms cubic-bezier(0.25, 0.1, 0, 1.36);
+	outline: none;
+	float: left;
+	margin-right: 15px;
+	width: 220px;
+}
+
+section div form input:hover{
+     box-shadow: 0px 5px 10px -5px rgb(82, 110, 234, 0.7);
+     border-color: rgb(30, 135, 240);
+}
+
+section div form input[type='submit']{
+    border: 1px solid rgba(255,255,255,0);
+    border-radius: 3px;
+    width: 150px;
+    height: 35px;
+    font-size: 15px;
+    font-family: roboto;
+    cursor: pointer;
+    color: #FFFFFF;
+    font-weight: bold;
+    text-transform: capitalize;
+    background: rgb(30, 135, 240);
+    transition: all 250ms cubic-bezier(0.25, 0.1, 0, 1.36);
+    float: right;
+    margin-right: 0px;
+}
+
+section div form input[type='submit']:hover{
+    background: rgb(24, 120, 216);
+     box-shadow: 0px 4px 10px -5px rgb(0,0,0, 0.7);
+}
+span.required{
+	color: #ff1515;
+}

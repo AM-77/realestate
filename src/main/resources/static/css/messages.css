@@ -1,0 +1,45 @@
+ .message.error, .message.success{
+	display:block;
+	position: absolute;
+	top: 80px;
+	left: -460px; 
+	opacity: 1;
+	z-index: 10;
+	height: 42px;
+	border-radius: 3px;
+	font-size: 18px;
+	color: #FFFFFF;
+	text-indent: 25px;
+	line-height: 2.3;
+	padding-right: 20px;
+	animation: dispaly_message 3500ms cubic-bezier(0.25, 0.1, 0, 1.15) 100ms forwards;
+}
+
+@keyframes dispaly_message{
+	0%{
+		left: -450px;
+		opacity: 0;
+	}
+	30%{
+		left: 55px;
+		opacity: 1;
+	}
+	70%{
+		left: 55px;
+		opacity: 1;
+	}
+	100%{
+		left: -450px;
+		opacity: 0;
+	}
+}
+
+ .message.error{
+	background: rgb(220, 115, 115);
+	border: 1px solid rgb(243, 47, 30);
+}
+
+.message.success{
+	background: rgb(114, 167, 120);
+	border: 1px solid rgb(75, 132, 81);
+}

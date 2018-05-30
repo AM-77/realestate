@@ -1,0 +1,207 @@
+body{
+	overflow: hidden
+}
+
+section a{
+	display: block;
+	text-decoration:none;
+	font-size: 37px;
+	width: 25%;
+	text-align: center;
+	color: rgba(0, 0, 0, 0.74);
+	margin: 0 auto;
+}
+
+section .logo{
+	width: 50%;
+	margin: 0 auto;
+	margin-top: 60px
+}
+
+section .logo img{
+	width: 60%;
+}
+
+.subscribe__form{
+    display: block;
+    width: 60%;
+    z-index: 5;
+    margin: 0px auto;
+}
+
+.subscribe__form form .input{
+	display: block;
+	width: 48%;
+	float: left;
+	margin-right: 1%;
+	margin-left: 1%;
+}
+.subscribe__form form .first{
+	display: block;
+	width: 98%;
+	float: left;
+	margin-right: 1%;
+    margin-left: 1%;
+}
+
+.subscribe__form form label{
+    display: block;
+    font-size: 18px;
+    color: rgba(0,0,0,0.85);
+    margin: 0 auto;
+    text-align: center;
+    color: #333;
+    cursor: pointer;
+    margin-top: 15px;
+    margin-bottom: 5px;
+    position: relative;
+}
+
+.subscribe__form form  .show_password{
+	position: absolute;
+	right: 10px;
+	top: 32px;
+	font-weight:bold;
+	cursor: pointer;
+	color: #000;
+	transition: all 250ms cubic-bezier(0.25, 0.1, 0, 1.36);
+}
+
+.subscribe__form form  .show_password:hover{
+	color: #1e87f0;
+}
+
+.subscribe__form form input,.subscribe__form form select{
+    display: block;
+    width: 100%;
+}
+
+.subscribe__form form input[type='email'], 
+.subscribe__form form input[type='password'],
+.subscribe__form form input[type='text'],
+.subscribe__form form input[type='phone'],
+.subscribe__form form input[type='date'], 
+.subscribe__form form input[type='file'],
+.subscribe__form form select{
+    border: 1px solid rgba(0,0,0,0.85);
+    border-radius: 2px;
+    height: 35px;
+    font-size: 16px;
+    font-weight: 300;
+    text-indent: 15px;
+    font-family: roboto;
+    transition: all 250ms cubic-bezier(0.25, 0.1, 0, 1.36);
+    outline: none;
+}
+
+.subscribe__form form select{
+	background: rgba(0,0,0,0)
+}
+
+.subscribe__form form input[type='file']{
+	position:relative;
+	cursor: pointer !important;
+	z-index: 5;
+	opacity: 0;
+}
+
+.subscribe__form form .file_btn{
+	position: relative;
+	top: -35px;
+	height: 35px;
+	font-size: 16px;
+	font-weight: 300;
+	font-family: roboto;
+	line-height: 1.9;
+	font-size: 17px;
+	text-indent: 21px;
+	text-transform: capitalize;
+	border: 1px solid rgba(0,0,0,0.85);
+	border-radius: 2px;
+	z-index: 1;
+}
+
+.subscribe__form form .file_btn .fa-paperclip{
+	font-weight: bold;
+}
+
+.subscribe__form form input[type='email']:hover,
+.subscribe__form form input[type='password']:hover,
+.subscribe__form form input[type='text']:hover,
+.subscribe__form form input[type='phone']:hover,
+.subscribe__form form input[type='date']:hover, 
+.subscribe__form form input[type='file']:hover,
+.subscribe__form form select:hover,
+.subscribe__form form input[type='file']:hover + .file_btn{
+     box-shadow: 0px 5px 10px -5px rgb(82, 110, 234, 0.7);
+     border-color: #1e87f0;
+}
+
+.subscribe__form form input[type='file']:hover + .file_btn{
+	color: #1e87f0;;
+}
+
+.subscribe__form form input[type='submit']{
+    border: 1px solid rgba(255,255,255,0);
+    border-radius: 3px;
+    height: 35px;
+    width: 48%;
+    margin: 0 auto;
+    font-size: 16px;
+    font-family: roboto;
+    cursor: pointer;
+    color: #FFFFFF;
+    outline: none;
+    margin-bottom: 20px;
+    text-transform: capitalize;
+    background: #1e87f0;
+    transition: all 250ms cubic-bezier(0.25, 0.1, 0, 1.36);
+}
+
+.subscribe__form form input[type='submit']:hover{
+    background: #1977d4;
+    box-shadow: 0px 5px 10px -5px rgba(0,0,0, 0.75);
+}
+
+.subscribe__form .agent{
+	display: block;
+	width: 100%;
+	height: 55px;
+	margin-top: px;
+}
+
+.subscribe__form .agent div{
+	display: block;
+	position: relative;
+	width: 25%;
+	float: left;
+}
+
+.subscribe__form .agent select{
+	text-indent: 0;
+	margin: 0;
+}
+.subscribe__form form .agent .file_btn{
+	position: relative;
+	top: -25px;
+	left: 20px;
+	font-size: 15px;
+    font-weight: 300;
+    font-family: roboto;
+    line-height: 1.6;
+    text-indent: 2px;
+    border: 1px solid rgba(0,0,0,0.85);
+    border-radius: 2px;
+    height: 25px;
+    width: 80%;
+    z-index: 1;
+}
+
+.subscribe__form form input[type='submit'].agent{
+	margin-top: 5px;
+	width: 80%;
+}
+
+.subscribe__form form .required{
+	color: rgba(255, 23, 23, 0.85);
+}
